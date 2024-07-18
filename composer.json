@@ -1,0 +1,26 @@
+{
+  "name": "lifetime/bridge",
+  "description": "bridge",
+  "version": "1.0.0",
+  "homepage": "https://github.com/LifeTimeNine/bridge.git",
+  "license": "MIT",
+  "authors": [{
+      "name": "Lifetime",
+      "email": "2390904403@qq.com"
+  }],
+  "keywords": [
+      "Wechat",
+      "Ali",
+      "ByteDance",
+      "Qiniu"
+  ],
+  "autoload": {
+      "psr-4": {
+          "lifetime\\bridge\\": "src"
+      }
+  },
+  "require": {
+      "php": ">=7.1",
+      "endroid/qr-code": "^4.6"
+  }
+}
