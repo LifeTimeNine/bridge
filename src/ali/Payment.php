@@ -297,21 +297,19 @@ class Payment
     /**
      * 异步通知处理
      * @access  public
-     * @param callable  $callback   验证完成闭包函数(参数: $data-数据，$checkRes-验证结果) 如果返回false强制给阿里云返回失败的消息
+     * @param callable  $callback   验证完成闭包函数(参数: $data-数据) 如果返回false将会给支付宝返回失败的消息
      * @param string    给支付宝返回的消息
      * @throws InvalidSignException
      */
     public function notify(callable $callback= null): string
     {
         $data = $_POST;
-        $checkRes = $this->verify($data);
-
-        if (is_callable($callback)) {
-            $res = call_user_func_array($callback, [$data, $checkRes]);
-            return $res === false ? 'fail' : 'success';
-        } else {
-            return $checkRes ? 'success' : 'fail';
+        if (!$this->verify($data)) {
+            return 'fail';
         }
+
+        $res = call_user_func_array($callback, [$data]);
+        return $res === false ? 'fail' : 'success';
     }
 
     /**

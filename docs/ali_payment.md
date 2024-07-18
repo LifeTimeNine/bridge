@@ -70,18 +70,13 @@ $result = (new \lifetime\bridge\ali\Payment)->page([
 ~~~php
 <?php
 
-echo (new \lifetime\bridge\ali\Payment)->notify(function($data, $checkRes) {
-  if ($checkRes) {
-    // 如果签名验证成功
-    /**
-     * 业务处理
-     * xxxxx
-    */
-    return true;
-  } else {
-    // 如果签名验证失败
-    return false;
-  }
+echo (new \lifetime\bridge\ali\Payment)->notify(function($data) {
+  /** 
+   * 当签名验证成功后会进入此闭包函数
+   * 
+   * 返回false，表示处理失败，会向支付宝服务返回失败的消息
+   * 返回任何非false的结果，会向支付宝服务返回成功的消息
+   */
 });
 ~~~
 
@@ -118,7 +113,7 @@ $result = (new \lifetime\bridge\ali\Payment)->query([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\ali\Payment)->query([
+$result = (new \lifetime\bridge\ali\Payment)->refund([
   'out_trade_no' => 'order_1',
   'refund_amount' => '0.01',
   'out_request_no' => 'refund_1'
