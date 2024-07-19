@@ -20,12 +20,6 @@ abstract class Basic implements ArrayAccess
     protected $config = [];
 
     /**
-     * 必须的配置参数
-     * @var array
-     */
-    protected $mustConfig = [];
-
-    /**
      * 构造函数
      * @access  public
      * @param   array   $config     配置项
@@ -162,7 +156,7 @@ abstract class Basic implements ArrayAccess
      */
     protected function check()
     {
-        foreach($this->mustConfig as $key) {
+        foreach($this->getMustConfig() as $key) {
             if (empty($this->config[$key])) {
                 throw new InvalidArgumentException("Missing Config [{$this->getPlatform()}.{$this->getProduct()}.{$key}]");
             }

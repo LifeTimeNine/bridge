@@ -123,3 +123,67 @@ $config = [
 new \lifetime\bridge\wechat\Payment(['app_id' => ''])
 
 ~~~
+
+### 微信公众号
+
+配置说明
+~~~php
+<?php
+
+$config = [
+  'wechat' => [
+    // 公众号相关配置
+    'official' => [
+        // 公众号appid
+        'app_id' => '',
+        // 公众号secret
+        'app_secret' => ''
+    ]
+  ]
+];
+~~~
+
+
+#### 网页授权
+
+| 方法 | 说明 |
+| -- | -- |
+| [authorize](./docs/wechat_official_oauth.md#authorize) | 这是网页授权的第一步, 跳转到微信授权, 获取Code |
+| [getUserAccessToken](./docs/wechat_official_oauth.md#getUserAccessToken) | 这是网页授权第二步，通过Code获取用户访问Token |
+| [getUserInfo](./docs/wechat_official_oauth.md#getUserInfo) | 获取用户个人信息（UnionID机制） |
+| [refreshAccessToken](./docs/wechat_official_oauth.md#refreshAccessToken) | 刷新访问Token |
+| [checkAccessToken](./docs/wechat_official_oauth.md#checkAccessToken) | 校验授权凭证是否有效 |
+| [getJsSdkSign](./docs/wechat_official_oauth.md#getJsSdkSign) | 获取JS-SDK使用权限 |
+
+#### 模板消息
+
+| 方法 | 说明 |
+| -- | -- |
+| [setIndustry](./docs/wechat_official_template.md#setindustry) | 设置所属行业 |
+| [getIndustry](./docs/wechat_official_template.md#getIndustry) | 获取所属行业 |
+| [addTemplate](./docs/wechat_official_template.md#addTemplate) | 添加模板 |
+| [getAllPrivateTemplate](./docs/wechat_official_template.md#getAllPrivateTemplate) | 获取模板列表 |
+| [deletePrivateTemplate](./docs/wechat_official_template.md#deletePrivateTemplate) | 删除模板 |
+| [send](./docs/wechat_official_template.md#getAllPrivateTemplate) | 发送模板消息 |
+
+#### 用户管理
+
+| 方法 | 说明 |
+| -- | -- |
+| [createTag](./docs/wechat_official_user.md#createtag) | 创建标签 |
+| [getTag](./docs/wechat_official_user.md#getTag) | 获取已经创建的标签 |
+| [updateTag](./docs/wechat_official_user.md#updateTag) | 更新标签信息 |
+| [deleteTag](./docs/wechat_official_user.md#deleteTag) | 删除标签 |
+| [getTagUser](./docs/wechat_official_user.md#getTagUser) | 获取某个标签下的用户列表 |
+| [batchBindTag](./docs/wechat_official_user.md#batchBindTag) | 批量为用户绑定标签 |
+| [batchUnBindTag](./docs/wechat_official_user.md#batchUnBindTag) | 批量为用户解绑标签 |
+| [getUserTag](./docs/wechat_official_user.md#getUserTag) | 获取用户绑定的标签 |
+| [updateRemark](./docs/wechat_official_user.md#updateRemark) | 设置用户备注名 |
+| [getUserInfo](./docs/wechat_official_user.md#getUserInfo) | 获取用户基本信息(UnionID机制) |
+| [batchGetUserInfo](./docs/wechat_official_user.md#batchGetUserInfo) | 批量获取用户基本信息 |
+| [getUserList](./docs/wechat_official_user.md#getUserList) | 获取用户列表 |
+| [getBlackList](./docs/wechat_official_user.md#getBlackList) | 获取黑名单列表 |
+| [batchBlack](./docs/wechat_official_user.md#batchBlack) | 批量拉黑用户 |
+| [batchUnBlack](./docs/wechat_official_user.md#batchUnBlack) | 批量取消拉黑用户 |
+
+> 仅对接了以上几个业务，如需其他业务，可以继承`\lifetime\bridge\wechat\official\Basic`类，按照官方文档说明，封装方法。

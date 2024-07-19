@@ -568,4 +568,21 @@ class Tools
     {
         return strtolower(preg_replace('/([a-z])([A-Z])/', "$1_$2", $str));
     }
+
+    /**
+     * 数组转url(不进行URL编码)
+     * @access  public
+     * @param   array   $arr    源数据
+     * @return string
+     */
+    public static function arrToUrl($arr): string
+    {
+        $buff = [];
+        foreach ($arr as $key => $value) {
+            if ($key <> ''&& !is_array($value)) {
+                $buff[] = "{$key}={$value}";
+            }
+        }
+        return implode('&', $buff);
+    }
 }

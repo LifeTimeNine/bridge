@@ -49,6 +49,7 @@ class Payment
     public function __construct(array $config = [])
     {
         $this->config = new WechatPayment($config);
+        Cache::init();
     }
 
     /**
@@ -151,10 +152,10 @@ class Payment
      * @param   string  $requestBody       请求报文主体
      * @return  string
      */
-    protected function getAuthoriztionStr(string $requestMethod, string $requestUrl, string $requestBody = null)
+    protected function getAuthorization(string $requestMethod, string $requestUrl, string $requestBody = null)
     {
         $time = time();
-        $nonce_str = Tools::createRandomstr();
+        $nonce_str = Tools::createRandomStr();
 
         $signStr = $this->getSign([$requestMethod, $requestUrl, $time, $nonce_str, $requestBody]);
 
@@ -195,7 +196,7 @@ class Payment
         }
         $result = json_decode(Tools::request($method, "{$this->apiDomain}{$url}", [
             'headers' => [
-                "Authorization: {$this->getAuthoriztionStr($method,$signUrl,$body)}",
+                "Authorization: {$this->getAuthorization($method,$signUrl,$body)}",
                 'Content-Type: application/json',
                 'Accept: application/json',
                 "User-Agent: php-curl/" . PHP_VERSION
@@ -212,19 +213,19 @@ class Payment
     /**
      * 解密AEAD_AES_256_GCM
      * @access  protected
-     * @param   string  $ciphertext     密文
+     * @param   string  $cipherText     密文
      * @param   string  $nonceStr       随机字符串
      * @param   string  $associatedData 附加数据包
      * @return  string
      * @throws InvalidArgumentException
      */
-    protected function decodeAes256Gcm(string $ciphertext, string $nonceStr, string $associatedData): string
+    protected function decodeAes256Gcm(string $cipherText, string $nonceStr, string $associatedData): string
     {
         if (empty($this->config['mch_key_v3'])) throw new InvalidArgumentException("Missing Config [mch_key_v3]");
         
-        $ciphertext = base64_decode($ciphertext);
-        $ctext = substr($ciphertext, 0, -16);
-        $authTag = substr($ciphertext, -16);
+        $cipherText = base64_decode($cipherText);
+        $ctext = substr($cipherText, 0, -16);
+        $authTag = substr($cipherText, -16);
         return openssl_decrypt($ctext, 'aes-256-gcm', $this->config['mch_key_v3'], OPENSSL_RAW_DATA, $nonceStr, $authTag, $associatedData);
     }
 
@@ -295,7 +296,7 @@ class Payment
 
         $order = $this->createOrder('/v3/pay/transactions/jsapi', $options);
         $time = time();
-        $nonceStr = Tools::createRandomstr();
+        $nonceStr = Tools::createRandomStr();
 
         return [
             'appId' => $this->config['app_id'],
@@ -325,7 +326,7 @@ class Payment
 
         $order = $this->createOrder('/v3/pay/transactions/app', $options);
         $time = time();
-        $nonceStr = Tools::createRandomstr();
+        $nonceStr = Tools::createRandomStr();
 
         return [
             'appid' => $this->config['app_id'],
@@ -413,7 +414,7 @@ class Payment
 
         $order = $this->createOrder('/v3/pay/transactions/jsapi', $options);
         $time = time();
-        $nonceStr = Tools::createRandomstr();
+        $nonceStr = Tools::createRandomStr();
 
         return [
             'appId' => $this->config['app_id'],
@@ -522,7 +523,7 @@ class Payment
             return json_encode(['code' => 'FAIL', 'message' => 'Signature verification failed']);
         }
         $postData = json_decode($postData, true);
-        $data = $this->decodeAes256Gcm($postData['resource']['ciphertext'], $postData['resource']['nonce'], $postData['resource']['associated_data']);
+        $data = $this->decodeAes256Gcm($postData['resource']['cipherText'], $postData['resource']['nonce'], $postData['resource']['associated_data']);
         $result = call_user_func_array($callable, [json_decode($data, true)]);
         if ($result !== false) {
             return json_encode(['code' => 'SUCCESS', 'message' => 'success']);

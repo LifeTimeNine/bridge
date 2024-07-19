@@ -77,7 +77,12 @@ class Cache
         if (self::$usingCustom) {
             return (bool)call_user_func_array(self::$callable['set'], [$name, $value, $expired]);
         } else {
-            $data = ['value' => $value, 'expired' => $expired > 0 ? time() + $expired : 0];
+            if ($expired > 0) {
+                $expired = time() + $expired;
+            } elseif ($expired < 0) {
+                $expired = time();
+            }
+            $data = ['value' => $value, 'expired' => $expired];
             if (!@file_put_contents(self::$path . DIRECTORY_SEPARATOR . self::_getName($name), serialize($data))) {
                 throw new InvalidCacheException('Cache write failed', 1, $data);
             }

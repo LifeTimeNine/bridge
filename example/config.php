@@ -30,5 +30,12 @@ return [
             // 证书key.pem路径
             'ssl_key' =>  ''
         ],
-    ]
+    ],
+    // 公众号相关配置
+    'official' => [
+        // 公众号appid
+        'app_id' => '',
+        // 公众号secret
+        'app_secret' => ''
+    ],
 ];
