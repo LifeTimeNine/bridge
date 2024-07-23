@@ -6,6 +6,7 @@ namespace lifetime\bridge\wechat\official;
 
 /**
  * 公众号用户管理
+ * @throws InvalidArgumentException
  */
 class User extends Basic
 {

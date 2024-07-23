@@ -12,6 +12,7 @@ use lifetime\bridge\Tools;
 
 /**
  * 支付宝支付相关业务
+ * @throws InvalidArgumentException
  */
 class Payment
 {

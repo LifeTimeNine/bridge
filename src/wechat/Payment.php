@@ -14,6 +14,7 @@ use lifetime\bridge\Tools;
 
 /**
  * 微信支付
+ * @throws InvalidArgumentException
  */
 class Payment
 {

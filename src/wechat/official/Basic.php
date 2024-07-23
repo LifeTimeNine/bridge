@@ -9,6 +9,10 @@ use lifetime\bridge\config\WechatOfficial;
 use lifetime\bridge\exception\InvalidResponseException;
 use lifetime\bridge\Tools;
 
+/**
+ * 微信公众号业务基类
+ * @throws InvalidArgumentException
+ */
 abstract class Basic
 {
     /**

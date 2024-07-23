@@ -6,6 +6,7 @@ namespace lifetime\bridge\wechat\official;
 
 /**
  * 公众号模板消息管理
+ * @throws InvalidArgumentException
  */
 class Template extends Basic
 {

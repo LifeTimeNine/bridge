@@ -187,3 +187,42 @@ $config = [
 | [batchUnBlack](./docs/wechat_official_user.md#batchUnBlack) | 批量取消拉黑用户 |
 
 > 仅对接了以上几个业务，如需其他业务，可以继承`\lifetime\bridge\wechat\official\Basic`类，按照官方文档说明，封装方法。
+
+### 微信小程序
+
+配置说明
+~~~php
+<?php
+
+$config = [
+  'wechat' => [
+    // 小程序相关配置
+    'miniapp' => [
+        // 小程序appid
+        'app_id' => '',
+        // 小程序secret
+        'app_secret' => ''
+    ]
+  ]
+];
+~~~
+
+#### 登录
+
+| 方法 | 说明 |
+| -- | -- |
+| [code2session](./docs/wechat_miniapp_login.md#code2session) | 小程序登录 |
+| [checkSession](./docs/wechat_miniapp_login.md#checkSession) | 检验登录态 |
+| [resetSession](./docs/wechat_miniapp_login.md#resetSession) | 重置登录态 |
+
+#### 用户信息
+
+| 方法 | 说明 |
+| -- | -- |
+| [getPluginOpenPid](./docs/wechat_miniapp_user.md#getpluginopenpid) | 获取插件用户OpenID |
+| [checkEncryptedData](./docs/wechat_miniapp_user.md#checkEncryptedData) | 检查加密信息 |
+| [getPaidUnionId](./docs/wechat_miniapp_user.md#getPaidUnionId) | 支付后获取 Unionid |
+| [getUserEncryptKey](./docs/wechat_miniapp_user.md#getUserEncryptKey) | 获取用户encryptKey |
+| [getPhoneNumber](./docs/wechat_miniapp_user.md#getPhoneNumber) | 获取手机号 |
+| [check](./docs/wechat_miniapp_user.md#check) | 验证用户信息 |
+| [decodeUserInfo](./docs/wechat_miniapp_user.md#decodeUserInfo) | 用户信息解密 |

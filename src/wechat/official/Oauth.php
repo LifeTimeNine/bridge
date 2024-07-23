@@ -10,6 +10,7 @@ use lifetime\bridge\Tools;
 
 /**
  * 公众号网页授权
+ * @throws InvalidArgumentException
  */
 class Oauth extends Basic
 {
