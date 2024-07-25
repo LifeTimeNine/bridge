@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace lifetime\bridge\config;
 
 use ArrayAccess;
-use InvalidArgumentException;
+use BadMethodCallException;
 use lifetime\bridge\Config;
+use lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\Tools;
 
 /**
  * 配置基类
@@ -26,7 +28,7 @@ abstract class Basic implements ArrayAccess
      */
     public function __construct(array $config = [])
     {
-        $this->config = array_merge($this->config, Config::platform($this->getPlatform())[$this->getProduct()] ?? [], $config);
+        $this->config = array_merge($this->getDefault(), Config::platform($this->getPlatform())[$this->getProduct()] ?? [], $config);
         $this->check();
     }
 
@@ -153,13 +155,24 @@ abstract class Basic implements ArrayAccess
      * 验证必须配置
      * @access  protected
      * @return  void
+     * @throws InvalidConfigException
      */
     protected function check()
     {
         foreach($this->getMustConfig() as $key) {
             if (empty($this->config[$key])) {
-                throw new InvalidArgumentException("Missing Config [{$this->getPlatform()}.{$this->getProduct()}.{$key}]");
+                throw new InvalidConfigException("Missing Config [{$this->getPlatform()}.{$this->getProduct()}.{$key}]");
             }
+        }
+    }
+
+    public function __call($name, $arguments)
+    {
+        $key = Tools::hump2underline($name);
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        } else {
+            throw new BadMethodCallException('Call to undefined method ' . get_class($this) . ":{$name}()");
         }
     }
 }

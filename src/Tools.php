@@ -26,7 +26,7 @@ class Tools
         $curl = curl_init();
         // GET参数设置
         if (!empty($options['query'])) {
-            $url .= (stripos($url, '?') !== false ? '&' : '?') . http_build_query($options['query']);
+            $url .= (stripos($url, '?') !== false ? '&' : '?') . self::arrToUrl($options['query']);
         }
         // CURL头信息设置
         if (!empty($options['headers'])) {
@@ -35,6 +35,9 @@ class Tools
         switch (strtoupper($method)) {
             case 'PUT':
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                if (!empty($options['data'])) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $options['data']);
+                }
                 break;
             case 'POST':
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -528,22 +531,6 @@ class Tools
         } else {
             exit;
         }
-    }
-
-    /**
-     * 数组转URL参数(值 进行urlencode编码)
-     * @access  public
-     * @param   array   $arr
-     * @return string
-     */
-    public static function arr2url(array $arr): string
-    {
-        $urlArr = [];
-        foreach($arr as $k => $v)
-        {
-            $urlArr[] = "{$k}=" . urlencode($v);
-        }
-        return implode('&', $urlArr);
     }
 
     /**

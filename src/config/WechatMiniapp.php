@@ -6,6 +6,9 @@ namespace lifetime\bridge\config;
 
 /**
  * 微信小程序配置
+ * @method string appId() 获取APPID
+ * @method string appSecret() 获取APP Secret
+ * @throws InvalidConfigException
  */
 class WechatMiniapp extends Basic
 {
@@ -52,25 +55,5 @@ class WechatMiniapp extends Basic
     protected function getProduct(): string
     {
         return 'miniapp';
-    }
-
-    /**
-     * 获取APPID
-     * @access  public
-     * @return  string
-     */
-    public function appId(): string
-    {
-        return $this->config['app_id'];
-    }
-
-    /**
-     * 获取APP Secret
-     * @access  public
-     * @return  string
-     */
-    public function appSecret(): string
-    {
-        return $this->config['app_secret'];
     }
 }

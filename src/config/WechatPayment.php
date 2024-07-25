@@ -8,6 +8,12 @@ use InvalidArgumentException;
 
 /**
  * 微信支付配置
+ * @method string appId() 应用ID
+ * @method string mchId() 商户ID
+ * @method string mchKey() 商户支付密钥
+ * @method string sslCert() 证书cert.pem路径
+ * @method string sslKey() 证书key.pem路径
+ * @throws InvalidConfigException
  */
 class WechatPayment extends Basic
 {

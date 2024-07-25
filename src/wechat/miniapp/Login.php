@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge\wechat\miniapp;
 
+use \lifetime\bridge\exception\InvalidConfigException;
+
 /**
  * 微信小程序登录相关
+ * @throws InvalidConfigException
  */
 class Login extends Basic
 {

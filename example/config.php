@@ -30,12 +30,31 @@ return [
             // 证书key.pem路径
             'ssl_key' =>  ''
         ],
+        // 公众号相关配置
+        'official' => [
+            // 公众号appid
+            'app_id' => '',
+            // 公众号secret
+            'app_secret' => ''
+        ],
+        // 小程序配置
+        'miniapp' => [
+            // 小程序APPID
+            'app_id' => 'wx8f7a8ab6d4903279',
+            // 小程序Secret
+            'app_secret' => 'fe75398b80b8340b9810f22a2209eee3',
+        ],
     ],
-    // 公众号相关配置
-    'official' => [
-        // 公众号appid
-        'app_id' => '',
-        // 公众号secret
-        'app_secret' => ''
+    // 七牛云相关配置
+    'qiniu' => [
+        // 对象存储配置
+        'kodo' => [
+            // AccessKey
+            'access_key' => '',
+            // SecretKey
+            'secret_key' => '',
+            // 默认Bucket名称
+            'bucket' => ''
+        ],
     ],
 ];

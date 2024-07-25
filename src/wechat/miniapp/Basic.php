@@ -7,11 +7,12 @@ namespace lifetime\bridge\wechat\miniapp;
 use lifetime\bridge\Cache;
 use lifetime\bridge\config\WechatMiniapp;
 use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\Tools;
 
 /**
  * 微信小程序业务基类
- * @throws InvalidArgumentException
+ * @throws InvalidConfigException
  */
 abstract class Basic
 {
@@ -31,7 +32,7 @@ abstract class Basic
      * 构造函数
      * @access  public
      * @param   array   $config     配置信息
-     * @throws InvalidArgumentException
+     * @throws InvalidConfigException
      */
     public function __construct(array $config = [])
     {

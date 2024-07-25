@@ -4,9 +4,11 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge\wechat\official;
 
+use \lifetime\bridge\exception\InvalidConfigException;
+
 /**
  * 公众号模板消息管理
- * @throws InvalidArgumentException
+ * @throws InvalidConfigException
  */
 class Template extends Basic
 {

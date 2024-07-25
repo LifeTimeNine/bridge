@@ -192,8 +192,6 @@ $config = [
 
 配置说明
 ~~~php
-<?php
-
 $config = [
   'wechat' => [
     // 小程序相关配置
@@ -226,3 +224,94 @@ $config = [
 | [getPhoneNumber](./docs/wechat_miniapp_user.md#getPhoneNumber) | 获取手机号 |
 | [check](./docs/wechat_miniapp_user.md#check) | 验证用户信息 |
 | [decodeUserInfo](./docs/wechat_miniapp_user.md#decodeUserInfo) | 用户信息解密 |
+
+## 七牛云
+
+### Kodo 对象存储
+
+> 注意  
+> 所有需要空间名称的方法请先调用`setBucketName()`设置空间名称
+~~~php
+$result = (new \lifetime\bridge\qiniu\kodo\Bucket())
+  ->setBucketName('bucket')
+  ->getDomain()
+~~~
+
+> 实例化的对象支持重复调用
+~~~php
+$bucket = (new \lifetime\bridge\qiniu\kodo\Bucket())->setBucketName('bucket');
+$res1 = $bucket->setTag(['tag1' => 'v1']);
+$res2 = $bucket->getTag();
+var_dump($res1, $res2);
+~~~
+
+配置说明
+~~~php
+$config = [
+  'qiniu' => [
+    // 对象存储配置
+    'kodo' => [
+        // AccessKey
+        'access_key' => '',
+        // SecretKey
+        'secret_key' => '',
+        // 区域ID
+        'region_id' => '',
+        // 访问域名
+        'access_domain' => '',
+        // 是否使用SSL
+        'is_ssl' => false,
+        // 默认Bucket名称
+        'bucket_name' => ''
+    ],
+  ]
+];
+~~~
+
+#### Service 相关操作
+
+| 方法 | 说明 |
+| -- | -- |
+| [bucketList](./docs/qiniu_kodo_service.md#bucketlist) | 获取Bucket列表 |
+
+#### Bucket 相关操作
+
+| 方法 | 说明 |
+| -- | -- |
+| [getRegionList](./docs/qiniu_kodo_bucket.md#getRegionList) | 获取存储区域列表 |
+| [create](./docs/qiniu_kodo_bucket.md#create) | 创建Bucket |
+| [delete](./docs/qiniu_kodo_bucket.md#delete) | 删除Bucket |
+| [getDomain](./docs/qiniu_kodo_bucket.md#getDomain) | 获取Bucket空间域名 |
+| [setImageSource](./docs/qiniu_kodo_bucket.md#setImageSource) | 设置镜像源 |
+| [setAccessAuth](./docs/qiniu_kodo_bucket.md#setAccessAuth) | 设置访问权限 |
+| [setTag](./docs/qiniu_kodo_bucket.md#setTag) | 设置空间标签 |
+| [getTag](./docs/qiniu_kodo_bucket.md#getTag) | 获取空间标签 |
+| [deleteTag](./docs/qiniu_kodo_bucket.md#deleteTag) | 删除空间标签 |
+
+#### Object 相关操作
+
+| 方法 | 说明 |
+| -- | -- |
+| [upload](./docs/qiniu_kodo_objcet.md#upload) | 直传文件 |
+| [clientUpload](./docs/qiniu_kodo_objcet.md#clientUpload) | 客户端直传文件 |
+| [initPart](./docs/qiniu_kodo_objcet.md#initPart) | 初始化分片上传 |
+| [uploadPart](./docs/qiniu_kodo_objcet.md#uploadPart) | 分片上传数据 |
+| [clientUploadPart](./docs/qiniu_kodo_objcet.md#clientUploadPart) | 客户端分片上传数据 |
+| [completePart](./docs/qiniu_kodo_objcet.md#completePart) | 完成分片上传 |
+| [stopPart](./docs/qiniu_kodo_objcet.md#stopPart) | 终止分片上传任务 |
+| [partList](./docs/qiniu_kodo_objcet.md#partList) | 列举已经上传的分片 |
+| [list](./docs/qiniu_kodo_objcet.md#list) | 资源列举 |
+| [getMetaData](./docs/qiniu_kodo_objcet.md#getMetaData) | 获取资源元信息 |
+| [setMetaData](./docs/qiniu_kodo_objcet.md#setMetaData) | 修改资源元信息 |
+| [move](./docs/qiniu_kodo_objcet.md#move) | 移动资源 |
+| [copy](./docs/qiniu_kodo_objcet.md#copy) | 复制资源 |
+| [delete](./docs/qiniu_kodo_objcet.md#delete) | 删除资源 |
+| [setStatus](./docs/qiniu_kodo_objcet.md#setStatus) | 修改文件状态 |
+| [setStorageType](./docs/qiniu_kodo_objcet.md#setStorageType) | 修改文件存储类型 |
+| [thaw](./docs/qiniu_kodo_objcet.md#thaw) | 解冻归档/深度归档存储文件 |
+| [setExpireDeleteDuration](./docs/qiniu_kodo_objcet.md#setExpireDeleteDuration) | 修改文件过期删除时间 |
+| [setLifecycle](./docs/qiniu_kodo_objcet.md#setLifecycle) | 修改文件生命周期 |
+| [imageSourceUpdate](./docs/qiniu_kodo_objcet.md#imageSourceUpdate) | 镜像资源更新 |
+| [createAsyncFetchTask](./docs/qiniu_kodo_objcet.md#createAsyncFetchTask) | 发起异步抓取任务 |
+| [queryAsyncFetchTask](./docs/qiniu_kodo_objcet.md#queryAsyncFetchTask) | 查询异步抓取任务 |
+| [batch](./docs/qiniu_kodo_objcet.md#batch) | 批量操作 |

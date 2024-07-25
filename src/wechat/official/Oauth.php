@@ -6,11 +6,12 @@ namespace lifetime\bridge\wechat\official;
 
 use lifetime\bridge\Cache;
 use lifetime\bridge\exception\InvalidArgumentException;
+use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\Tools;
 
 /**
  * 公众号网页授权
- * @throws InvalidArgumentException
+ * @throws InvalidConfigException
  */
 class Oauth extends Basic
 {

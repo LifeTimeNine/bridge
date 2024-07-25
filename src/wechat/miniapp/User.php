@@ -5,10 +5,12 @@ declare(strict_types = 1);
 namespace lifetime\bridge\wechat\miniapp;
 
 use lifetime\bridge\exception\InvalidArgumentException;
+use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidDecodeException;
 
 /**
  * 微信小程序用户相关
+ * @throws InvalidConfigException
  */
 class User extends Basic
 {

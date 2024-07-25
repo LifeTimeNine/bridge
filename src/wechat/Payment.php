@@ -9,12 +9,13 @@ use Endroid\QrCode\Writer\PngWriter;
 use lifetime\bridge\Cache;
 use lifetime\bridge\config\WechatPayment;
 use lifetime\bridge\exception\InvalidArgumentException;
+use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidResponseException;
 use lifetime\bridge\Tools;
 
 /**
  * 微信支付
- * @throws InvalidArgumentException
+ * @throws InvalidConfigException
  */
 class Payment
 {
@@ -46,6 +47,7 @@ class Payment
      * 构造函数
      * @access  public
      * @param   array   $config     配置
+     * @throws InvalidConfigException
      */
     public function __construct(array $config = [])
     {

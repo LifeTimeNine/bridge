@@ -6,6 +6,13 @@ namespace lifetime\bridge\config;
 
 /**
  * 支付宝支付配置
+ * @method string sandbox() 是否是沙箱
+ * @method string signType() 商户生成签名字符串所使用的签名算法类型
+ * @method string appid() 应用ID
+ * @method string publicKey() 公钥
+ * @method string privateKey() 私钥
+ * @method string alipayPublicKey() 支付宝公钥
+ * @throws InvalidConfigException
  */
 class AliPayment extends Basic
 {

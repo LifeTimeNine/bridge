@@ -6,13 +6,14 @@ namespace lifetime\bridge\ali;
 
 use lifetime\bridge\config\AliPayment;
 use lifetime\bridge\exception\InvalidArgumentException;
+use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidResponseException;
 use lifetime\bridge\exception\InvalidSignException;
 use lifetime\bridge\Tools;
 
 /**
  * 支付宝支付相关业务
- * @throws InvalidArgumentException
+ * @throws InvalidConfigException
  */
 class Payment
 {
@@ -50,6 +51,7 @@ class Payment
      * 构造函数
      * @access  public
      * @param   array   $config     配置信息
+     * @throws InvalidConfigException
      */
     public function __construct($config = [])
     {
