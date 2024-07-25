@@ -26,22 +26,10 @@ class Payment
     protected $config;
 
     /**
-     * 请求数据
-     * @var array
-     */
-    protected $options;
-
-    /**
      * 请求接口地址
      * @var string
      */
     protected $apiDomain = 'https://api.mch.weixin.qq.com';
-
-    /**
-     * 订单必须参数
-     * @var array
-     */
-    protected $mustOptions = [];
 
     /**
      * 构造函数
@@ -58,31 +46,18 @@ class Payment
     /**
      * 初始化参数
      * @access  protected
-     * @return self
+     * @return array
      */
-    protected function initOptions(): self
+    protected function initOptions(): array
     {
-        $this->options = [
-            'appid' => $this->config['app_id'],
-            'mchid' => $this->config['mch_id'],
+        return [
+            'appid' => $this->config->appId(),
+            'mchid' => $this->config->mchId(),
         ];
-        return $this;
     }
 
     /**
-     * 设置场景必须参数
-     * @access  protected
-     * @param   array   $data   当前场景必须的参数
-     * @return  self
-     */
-    protected function setMustOptions($data): self
-    {
-        $this->mustOptions = $data;
-        return $this;
-    }
-
-    /**
-     * 验证参数是否足够
+     * 验证必须参数
      * @access  protected
      * @param   array   $data   要验证的数据
      * @param   array   $field  必须的字段
@@ -90,7 +65,7 @@ class Payment
      * @return void
      * @throws InvalidArgumentException
      */
-    protected function checkOptions($data = [], $field = [], $msg = [])
+    protected function checkMustOptions($data = [], $field = [], $msg = [])
     {
         foreach ($field as $k => $v) {
             if (is_string($v) && !isset($data[$v])) {
@@ -101,7 +76,7 @@ class Payment
                     $msg[] = $k;
                     throw new InvalidArgumentException("Missing Options [". implode('.', $msg) ."]");
                 } else {
-                    $this->checkOptions($data[$k], $field[$k], array_merge($msg, [$k]));
+                    $this->checkMustOptions($data[$k], $field[$k], array_merge($msg, [$k]));
                 }
             }
         }
@@ -114,7 +89,7 @@ class Payment
      */
     protected function getApiPrivateKey(): string
     {
-        return file_get_contents($this->config['ssl_key']);
+        return @file_get_contents($this->config->sslKey());
     }
 
     /**
@@ -124,7 +99,7 @@ class Payment
      */
     protected function getSerialNo(): string
     {
-        return openssl_x509_parse(file_get_contents($this->config['ssl_cert']))['serialNumberHex'] ?? '';
+        return openssl_x509_parse(@file_get_contents($this->config->sslCert()))['serialNumberHex'] ?? '';
     }
 
     /**
@@ -163,7 +138,7 @@ class Payment
         $signStr = $this->getSign([$requestMethod, $requestUrl, $time, $nonce_str, $requestBody]);
 
         $data = [
-            'mchid' => $this->config['mch_id'],
+            'mchid' => $this->config->mchId(),
             'serial_no' => $this->getSerialNo(),
             'nonce_str' => $nonce_str,
             'timestamp' => $time,
@@ -224,12 +199,10 @@ class Payment
      */
     protected function decodeAes256Gcm(string $cipherText, string $nonceStr, string $associatedData): string
     {
-        if (empty($this->config['mch_key_v3'])) throw new InvalidArgumentException("Missing Config [mch_key_v3]");
-        
         $cipherText = base64_decode($cipherText);
         $ctext = substr($cipherText, 0, -16);
         $authTag = substr($cipherText, -16);
-        return openssl_decrypt($ctext, 'aes-256-gcm', $this->config['mch_key_v3'], OPENSSL_RAW_DATA, $nonceStr, $authTag, $associatedData);
+        return openssl_decrypt($ctext, 'aes-256-gcm', $this->config->mchKey(), OPENSSL_RAW_DATA, $nonceStr, $authTag, $associatedData);
     }
 
     /**
@@ -239,7 +212,8 @@ class Payment
      */
     protected function getCert(): string
     {
-        $wechatPublicCert = Cache::get("wechat_public_cert_{$this->config['mch_id']}");
+        $key = "wechat_public_cert_{$this->config->mchId()}";
+        $wechatPublicCert = Cache::get($key);
         if (!empty($wechatPublicCert)) return $wechatPublicCert;
 
         $url = "/v3/certificates";
@@ -247,7 +221,7 @@ class Payment
         $result = $this->request('GET', $url);
         $cretData = $result['data'][count($result['data']) - 1];
         $wechatPublicCert = $this->decodeAes256Gcm($cretData['encrypt_certificate']['ciphertext'],  $cretData['encrypt_certificate']['nonce'], $cretData['encrypt_certificate']['associated_data']);
-        Cache::set("wechat_public_cert_{$this->config['mch_id']}", $wechatPublicCert, 3600 * 11);
+        Cache::set($key, $wechatPublicCert, 3600 * 11);
         return $wechatPublicCert;
     }
 
@@ -268,92 +242,80 @@ class Payment
     }
 
     /**
-     * 统一下单
-     * @access  protected
-     * @param   string  $url        请求url
-     * @param   array   $options    订单参数
-     * @return  array
-     */
-    protected function createOrder(string $url, array $options): array
-    {
-        $this->options = array_merge($this->options, $options);
-        $this->checkOptions($this->options, $this->mustOptions);
-        return $this->request('POST', $url, $this->options);
-    }
-
-    /**
      * JSAPI下单
      * @access  public
-     * @param   array   $options    订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, payer.openid-用户openid]
-     * @param   string  $notify_url 异步通知地址
+     * @param   array   $order      订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, payer.openid-用户openid]
+     * @param   string  $notifyUrl  异步通知地址
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function jsapi(array $options, string $notifyUrl): array
+    public function jsapi(array $order, string $notifyUrl): array
     {
-        $this->setMustOptions(['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
-        $this->initOptions();
+        $options = array_merge($this->initOptions(), $order);
+        $options['notify_url'] = $notifyUrl;
 
-        $this->options['notify_url'] = $notifyUrl;
+        $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
 
-        $order = $this->createOrder('/v3/pay/transactions/jsapi', $options);
+        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
         return [
-            'appId' => $this->config['app_id'],
+            'appId' => $this->config->appId(),
             'timeStamp' => $time,
             'onoceStr' => $nonceStr,
-            'package' => "prepay_id={$order['prepay_id']}",
+            'package' => "prepay_id={$result['prepay_id']}",
             'signType' => 'RSA',
-            'paySign' => $this->getSign([$this->config['app_id'], $time, $nonceStr, "prepay_id={$order['prepay_id']}"], 1)
+            'paySign' => $this->getSign([$this->config->appId(), $time, $nonceStr, "prepay_id={$result['prepay_id']}"], 1)
         ];
     }
 
     /**
      * APP下单
      * @access  public
-     * @param   array   $options    订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述]
-     * @param   string  $notify_url 异步通知地址
+     * @param   array   $order      订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述]
+     * @param   string  $notifyUrl  异步通知地址
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function app(array $options, string $notifyUrl): array
+    public function app(array $order, string $notifyUrl): array
     {
-        $this->setMustOptions(['out_trade_no', 'amount' => ['total'], 'description']);
-        $this->initOptions();
+        $options = array_merge($this->initOptions(), $order);
+        $options['notify_url'] = $notifyUrl;
 
-        $this->options['notify_url'] = $notifyUrl;
+        $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description']);
 
-        $order = $this->createOrder('/v3/pay/transactions/app', $options);
+        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
         return [
-            'appid' => $this->config['app_id'],
-            'partnerid' => $this->config['mch_id'],
-            'prepayid' => $order['prepay_id'],
+            'appid' => $this->config->appId(),
+            'partnerid' => $this->config->mchId(),
+            'prepayid' => $result['prepay_id'],
             'package' => "Sign=WXPay",
             'onoceStr' => $nonceStr,
             'timestamp' => $time,
-            'paySign' => $this->getSign([$this->config['app_id'], $time, $nonceStr, "prepay_id={$order['prepay_id']}"], 1)
+            'paySign' => $this->getSign([$this->config->appId(), $time, $nonceStr, "prepay_id={$result['prepay_id']}"], 1)
         ];
     }
 
      /**
      * H5下单
      * @access  public
-     * @param   array   $options    订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, scene_info.payer_client_ip-用户终端IP, scene_info.h5_info.type-场景类型]
-     * @param   string  $notify_url 异步通知地址
+     * @param   array   $order      订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, scene_info.payer_client_ip-用户终端IP, scene_info.h5_info.type-场景类型]
+     * @param   string  $notifyUrl  异步通知地址
      * @return  string
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function h5(array $options, string $notifyUrl): string
+    public function h5(array $order, string $notifyUrl): string
     {
-        $this->setMustOptions([
+        $options = array_merge($this->initOptions(), $order);
+        $options['notify_url'] = $notifyUrl;
+        $this->checkMustOptions($options, [
             'out_trade_no',
             'amount' => ['total'],
             'description',
@@ -364,91 +326,82 @@ class Payment
                 ]
             ]
         ]);
-        $this->initOptions();
 
-        $this->options['notify_url'] = $notifyUrl;
+        $result = $this->request('POST', '/v3/pay/transactions/h5', $options);
 
-        $order = $this->createOrder('/v3/pay/transactions/h5', $options);
-
-        return $order['h5_url'];
+        return $result['h5_url'];
     }
 
     /**
      * Native下单
      * @access  public
-     * @param   array   $options    订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述]
-     * @param   string  $notify_url 异步通知地址
+     * @param   array   $order      订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述]
+     * @param   string  $notifyUrl  异步通知地址
      * @param   int     $qrcodeSize 二维码大小
      * @return  string
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function native(array $options, string $notifyUrl, int $qrcodeSize = 200): string
+    public function native(array $order, string $notifyUrl, int $qrcodeSize = 200): string
     {
-        $this->setMustOptions(['out_trade_no', 'amount' => ['total'], 'description']);
-        $this->initOptions();
-
-        $this->options['notify_url'] = $notifyUrl;
-
-        $order = $this->createOrder('/v3/pay/transactions/native', $options);
-
-        $qrcode = QrCode::create($order['code_url'])
+        $options = array_merge($this->initOptions(), $order);
+        $options['notify_url'] = $notifyUrl;
+        $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description']);
+        $result = $this->request('POST', '/v3/pay/transactions/native', $options);
+        $qrcode = QrCode::create($result['code_url'])
             ->setSize($qrcodeSize);
         $writer = (new PngWriter)->write($qrcode);
-        
         return $writer->getDataUri();
     }
 
     /**
      * 小程序下单
      * @access  public
-     * @param   array   $options    订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, payer.openid-用户openid]
-     * @param   string  $notify_url 异步通知地址
+     * @param   array   $order      订单参数[out_trade_no-商户订单号, amount.total-订单金额, description-订单描述, payer.openid-用户openid]
+     * @param   string  $notifyUrl  异步通知地址
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function miniApp(array $options, string $notifyUrl): array
+    public function miniApp(array $order, string $notifyUrl): array
     {
-        $this->setMustOptions(['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
-        $this->initOptions();
-
-        $this->options['notify_url'] = $notifyUrl;
-
-        $order = $this->createOrder('/v3/pay/transactions/jsapi', $options);
+        $options = array_merge($this->initOptions(), $order);
+        $options['notify_url'] = $notifyUrl;
+        $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
+        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
         return [
-            'appId' => $this->config['app_id'],
+            'appId' => $this->config->appId(),
             'timeStamp' => $time,
             'onoceStr' => $nonceStr,
-            'package' => "prepay_id={$order['prepay_id']}",
+            'package' => "prepay_id={$result['prepay_id']}",
             'signType' => 'RSA',
-            'paySign' => $this->getSign([$this->config['app_id'], $time, $nonceStr, "prepay_id={$order['prepay_id']}"], 1)
+            'paySign' => $this->getSign([$this->config->appId(), $time, $nonceStr, "prepay_id={$result['prepay_id']}"], 1)
         ];
     }
 
     /**
      * 订单查询
      * @access  public
-     * @param   array   $options    查询参数[二选其一: transaction_id-微信支付订单号, out_trade_no-商户订单号]
+     * @param   string  $outTradeNo     商户订单号
+     * @param   string  $transactionId  商户订单号
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function query(array $options): array
+    public function query(string $outRefundNo = null, string $transactionId = null): array
     {
         $url = '';
-        if (!empty($options['transaction_id'])) {
-            $url = "/v3/pay/transactions/id/{$options['transaction_id']}";
-        } elseif (!empty($options['out_trade_no'])) {
-            $url = "/v3/pay/transactions/out-trade-no/{$options['out_trade_no']}";
+        if (!empty($transactionId)) {
+            $url = "/v3/pay/transactions/id/{$transactionId}";
+        } elseif (!empty($outRefundNo)) {
+            $url = "/v3/pay/transactions/out-trade-no/{$outRefundNo}";
         } else {
-            throw new InvalidArgumentException("Missing Options [transaction_id  OR out_trade_no]");
+            throw new InvalidArgumentException("Missing Options [transactionId  OR outRefundNo]");
         }
-
-        return $this->request('GET', $url, null, ['mchid' => $this->config['mch_id']]);
+        return $this->request('GET', $url, null, ['mchid' => $this->config->mchId()]);
     }
 
     /**
@@ -461,12 +414,9 @@ class Payment
      */
     public function close(string $outTradeNo): array
     {
-        $this->initOptions();
-        if (empty($outTradeNo)) throw new InvalidArgumentException('Missing Options [out_trade_no]', 1, $this->options);
-
+        if (empty($outTradeNo)) throw new InvalidArgumentException('Missing Options [out_trade_no]', 1);
         $url = "/v3/pay/transactions/out-trade-no/{$outTradeNo}/close";
-
-        return $this->request('POST', $url, ['mchid' => $this->config['mch_id']]);
+        return $this->request('POST', $url, ['mchid' => $this->config->mchId()]);
     }
 
     /**
@@ -477,20 +427,13 @@ class Payment
      */
     public function refund(array $options): array
     {
-        $this->setMustOptions([
+        if (empty($options['transaction_id']) && empty($options['out_trade_no'])) {
+            throw new InvalidArgumentException('Missing Options [transaction_id | out_trade_no]', 1, $options);
+        }
+        $this->checkMustOptions($options, [
             'out_refund_no',
             'amount' => ['refund','total','currency']
         ]);
-        $this->options = [];
-
-        $this->options = array_merge($this->options, $options);
-
-        if (empty($this->options['transaction_id']) && empty($this->options['out_trade_no'])) {
-            throw new InvalidArgumentException('Missing Options [transaction_id | out_trade_no]', 1, $this->options);
-        }
-
-        $this->checkOptions($this->options, $this->mustOptions);
-
         return $this->request('POST', '/v3/refund/domestic/refunds', $this->options);
     }
 
@@ -505,7 +448,6 @@ class Payment
         if (empty($outRefundNo)) {
             throw new InvalidArgumentException('Missing Options [out_refund_no]');
         }
-
         return $this->request('GET', "/v3/refund/domestic/refunds/{$outRefundNo}");
     }
 

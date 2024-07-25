@@ -2,7 +2,7 @@
 - 说明: JSAPI下单
 - 官方文档: [JSAPI下单](https://pay.weixin.qq.com/docs/merchant/apis/jsapi-payment/direct-jsons/jsapi-prepay.html)
 - 参数说明
-  + `options`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
+  + `order`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
     - `out_trade_no`: (string) 商户订单号
     - `description`: (string) 订单描述
     - `amount`: (array)
@@ -27,7 +27,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->jsapi([
 - 说明: APP下单
 - 官方文档: [APP下单](https://pay.weixin.qq.com/docs/merchant/apis/in-app-payment/direct-jsons/app-prepay.html)
 - 参数说明
-  + `options`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
+  + `order`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
     - `out_trade_no`: (string) 商户订单号
     - `description`: (string) 订单描述
     - `amount`: (array)
@@ -49,7 +49,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->app([
 - 说明: H5下单
 - 官方文档: [H5下单](https://pay.weixin.qq.com/docs/merchant/apis/h5-payment/direct-jsons/h5-prepay.html)
 - 参数说明
-  + `options`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
+  + `order`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
     - `out_trade_no`: (string) 商户订单号
     - `description`: (string) 订单描述
     - `amount`: (array)
@@ -81,7 +81,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->h5([
 - 说明: Native下单
 - 官方文档: [Native下单](https://pay.weixin.qq.com/docs/merchant/apis/native-payment/direct-jsons/native-prepay.html)
 - 参数说明
-  + `options`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
+  + `order`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
     - `out_trade_no`: (string) 商户订单号
     - `description`: (string) 订单描述
     - `amount`: (array)
@@ -103,7 +103,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->native([
 - 说明: 小程序下单
 - 官方文档: [小程序下单](https://pay.weixin.qq.com/docs/merchant/apis/mini-program-payment/mini-prepay.html)
 - 参数说明
-  + `options`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
+  + `order`: (array) 订单参数，仅列出必选参数，其他参数请参考官方文档
     - `out_trade_no`: (string) 商户订单号
     - `description`: (string) 订单描述
     - `amount`: (array)
@@ -128,10 +128,9 @@ $result = (new \lifetime\bridge\wechat\Payment)->miniApp([
 - 说明: 订单号查询订单
 - 官方文档: [微信支付订单号查询订单](https://pay.weixin.qq.com/docs/merchant/apis/jsapi-payment/query-by-wx-trade-no.html) [商户订单号查询订单](https://pay.weixin.qq.com/docs/merchant/apis/jsapi-payment/query-by-out-trade-no.html)
 - 参数说明:
-  + `options`: (array) 请求参数
-    - 以下参数二选一
-      + `transaction_id`: (string) 微信支付订单号
-      + `out_trade_no`: (string) 商户订单号
+  + 以下参数二选一
+    - `outRefundNo`: (string) 商户订单号
+    - `transactionId`: (string) 微信支付订单号
 
 请求示例
 ~~~php
