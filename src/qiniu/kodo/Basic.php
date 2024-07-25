@@ -211,7 +211,7 @@ abstract class Basic
             'headers' => $headerData,
             'query' => $query,
             'data' => $body
-        ]);
+        ], false);
         // 如果是空响应，直接返回
         if ($isEmptyResponse) return [];
         $result = json_decode($response, true);

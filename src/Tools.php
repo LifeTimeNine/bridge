@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge;
 
-use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidResponseException;
 
 /**
@@ -15,18 +14,19 @@ class Tools
     /**
      * CURL模拟网络请求
      * @access  public
-     * @param string $method 请求方法
-     * @param string $url 请求方法
-     * @param array $options 请求参数[headers,query,data,ssl_cer,ssl_key]
+     * @param   string  $method         请求方法
+     * @param   string  $url            请求方法
+     * @param   array   $options        请求参数[headers,query,data,ssl_cer,ssl_key]
+     * @param   bool    $queryEncode    Query参数编码
      * @return string
      * @throws Exception
      */
-    public static function request(string $method, string $url, array $options = []): string
+    public static function request(string $method, string $url, array $options = [], bool $queryEncode = true): string
     {
         $curl = curl_init();
         // GET参数设置
         if (!empty($options['query'])) {
-            $url .= (stripos($url, '?') !== false ? '&' : '?') . self::arrToUrl($options['query']);
+            $url .= (stripos($url, '?') !== false ? '&' : '?') . ($queryEncode ? http_build_query($options['query']) : Tools::arrToUrl($options['query']));
         }
         // CURL头信息设置
         if (!empty($options['headers'])) {
@@ -83,7 +83,7 @@ class Tools
         $info = curl_getinfo($curl);
         curl_close($curl);
         if ($info['http_code'] <> '200' && $info['http_code'] <> '204') {
-            throw new InvalidResponseException("response: {$content}", $info['http_code'], $info);
+            throw new InvalidResponseException("Response: {$content}", $info['http_code'], $info);
         }
         return $content;
     }

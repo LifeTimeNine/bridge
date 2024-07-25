@@ -24,18 +24,6 @@ class Payment
     protected $config;
 
     /**
-     * 当前请求数据
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * bizContent数据
-     * @var array
-     */
-    protected $bizContent;
-
-    /**
      * 请求网关
      * @var string
      */
@@ -57,7 +45,7 @@ class Payment
     {
         $this->config = new AliPayment($config);
 
-        if ($this->config['sandbox']) {
+        if ($this->config->sandbox()) {
             $this->gateway = 'https://openapi-sandbox.dl.alipaydev.com/gateway.do';
         } else {
             $this->gateway = 'https://openapi.alipay.com/gateway.do';
@@ -67,46 +55,46 @@ class Payment
     /**
      * 初始化请求参数
      * @access  protected
-     * @return void
+     * @return  array
      */
-    protected function initOptions()
+    protected function initOptions(): array
     {
-        $this->options = [
-            'app_id' => $this->config['appid'],
+        return [
+            'app_id' => $this->config->appId(),
             'version' => '1.0',
             'format' => 'JSON',
-            'sign_type' => $this->config['sign_type'],
+            'sign_type' => $this->config->signType(),
             'charset' => 'UTF-8',
             'timestamp' => date('Y-m-d H:i:s'),
         ];
-        $this->bizContent = [];
     }
 
     /**
      * 获取数据签名
      * @access  public
+     * @param   array   $data   签名的数据
      * @return string
      */
-    protected function getSign(): string
+    protected function getSign(array $data): string
     {
-        $content = wordwrap(preg_replace(['/\s+/', '/\-{5}.*?\-{5}/'], '', $this->config['private_key']), 64, "\n", true);
+        $content = wordwrap(preg_replace(['/\s+/', '/\-{5}.*?\-{5}/'], '', $this->config->privateKey()), 64, "\n", true);
         $string = "-----BEGIN RSA PRIVATE KEY-----\n{$content}\n-----END RSA PRIVATE KEY-----";
-        if ($this->options['sign_type'] === 'RSA2') {
-            openssl_sign($this->getSignContent($this->options, true), $sign, $string, OPENSSL_ALGO_SHA256);
+        if ($data['sign_type'] === 'RSA2') {
+            openssl_sign($this->handlerSignData($data, true), $sign, $string, OPENSSL_ALGO_SHA256);
         } else {
-            openssl_sign($this->getSignContent($this->options, true), $sign, $string, OPENSSL_ALGO_SHA1);
+            openssl_sign($this->handlerSignData($data, true), $sign, $string, OPENSSL_ALGO_SHA1);
         }
         return base64_encode($sign);
     }
 
     /**
-     * 数据签名处理
+     * 处理签名数据
      * @access  public
-     * @param array $data 需要进行签名数据
-     * @param boolean $needSignType 是否需要sign_type字段
+     * @param array     $data           需要进行签名数据
+     * @param bool      $needSignType   是否需要sign_type字段
      * @return string
      */
-    protected function getSignContent(array $data, $needSignType = false): string
+    protected function handlerSignData(array $data, bool $needSignType = false): string
     {
         list($attrs,) = [[], ksort($data)];
         if (isset($data['sign'])) unset($data['sign']);
@@ -131,7 +119,7 @@ class Payment
         if (empty($data['sign']) || empty('sing_type')) return false;
         $sign = $data['sign'];
         $signType = $data['sign_type'];
-        $signData = $this->getSignContent($data);
+        $signData = $this->handlerSignData($data);
 
         if (!$this->checkSign($signData, $sign, $signType)) {
             throw new InvalidSignException('signature verification failed', 1, $data);
@@ -149,7 +137,7 @@ class Payment
     protected function checkSign($data, $sign, $signType = 'RSA'): bool
     {
         $alipayPublicKey = "-----BEGIN PUBLIC KEY-----\n" .
-            wordwrap($this->config['alipay_public_key'], 64, "\n", true) .
+            wordwrap($this->config->alipayPublicKey(), 64, "\n", true) .
             "\n-----END PUBLIC KEY-----";
 
         if ($signType == "RSA2") {
@@ -162,16 +150,17 @@ class Payment
     /**
      * 生成支付HTML代码
      * @access  public
-     * @param   array   $order  订单参数
+     * @param   array   $options        请求参数
+     * @param   array   $bizContent     订单参数
      * @return string
      */
-    protected function buildPayHtml($order)
+    protected function buildPayHtml(array $options, array $bizContent): string
     {
-        $this->options['biz_content'] = json_encode(array_merge($this->bizContent, $order), JSON_UNESCAPED_UNICODE);
-        $this->options['sign'] = $this->getSign();
+        $options['biz_content'] = json_encode($bizContent, JSON_UNESCAPED_UNICODE);
+        $options['sign'] = $this->getSign($options);
 
         $html = "<form id='alipaysubmit' name='alipaysubmit' action='{$this->gateway}' method='post'>";
-        foreach ($this->options as $key => $value) {
+        foreach ($options as $key => $value) {
             $value = str_replace("'", '&apos;', $value);
             $html .= "<input type='hidden' name='{$key}' value='{$value}'/>";
         }
@@ -194,36 +183,37 @@ class Payment
     }
 
     /**
-     * 请求支付宝
+     * 发起请求
      * @access  protected
-     * @param  array    $options    请求参数
-     * @return array    [相应数据， 验证签名结果]
+     * @param   array       $options    请求参数
+     * @param   array       $bizContent 接口参数
+     * @return  array
      */
-    protected function requestAli($options): array
+    protected function request(array $options, array $bizContent): array
     {
-        $this->options['biz_content'] = json_encode(array_merge($this->bizContent, $options), JSON_UNESCAPED_UNICODE);
-        $this->options['sign'] = $this->getSign();
+        $options['biz_content'] = json_encode($bizContent, JSON_UNESCAPED_UNICODE);
+        $options['sign'] = $this->getSign($options);
 
         try {
-            $res = Tools::request('get', $this->gateway, [
-                'query' => $this->options
+            $res = Tools::request('GET', $this->gateway, [
+                'query' => $options
             ]);
         } catch (\Exception $e) {
-            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $this->options);
+            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $options);
         }
 
         $resData = json_decode($res, true);
-        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidResponseException("The request result resolution failed", 200, $this->options);
+        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidResponseException("The request result resolution failed", 200, $options);
 
         if (empty($resData['sign'])) throw new InvalidResponseException("Missing Response data");
         $sign = $resData['sign'];
 
-        $methodName = str_replace('.', '_', $this->options['method']) . '_response';
+        $methodName = str_replace('.', '_', $options['method']) . '_response';
 
         if (empty($resData[$methodName])) throw new InvalidResponseException("Missing Response data");
         $data = $resData[$methodName];
 
-        if (!$this->checkSign(json_encode($data, JSON_UNESCAPED_UNICODE), $sign, $this->options['sign_type'])) throw new InvalidSignException('Signature verification failed', 1, $data);
+        if (!$this->checkSign(json_encode($data, JSON_UNESCAPED_UNICODE), $sign, $options['sign_type'])) throw new InvalidSignException('Signature verification failed', 1, $data);
 
         return $data;
     }
@@ -240,15 +230,15 @@ class Payment
     public function page(array $order, string $notifyUrl, string $returnUrl = null): string
     {
         $this->checkOrder($order);
-        $this->initOptions();
+        $options = $this->initOptions();
 
-        $this->bizContent['product_code'] = 'FAST_INSTANT_TRADE_PAY';
+        $options['method'] = 'alipay.trade.page.pay';
+        $options['notify_url'] = $notifyUrl;
+        $options['return_url'] = $returnUrl;
 
-        $this->options['method'] = 'alipay.trade.page.pay';
-        $this->options['notify_url'] = $notifyUrl;
-        $this->options['return_url'] = $returnUrl;
+        $order['product_code'] = 'FAST_INSTANT_TRADE_PAY';
         
-        return $this->buildPayHtml($order);
+        return $this->buildPayHtml($options, $order);
     }
 
     /**
@@ -263,15 +253,15 @@ class Payment
     public function wap(array $order, string $notifyUrl, string $returnUrl = null): string
     {
         $this->checkOrder($order);
-        $this->initOptions();
+        $options = $this->initOptions();
 
-        $this->bizContent['product_code'] = 'QUICK_WAP_WAY';
+        $options['method'] = 'alipay.trade.wap.pay';
+        $options['notify_url'] = $notifyUrl;
+        $options['return_url'] = $returnUrl;
 
-        $this->options['method'] = 'alipay.trade.wap.pay';
-        $this->options['notify_url'] = $notifyUrl;
-        $this->options['return_url'] = $returnUrl;
+        $order['product_code'] = 'QUICK_WAP_WAY';
 
-        return $this->buildPayHtml($order);
+        return $this->buildPayHtml($options, $order);
     }
 
     /**
@@ -285,16 +275,16 @@ class Payment
     public function app(array $order, string $notifyUrl): string
     {
         $this->checkOrder($order);
-        $this->initOptions();
+        $options = $this->initOptions();
 
-        $this->bizContent['product_code'] = 'QUICK_MSECURITY_PAY';
+        $order['product_code'] = 'QUICK_MSECURITY_PAY';
 
-        $this->options['method'] = 'alipay.trade.app.pay';
-        $this->options['notify_url'] = $notifyUrl;
-        $this->options['biz_content'] = json_encode(array_merge($this->bizContent, $order), JSON_UNESCAPED_UNICODE);
-        $this->options['sign'] = $this->getSign();
+        $options['method'] = 'alipay.trade.app.pay';
+        $options['notify_url'] = $notifyUrl;
+        $options['biz_content'] = json_encode($order, JSON_UNESCAPED_UNICODE);
+        $options['sign'] = $this->getSign($options);
         
-        return http_build_query($this->options);
+        return http_build_query($options);
     }
 
     /**
@@ -329,10 +319,10 @@ class Payment
         if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
-        $this->initOptions();
-        $this->options['method'] = 'alipay.trade.query';
+        $requestOptions = $this->initOptions();
+        $requestOptions['method'] = 'alipay.trade.query';
 
-        return $this->requestAli($options);
+        return $this->request($requestOptions, $options);
     }
 
     /**
@@ -357,10 +347,10 @@ class Payment
         if (empty($options['out_request_no'])) {
             throw new InvalidArgumentException("Missing options [out_request_no]");
         }
-        $this->initOptions();
-        $this->options['method'] = 'alipay.trade.refund';
+        $requestOptions = $this->initOptions();
+        $requestOptions['method'] = 'alipay.trade.refund';
 
-        return $this->requestAli($options);
+        return $this->request($requestOptions, $options);
     }
 
     /**
@@ -381,10 +371,10 @@ class Payment
         if (empty($options['out_request_no'])) {
             throw new InvalidArgumentException("Missing options [out_request_no]");
         }
-        $this->initOptions();
-        $this->options['method'] = 'alipay.trade.fastpay.refund.query';
+        $requestOptions = $this->initOptions();
+        $requestOptions['method'] = 'alipay.trade.fastpay.refund.query';
 
-        return $this->requestAli($options);
+        return $this->request($requestOptions, $options);
     }
 
     /**
@@ -401,9 +391,9 @@ class Payment
         if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
-        $this->initOptions();
-        $this->options['method'] = 'alipay.trade.close';
+        $requestOptions = $this->initOptions();
+        $requestOptions['method'] = 'alipay.trade.close';
 
-        return $this->requestAli($options);
+        return $this->request($requestOptions, $options);
     }
 }

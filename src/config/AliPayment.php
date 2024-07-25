@@ -8,7 +8,7 @@ namespace lifetime\bridge\config;
  * 支付宝支付配置
  * @method string sandbox() 是否是沙箱
  * @method string signType() 商户生成签名字符串所使用的签名算法类型
- * @method string appid() 应用ID
+ * @method string appId() 应用ID
  * @method string publicKey() 公钥
  * @method string privateKey() 私钥
  * @method string alipayPublicKey() 支付宝公钥
@@ -29,7 +29,7 @@ class AliPayment extends Basic
             // 商户生成签名字符串所使用的签名算法类型
             'sign_type' => 'RSA2',
             // 应用ID
-            'appid' => '',
+            'app_id' => '',
             // 公钥
             'public_key' => '',
             // 私钥
@@ -46,7 +46,7 @@ class AliPayment extends Basic
      */
     protected function getMustConfig(): array
     {
-        return ['appid', 'alipay_public_key', 'private_key'];
+        return ['app_id', 'alipay_public_key', 'private_key'];
     }
 
     /**

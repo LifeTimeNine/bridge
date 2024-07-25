@@ -6,7 +6,7 @@ return [
         // 支付宝支付相关配置
         'payment' => [
             // 支付宝APPID
-            'appid' => '',
+            'app_id' => '',
             // 应用公钥
             'public_key' => '',
             // 应用私钥
@@ -40,9 +40,9 @@ return [
         // 小程序配置
         'miniapp' => [
             // 小程序APPID
-            'app_id' => 'wx8f7a8ab6d4903279',
+            'app_id' => '',
             // 小程序Secret
-            'app_secret' => 'fe75398b80b8340b9810f22a2209eee3',
+            'app_secret' => '',
         ],
     ],
     // 七牛云相关配置
