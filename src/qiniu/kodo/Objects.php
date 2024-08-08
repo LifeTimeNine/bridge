@@ -103,9 +103,11 @@ class Objects extends Basic
         return [
             'method' => self::REQUEST_METHOD_POST,
             'url' => ($this->config->isSsl() ? 'https' : 'http') . "://{$this->getRegion()['upload']}",
-            'header' => Tools::arrToKeyVal([self::S_CONTENT_TYPE => self::CONTENT_TYPE_FORMDATA]),
+            'content_type' => self::CONTENT_TYPE_FORMDATA,
+            'header' => [],
+            'query' => [],
             'body' => Tools::arrToKeyVal($body),
-            'file_filed_name' => 'file',
+            'file_key' => 'file',
             'file_path' => ($this->config->isSsl() ? 'https' : 'http') . "://{$this->config->accessDomain()}/{$filename}"
         ];
     }
@@ -183,7 +185,6 @@ class Objects extends Basic
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}/{$partNumber}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_STREAM,
             self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
@@ -192,7 +193,9 @@ class Objects extends Basic
         return [
             'method' => self::REQUEST_METHOD_PUT,
             'url' => ($this->config->isSsl() ? 'https' : 'http') . "://{$host}{$path}",
+            'content_type' => self::CONTENT_TYPE_STREAM,
             'header' => Tools::arrToKeyVal($header),
+            'query' => [],
             'part_number' => $partNumber,
             'file_path' => ($this->config->isSsl() ? 'https' : 'http') . "://{$this->config->accessDomain()}/{$filename}"
         ];

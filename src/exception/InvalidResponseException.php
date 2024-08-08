@@ -15,18 +15,18 @@ class InvalidResponseException extends \Exception
     public $raw = [];
 
     /**
-     * InvalidResponseException constructor.
-     * @param string $message
-     * @param integer $code
-     * @param array $raw
+     * 构造函数
+     * @param string    $message
+     * @param int       $code
+     * @param array     $raw
      */
-    public function __construct($message, $code = 0, $raw = [])
+    public function __construct(string $message, int $code = 0, array $raw = [])
     {
         parent::__construct($message, intval($code));
         $this->raw = $raw;
     }
 
-    public function getRaw()
+    public function getRaw(): array
     {
         return $this->raw;
     }

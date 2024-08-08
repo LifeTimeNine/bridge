@@ -14,6 +14,20 @@ return [
             // 支付宝公钥
             'alipay_public_key' => ''
         ],
+        'oss' => [
+            // 访问KeyID
+            'access_key_id' => '',
+            // 访问秘钥
+            'access_key_secret' => '',
+            // 区域ID
+            'region_id' => '',
+            // 默认空间名称
+            'bucket_name' => '',
+            // 访问域名
+            'access_domain' => '',
+            // 是否使用HTTPS
+            'is_https' => true
+        ]
     ],
     // 微信相关配置
     'wechat' => [

@@ -7,7 +7,7 @@ namespace lifetime\bridge\exception;
 /**
  * 配置异常类
  */
-class InvalidConfigException extends \InvalidArgumentException
+class InvalidConfigException extends \ErrorException
 {
     
 }

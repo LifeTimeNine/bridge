@@ -169,7 +169,7 @@ abstract class Basic implements ArrayAccess
     public function __call($name, $arguments)
     {
         $key = Tools::hump2underline($name);
-        if (isset($this->config[$key])) {
+        if (array_key_exists($key, $this->config)) {
             return $this->config[$key];
         } else {
             throw new BadMethodCallException('Call to undefined method ' . get_class($this) . ":{$name}()");

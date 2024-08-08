@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge;
 
+use DOMDocument;
+use DOMElement;
+use lifetime\bridge\exception\InvalidDecodeException;
 use lifetime\bridge\exception\InvalidResponseException;
 
 /**
@@ -83,7 +86,7 @@ class Tools
         $info = curl_getinfo($curl);
         curl_close($curl);
         if ($info['http_code'] <> '200' && $info['http_code'] <> '204') {
-            throw new InvalidResponseException("Response: {$content}", $info['http_code'], $info);
+            throw new InvalidResponseException((string)$content, $info['http_code'], $info);
         }
         return $content;
     }
@@ -534,18 +537,6 @@ class Tools
     }
 
     /**
-     * 获取UTC时间
-     * @access  public
-     * @param   int     $timestamp  时间戳
-     * @param   string  $format     格式
-     * @return  string
-     */
-    public static function getUTCTime(int $timestamp = null, string $format = 'Y-m-d\TH:i:s\Z'): string
-    {
-        return gmdate($format, $timestamp?:time());
-    }
-
-    /**
      * 驼峰转下划线
      * @access  public
      * @param   string  $str
@@ -562,14 +553,73 @@ class Tools
      * @param   array   $arr    源数据
      * @return string
      */
-    public static function arrToUrl($arr): string
+    public static function arrToUrl(array $arr): string
     {
         $buff = [];
         foreach ($arr as $key => $value) {
-            if ($key <> ''&& !is_array($value)) {
+            if (is_null($value)) {
+                $buff[] = $key;
+            } else {
                 $buff[] = "{$key}={$value}";
             }
         }
         return implode('&', $buff);
+    }
+
+    /**
+     * XML转数组
+     * @access  public
+     * @param   string  $xml    XML数据
+     * @return  array
+     */
+    public static function xmlToArr(string $xml): array
+    {
+        try {
+            $xml = simplexml_load_string($xml);
+        } catch (\Throwable $th) {
+            throw new InvalidDecodeException($th->getMessage(), $th->getCode());
+        }
+        return json_decode(json_encode($xml), true);
+    }
+
+    /**
+     * 数组转XML
+     * @access  public
+     * @param   array   $arr        数组数据
+     * @param   string  $rootName   根节点名称
+     * @return  string
+     */
+    public static function arrToXml(array $arr, string $rootName = 'xml'): string
+    {
+        $call = function (DOMDocument $xml, DOMElement $el, array $arr, callable $call) {
+            foreach($arr as $key => $value) {
+                if (is_array($value)) {
+                    if (count(array_diff_key($value, array_values($value))) > 0) {
+                        $chlid = $xml->createElement($key);
+                        call_user_func_array($call, [$xml, $chlid, $value, $call]);
+                        $el->appendChild($chlid);
+                    } else {
+                        foreach($value as $item) {
+                            if (is_array($item)) {
+                                $chlid = $xml->createElement($key);
+                                call_user_func_array($call, [$xml, $chlid, $item, $call]);
+                            } else {
+                                $chlid = $xml->createElement($key, $item);
+                            }
+                            $el->appendChild($chlid);
+                        }
+
+                    }
+                } else {
+                    $chlid = $xml->createElement($key, (string)$value);
+                    $el->appendChild($chlid);
+                }
+            }
+        };
+        $xml = new DOMDocument('1.0', 'UTF-8');
+        $root = $xml->createElement($rootName);
+        call_user_func_array($call, [$xml, $root, $arr, $call]);
+        $xml->appendChild($root);
+        return $xml->saveXML();
     }
 }

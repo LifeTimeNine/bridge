@@ -1,16 +1,15 @@
 # Bridge
 
-本项目的主要作用是对接各大平台的第三方接口，因此称它为“桥”。
+本项目的主要作用是对接各大平台的开放接口，因此称它为“桥”。
 
 ## 配置
 
 在项目初始化的时候调用初始化的方法
 ~~~php
-<?php
-
 \lifetime\bridge\Config::init([
   'ali' => [],
   'wechat' => [],
+  'qiniu' => [],
   'cache_path' => '/tmp/lifetime-bridge',
   'cache_callable' => [
     'set' => null,
@@ -42,12 +41,8 @@
 
 ### 支付宝支付
 
-类: `\lifetime\bridge\ali\Payment`
-
 配置说明
 ~~~php
-<?php
-
 $config = [
   'ali' => [
     'payment' => [
@@ -75,16 +70,173 @@ $config = [
 | [refundQuery](./docs/ali_payment.md#refundQuery) | 退款查询 |
 | [tradeClose](./docs/ali_payment.md#tradeClose) | 交易关闭 |
 
+### 对象存储
+
+配置说明
+~~~php
+$config = [
+  'ali' => [
+    'oss' => [
+      // 访问KeyID
+      'access_key_id' => '',
+      // 访问秘钥
+      'access_key_secret' => '',
+      // 区域ID
+      'region_id' => '',
+      // 默认空间名称
+      'bucket_name' => '',
+      // 访问域名
+      'access_domain' => '',
+      // 是否使用HTTPS
+      'is_https' => true
+    ]
+  ]
+];
+~~~
+
+#### Bucket相关操作
+| 方法 | 说明 |
+| -- | -- |
+| [list](./docs/ali_oss_bucket.md#list) | 获取储存空间列表 |
+| [regionList](./docs/ali_oss_bucket.md#regionList) | 获取区域列表 |
+| [create](./docs/ali_oss_bucket.md#create) | 创建存储空间 |
+| [delete](./docs/ali_oss_bucket.md#delete) | 删除存储空间 |
+| [getInfo](./docs/ali_oss_bucket.md#getInfo) | 获取空间信息 |
+| [getLocation](./docs/ali_oss_bucket.md#getLocation) | 获取位置信息 |
+| [getStat](./docs/ali_oss_bucket.md#getStat) | 获取状态信息 |
+| [createWorm](./docs/ali_oss_bucket.md#createWorm) | 创建合规保留策略 |
+| [deleteWorm](./docs/ali_oss_bucket.md#deleteWorm) | 删除未锁定的合规保留策略 |
+| [lockWorm](./docs/ali_oss_bucket.md#lockWorm) | 删除未锁定的合规保留策略 |
+| [extendWorm](./docs/ali_oss_bucket.md#extendWorm) | 延长已锁定的合规保留策 |
+| [getWorm](./docs/ali_oss_bucket.md#getWorm) | 获取合规保留策略信息 |
+| [setAcl](./docs/ali_oss_bucket.md#setAcl) | 设置访问权限 |
+| [getAcl](./docs/ali_oss_bucket.md#getAcl) | 获取访问权限 |
+| [setLifecycle](./docs/ali_oss_bucket.md#setLifecycle) | 设置生命周期规则 |
+| [getLifecycle](./docs/ali_oss_bucket.md#getLifecycle) | 获取生命周期规则 |
+| [deleteLifecycle](./docs/ali_oss_bucket.md#deleteLifecycle) | 删除生命周期规则 |
+| [setTransferAcceleration](./docs/ali_oss_bucket.md#setTransferAcceleration) | 设置传输加速 |
+| [getTransferAcceleration](./docs/ali_oss_bucket.md#getTransferAcceleration) | 获取传输加速配置 |
+| [setVersioning](./docs/ali_oss_bucket.md#setVersioning) | 设置版本控制 |
+| [getVersioning](./docs/ali_oss_bucket.md#getVersioning) | 获取版本控制配置 |
+| [getVersionList](./docs/ali_oss_bucket.md#getVersionList) | 获取所有Object的版本信息 |
+| [createReplication](./docs/ali_oss_bucket.md#createReplication) | 创建复制规则 |
+| [setRtc](./docs/ali_oss_bucket.md#setRtc) | 设置跨区域复制规则时间控制功能 |
+| [getReplication](./docs/ali_oss_bucket.md#getReplication) | 获取数据复制规则 |
+| [getReplicationLocation](./docs/ali_oss_bucket.md#getReplicationLocation) | 获取可复制到的目标存储空间所在的地域 |
+| [getReplicationProgress](./docs/ali_oss_bucket.md#getReplicationProgress) | 获取数据复制进度 |
+| [deleteReplication](./docs/ali_oss_bucket.md#deleteReplication) | 删除数据复制规则 |
+| [setPolicy](./docs/ali_oss_bucket.md#setPolicy) | 设置授权策略 |
+| [getPolicy](./docs/ali_oss_bucket.md#getPolicy) | 获取授权策略 |
+| [getPolicyStatus](./docs/ali_oss_bucket.md#getPolicyStatus) | 获取授权策略状态 |
+| [deletePolicy](./docs/ali_oss_bucket.md#deletePolicy) | 删除授权策略 |
+| [createInventory](./docs/ali_oss_bucket.md#createInventory) | 创建清单规则 |
+| [getInventory](./docs/ali_oss_bucket.md#getInventory) | 获取清单规则 |
+| [getInventoryList](./docs/ali_oss_bucket.md#getInventoryList) | 获取清单规则列表 |
+| [deleteInventory](./docs/ali_oss_bucket.md#deleteInventory) | 删除清单规则 |
+| [setLogging](./docs/ali_oss_bucket.md#setLogging) | 设置日志转存 |
+| [getLogging](./docs/ali_oss_bucket.md#getLogging) | 获取日志转存配置 |
+| [deleteLogging](./docs/ali_oss_bucket.md#deleteLogging) | 关闭日志转存配置 |
+| [setLoggingUserField](./docs/ali_oss_bucket.md#setLoggingUserField) | 设置日志转存用户定义字段 |
+| [getLoggingUserField](./docs/ali_oss_bucket.md#getLoggingUserField) | 获取日志转存用户定义字段 |
+| [deleteLoggingUserField](./docs/ali_oss_bucket.md#deleteLoggingUserField) | 删除日志转存用户定义字段 |
+| [setWebsite](./docs/ali_oss_bucket.md#setWebsite) | 设置静态网站规则 |
+| [getWebsite](./docs/ali_oss_bucket.md#getWebsite) | 获取静态网站规则 |
+| [deleteWebsite](./docs/ali_oss_bucket.md#deleteWebsite) | 关闭静态网站规则 |
+| [setReferer](./docs/ali_oss_bucket.md#setReferer) | 设置防盗链 |
+| [getReferer](./docs/ali_oss_bucket.md#getReferer) | 获取防盗链设置 |
+| [setTag](./docs/ali_oss_bucket.md#setTag) | 设置标签 |
+| [getTag](./docs/ali_oss_bucket.md#getTag) | 获取标签 |
+| [deleteTag](./docs/ali_oss_bucket.md#deleteTag) | 删除标签 |
+| [setEncryption](./docs/ali_oss_bucket.md#setEncryption) | 设置加密规则 |
+| [getEncryption](./docs/ali_oss_bucket.md#getEncryption) | 获取加密规则 |
+| [deleteEncryption](./docs/ali_oss_bucket.md#deleteEncryption) | 删除加密规则 |
+| [setRequestPayment](./docs/ali_oss_bucket.md#setRequestPayment) | 设置请求者付费 |
+| [getRequestPayment](./docs/ali_oss_bucket.md#getRequestPayment) | 获取请求者付费配置 |
+| [setCors](./docs/ali_oss_bucket.md#setCors) | 设置跨域资源共享 |
+| [getCors](./docs/ali_oss_bucket.md#getCors) | 获取跨域资源共享配置 |
+| [deleteCors](./docs/ali_oss_bucket.md#deleteCors) | 删除跨域资源共享配置 |
+| [setAccessMonitor](./docs/ali_oss_bucket.md#setAccessMonitor) | 设置访问跟踪 |
+| [getAccessMonitor](./docs/ali_oss_bucket.md#getAccessMonitor) | 获取访问跟踪配置 |
+| [openMetaQuery](./docs/ali_oss_bucket.md#openMetaQuery) | 开启元数据管理 |
+| [getMetaQuery](./docs/ali_oss_bucket.md#getMetaQuery) | 获取元数据索引库信息 |
+| [doMetaQuery](./docs/ali_oss_bucket.md#doMetaQuery) | 查询满足指定条件的文件并按照指定字段和排序方式列出文件信息 |
+| [closeMetaQuery](./docs/ali_oss_bucket.md#closeMetaQuery) | 关闭元数据管理 |
+| [setResourceGroupId](./docs/ali_oss_bucket.md#setResourceGroupId) | 设置资源组 |
+| [getResourceGroupId](./docs/ali_oss_bucket.md#getResourceGroupId) | 获取资源组配置 |
+| [createCnameToken](./docs/ali_oss_bucket.md#createCnameToken) | 创建域名所有权验证所需的Token |
+| [getCnameToken](./docs/ali_oss_bucket.md#getCnameToken) | 获取已创建的CnameToken |
+| [bindCname](./docs/ali_oss_bucket.md#bindCname) | 绑定自定义域名 |
+| [getCname](./docs/ali_oss_bucket.md#getCname) | 获取已绑定的域名列表 |
+| [deleteCname](./docs/ali_oss_bucket.md#deleteCname) | 删除已绑定的域名 |
+| [createImageStyle](./docs/ali_oss_bucket.md#createImageStyle) | 创建图片样式 |
+| [getImageStyle](./docs/ali_oss_bucket.md#getImageStyle) | 创建图片样式 |
+| [getImageStyleList](./docs/ali_oss_bucket.md#getImageStyleList) | 获取所有图片样式列表 |
+| [deleteImageStyle](./docs/ali_oss_bucket.md#deleteImageStyle) | 删除图片样式 |
+| [setTls](./docs/ali_oss_bucket.md#setTls) | 设置TLS配置 |
+| [getTls](./docs/ali_oss_bucket.md#getTls) | 获取TLS配置 |
+| [createDataRedundancyTransition](./docs/ali_oss_bucket.md#createDataRedundancyTransition) | 创建冗余转换任务 |
+| [getDataRedundancyTransition](./docs/ali_oss_bucket.md#getDataRedundancyTransition) | 获取冗余转换任务 |
+| [deleteDataRedundancyTransition](./docs/ali_oss_bucket.md#deleteDataRedundancyTransition) | 删除冗余转换任务 |
+| [getUserDataRedundancyTransitionList](./docs/ali_oss_bucket.md#getUserDataRedundancyTransitionList) | 获取请求者所有转换任务 |
+| [getDataRedundancyTransitionList](./docs/ali_oss_bucket.md#getDataRedundancyTransitionList) | 获取所有转换任务 |
+| [createAccessPoint](./docs/ali_oss_bucket.md#createAccessPoint) | 创建接入点 |
+| [getAccessPoint](./docs/ali_oss_bucket.md#getAccessPoint) | 获取接入点 |
+| [deleteAccessPoint](./docs/ali_oss_bucket.md#deleteAccessPoint) | 删除接入点 |
+| [getAccessPointList](./docs/ali_oss_bucket.md#getAccessPointList) | 获取接入点列表 |
+| [setAccessPointPolicy](./docs/ali_oss_bucket.md#setAccessPointPolicy) | 设置接入点策略 |
+| [getAccessPointPolicy](./docs/ali_oss_bucket.md#getAccessPointPolicy) | 获取接入点策略配置 |
+| [deleteAccessPointPolicy](./docs/ali_oss_bucket.md#deleteAccessPointPolicy) | 获取接入点策略配置 |
+| [setGlobalPublicAccessBlock](./docs/ali_oss_bucket.md#setGlobalPublicAccessBlock) | 设置全局阻止公共访问 |
+| [getGlobalPublicAccessBlock](./docs/ali_oss_bucket.md#getGlobalPublicAccessBlock) | 设置全局阻止公共访问 |
+| [deleteGlobalPublicAccessBlock](./docs/ali_oss_bucket.md#deleteGlobalPublicAccessBlock) | 删除全局阻止公共访问配置 |
+| [setPublicAccessBlock](./docs/ali_oss_bucket.md#setPublicAccessBlock) | 设置阻止公共访问 |
+| [getPublicAccessBlock](./docs/ali_oss_bucket.md#getPublicAccessBlock) | 获取阻止公共访问配置 |
+| [deletePublicAccessBlock](./docs/ali_oss_bucket.md#deletePublicAccessBlock) | 删除阻止公共访问配置 |
+| [setAccessPointPublicAccessBlock](./docs/ali_oss_bucket.md#setAccessPointPublicAccessBlock) | 设置接入点阻止公共访问 |
+| [getAccessPointPublicAccessBlock](./docs/ali_oss_bucket.md#getAccessPointPublicAccessBlock) | 获取接入点阻止公共访问配置 |
+| [deleteAccessPointPublicAccessBlock](./docs/ali_oss_bucket.md#deleteAccessPointPublicAccessBlock) | 删除接入点阻止公共访问配置 |
+| [setArchiveDirectRead](./docs/ali_oss_bucket.md#setArchiveDirectRead) | 设置归档直读配置 |
+| [getArchiveDirectRead](./docs/ali_oss_bucket.md#getArchiveDirectRead) | 获取归档直读配置 |
+
+#### Object相关操作
+| 方法 | 说明 |
+| -- | -- |
+| [setBucketName](./docs/ali_oss_object.md#setBucketName) | 设置存储空间名称 |
+| [getAccessPath](./docs/ali_oss_object.md#getAccessPath) | 获取访问地址 |
+| [list](./docs/ali_oss_object.md#list) | 获取所有Object信息 |
+| [put](./docs/ali_oss_object.md#put) | 上传文件 |
+| [get](./docs/ali_oss_object.md#get) | 获取文件 |
+| [copy](./docs/ali_oss_object.md#copy) | 复制文件 |
+| [append](./docs/ali_oss_object.md#append) | 追加写的方式上传文件 |
+| [delete](./docs/ali_oss_object.md#delete) | 删除文件 |
+| [deleteMultiple](./docs/ali_oss_object.md#deleteMultiple) | 删除多个文件 |
+| [getHead](./docs/ali_oss_object.md#getHead) | 获取文件头信息 |
+| [getMeta](./docs/ali_oss_object.md#getMeta) | 获取文件元数据 |
+| [post](./docs/ali_oss_object.md#post) | 表单上传 (此方法返回上传参数，需自行构建请求进行上传) |
+| [restore](./docs/ali_oss_object.md#restore) | 解冻 |
+| [initPart](./docs/ali_oss_object.md#initPart) | 初始化分片上传 |
+| [uploadPart](./docs/ali_oss_object.md#uploadPart) | 分片上传 |
+| [clientUploadPart](./docs/ali_oss_object.md#clientUploadPart) | 客户端分片上传 (此方法返回上传参数，需自行构建请求进行上传) |
+| [copyPart](./docs/ali_oss_object.md#copyPart) | 拷贝现有文件到分片 |
+| [completePart](./docs/ali_oss_object.md#completePart) | 完成分片上传 |
+| [abortPart](./docs/ali_oss_object.md#abortPart) | 取消分片上传 |
+| [partTaskList](./docs/ali_oss_object.md#partTaskList) | 分片上传任务列表 |
+| [abortPart](./docs/ali_oss_object.md#abortPart) | 取消分片上传 |
+| [partList](./docs/ali_oss_object.md#partList) | 分片列表 |
+| [setAcl](./docs/ali_oss_object.md#setAcl) | 设置访问权限 |
+| [getAcl](./docs/ali_oss_object.md#getAcl) | 获取访问权限 |
+| [createSymlink](./docs/ali_oss_object.md#createSymlink) | 创建软链接 |
+| [getSymlink](./docs/ali_oss_object.md#getSymlink) | 获取软连接 |
+| [setTag](./docs/ali_oss_object.md#setTag) | 设置标签 |
+| [getTag](./docs/ali_oss_object.md#getTag) | 获取标签 |
+| [deleteTag](./docs/ali_oss_object.md#deleteTag) | 删除标签 |
+
 ## 微信
 
 ### 微信支付
 
-类: `\lifetime\bridge\wechat\Payment`
-
 配置说明
 ~~~php
-<?php
-
 $config = [
   'wechat' => [
     'payment' => [
@@ -128,8 +280,6 @@ new \lifetime\bridge\wechat\Payment(['app_id' => ''])
 
 配置说明
 ~~~php
-<?php
-
 $config = [
   'wechat' => [
     // 公众号相关配置
