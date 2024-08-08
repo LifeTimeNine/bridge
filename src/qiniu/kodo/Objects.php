@@ -18,6 +18,37 @@ use lifetime\bridge\Tools;
 class Objects extends Basic
 {
     /**
+     * Bucket名称
+     * @var string
+     */
+    protected $bucketName;
+
+    /**
+     * 设置Bucket名称
+     * @access  public
+     * @return  self
+     */
+    public function setBucketName(string $name): self
+    {
+        $this->bucketName = $name;
+        return $this;
+    }
+
+    /**
+     * 获取Bucket名称
+     * @access  public
+     * @return  string
+     * @throws  InvalidArgumentException
+     */
+    protected function getBucketName(): string
+    {
+        $name = $this->bucketName;
+        if (empty($name)) $name = $this->config->bucketName();
+        if (empty($name)) throw new InvalidArgumentException("Missing Options [bucketName]");
+        return $name;
+    }
+
+    /**
      * 直传文件
      * @access  public
      * @param   string  $filename       文件名

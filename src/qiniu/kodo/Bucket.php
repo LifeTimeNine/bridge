@@ -63,6 +63,7 @@ class Bucket extends Basic
     /**
      * 创建Bucket
      * @access  public
+     * @param   string  $name       存储空间名称
      * @param   string  $regionId   区域ID
      * @return  array
      * @throws  InvalidArgumentException
@@ -70,11 +71,11 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function create(string $regionId): array
+    public function create(string $name, string $regionId): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion($regionId)['bucket_manage'];
-        $path = "/mkbucketv3/{$this->getBucketName()}/region/{$regionId}";
+        $path = "/mkbucketv3/{$name}/region/{$regionId}";
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
@@ -84,17 +85,18 @@ class Bucket extends Basic
     /**
      * 删除Bucket
      * @access  public
+     * @param   string  $name       存储空间名称
      * @return  array
      * @throws  InvalidArgumentException
      * @throws  InvalidConfigException
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function delete(): array
+    public function delete(string $name): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
-        $path = "/drop/{$this->getBucketName()}";
+        $path = "/drop/{$$name}";
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
@@ -104,19 +106,20 @@ class Bucket extends Basic
     /**
      * 获取Bucket空间域名
      * @access  public
+     * @param   string  $name       存储空间名称
      * @return  array
      * @throws  InvalidArgumentException
      * @throws  InvalidConfigException
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getDomain(): array
+    public function getDomain(string $name): array
     {
         $method = Request::METHOD_GET;
         $host = $this->getRegion()['query'];
         $path = '/v6/domain/list';
         $query = [
-            'tbl' => $this->getBucketName()
+            'tbl' => $name
         ];
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
@@ -127,6 +130,7 @@ class Bucket extends Basic
     /**
      * 设置镜像源
      * @access  public
+     * @param   string  $name           存储空间名称
      * @param   string  $accessUrl      镜像源的访问域名
      * @param   string  $host           回源时使用的Host头部值
      * @return  array
@@ -135,11 +139,11 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setImageSource(string $accessUrl, string $host = null): array
+    public function setImageSource(string $name, string $accessUrl, string $host = null): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
-        $path = "/image/{$this->getBucketName()}/from/{$this->urlBase64($accessUrl)}/host/{$this->urlBase64($host)}";
+        $path = "/image/{$name}/from/{$this->urlBase64($accessUrl)}/host/{$this->urlBase64($host)}";
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
@@ -149,6 +153,7 @@ class Bucket extends Basic
     /**
      * 设置访问权限
      * @access  public
+     * @param   string  $name       存储空间名称
      * @param   bool    $private    是否是私有
      * @return  array
      * @throws  InvalidArgumentException
@@ -156,13 +161,13 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setAccessAuth(bool $private): array
+    public function setAccessAuth(string $name, bool $private): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/private';
         $query = [
-            'bucket' => $this->getBucketName(),
+            'bucket' => $name,
             'private' => $private ? 1 : 0
         ];
         $header = [
@@ -175,6 +180,7 @@ class Bucket extends Basic
     /**
      * 设置空间标签
      * @access  public
+     * @param   string  $name       存储空间名称
      * @param   array   $tagList    标签列表['key1'=>'value1','key2'=>'value2']
      * @return  array
      * @throws  InvalidArgumentException
@@ -182,13 +188,13 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setTag(array $tagList): array
+    public function setTag(string $name, array $tagList): array
     {
         $method = Request::METHOD_PUT;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
-            'bucket' => $this->getBucketName()
+            'bucket' => $name
         ];
         $tagData = [];
         foreach($tagList as $k => $v) $tagData[] = ['Key' => $k, 'Value' => $v];
@@ -203,19 +209,20 @@ class Bucket extends Basic
     /**
      * 获取空间标签
      * @access  public
+     * @param   string  $name       存储空间名称
      * @return  array
      * @throws  InvalidArgumentException
      * @throws  InvalidConfigException
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getTag(): array
+    public function getTag(string $name): array
     {
         $method = Request::METHOD_GET;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
-            'bucket' => $this->getBucketName()
+            'bucket' => $name
         ];
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
@@ -226,19 +233,20 @@ class Bucket extends Basic
     /**
      * 删除空间标签
      * @access  public
+     * @param   string  $name       存储空间名称
      * @return  array
      * @throws  InvalidArgumentException
      * @throws  InvalidConfigException
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function deleteTag(): array
+    public function deleteTag(string $name): array
     {
         $method = Request::METHOD_DELETE;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
-            'bucket' => $this->getBucketName()
+            'bucket' => $name
         ];
         $header = [
             Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)

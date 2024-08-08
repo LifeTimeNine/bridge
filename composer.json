@@ -1,9 +1,9 @@
 {
   "name": "lifetime/bridge",
   "description": "bridge",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/LifeTimeNine/bridge.git",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "authors": [{
       "name": "Lifetime",
       "email": "2390904403@qq.com"

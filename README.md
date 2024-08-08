@@ -208,8 +208,7 @@ $config = [
 > 注意  
 > 请先调用`setBucketName()`设置空间名称,如果不设置，将使用配置中的存储空间名称
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())
-  ->setBucketName('bucket');
+$result = (new \lifetime\bridge\ali\oss\Objects())->setBucketName('bucket');
 ~~~
 
 | 方法 | 说明 |
@@ -395,9 +394,7 @@ $config = [
 > 注意  
 > 请先调用`setBucketName()`设置空间名称,如果不设置，将使用配置中的存储空间名称
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())
-  ->setBucketName('bucket')
-  ->getDomain()
+$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setBucketName('bucket');
 ~~~
 
 

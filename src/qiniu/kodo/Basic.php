@@ -26,12 +26,6 @@ abstract class Basic
     protected $config;
 
     /**
-     * Bucket名称
-     * @var string
-     */
-    protected $bucketName;
-
-    /**
      * 区域列表
      * @var array
      */
@@ -55,31 +49,6 @@ abstract class Basic
     public function __construct(array $config = [])
     {
         $this->config = new QiniuKodo($config);
-    }
-
-    /**
-     * 设置Bucket名称
-     * @access  public
-     * @return  self
-     */
-    public function setBucketName(string $name): self
-    {
-        $this->bucketName = $name;
-        return $this;
-    }
-
-    /**
-     * 获取Bucket名称
-     * @access  public
-     * @return  string
-     * @throws  InvalidArgumentException
-     */
-    protected function getBucketName(): string
-    {
-        $name = $this->bucketName;
-        if (empty($name)) $name = $this->config->bucketName();
-        if (empty($name)) throw new InvalidArgumentException("Missing Options [bucketName]");
-        return $name;
     }
 
     /**
