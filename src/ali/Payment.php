@@ -5,10 +5,13 @@ declare(strict_types = 1);
 namespace lifetime\bridge\ali;
 
 use lifetime\bridge\config\AliPayment;
+use lifetime\bridge\exception\AliPaymentResponseException;
 use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\exception\InvalidDecodeException;
 use lifetime\bridge\exception\InvalidResponseException;
 use lifetime\bridge\exception\InvalidSignException;
+use lifetime\bridge\Request;
 use lifetime\bridge\Tools;
 
 /**
@@ -194,16 +197,14 @@ class Payment
         $options['biz_content'] = json_encode($bizContent, JSON_UNESCAPED_UNICODE);
         $options['sign'] = $this->getSign($options);
 
-        try {
-            $res = Tools::request('GET', $this->gateway, [
-                'query' => $options
-            ]);
-        } catch (\Exception $e) {
-            throw new InvalidResponseException($e->getMessage(), $e->getCode(), $options);
+        $request = Request::get("{$this->gateway}?" . http_build_query($options));
+        $resData = json_decode($request->send(), true);
+
+        if ($request->getCode() <> 200 && $request->getCode() <> 204) {
+            throw new InvalidResponseException('Request exception', 1);
         }
 
-        $resData = json_decode($res, true);
-        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidResponseException("The request result resolution failed", 200, $options);
+        if (json_last_error() != JSON_ERROR_NONE) throw new InvalidDecodeException(json_last_error_msg(), json_last_error());
 
         if (empty($resData['sign'])) throw new InvalidResponseException("Missing Response data");
         $sign = $resData['sign'];
@@ -214,6 +215,10 @@ class Payment
         $data = $resData[$methodName];
 
         if (!$this->checkSign(json_encode($data, JSON_UNESCAPED_UNICODE), $sign, $options['sign_type'])) throw new InvalidSignException('Signature verification failed', 1, $data);
+
+        if ($data['code'] <> 10000 || $data['sub_code'] <> 'ACQ.TRADE_HAS_SUCCESS') {
+            throw new AliPaymentResponseException($data['msg'], (int)$data['code'], $data['sub_code'], $data['sub_msg']);
+        }
 
         return $data;
     }
@@ -308,17 +313,25 @@ class Payment
     /**
      * 订单查询
      * @access  public
-     * @param   array     $options    请求参数 (out_trade_no-商户订单号 || trade_no-支付宝订单号)
+     * @param   string  $outTradeNo     商户订单号
+     * @param   string  $tradeNo        支付宝订单号
+     * @param   array   $queryOptions   查询选项
+     * @param   string  $orgPid         双联通过该参数指定需要查询的交易所属收单机构的pid
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidSignException
      * @throws InvalidResponseException
      */
-    public function query(array $options): array
+    public function query(string $outTradeNo = null, string $tradeNo = null, array $queryOptions = [], string $orgPid = null): array
     {
-        if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
+        if (empty($outTradeNo) && empty($tradeNo)) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
+        $options = [];
+        if (!empty($outTradeNo)) $options['out_trade_no'] = $outTradeNo;
+        if (!empty($tradeNo)) $options['trade_no'] = $tradeNo;
+        if (!empty($queryOptions)) $options['query_options'] = $queryOptions;
+        if (!empty($orgPid)) $options['org_pid'] = $orgPid;
         $requestOptions = $this->initOptions();
         $requestOptions['method'] = 'alipay.trade.query';
 
@@ -356,21 +369,25 @@ class Payment
     /**
      * 退款查询
      * @access  public
-     * @param   array     $options    请求参数 (out_trade_no-商户订单号 || trade_no-支付宝订单号, out_request_no-退款请求号)
+     * @param   string  $outRequestNo   退款请求号
+     * @param   string  $outTradeNo     商户订单号
+     * @param   string  $tradeNo        支付宝订单号
+     * @param   array   $queryOptions   查询选项
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidSignException
      * @throws InvalidResponseException
      */
-    public function refundQuery(array $options): array
+    public function refundQuery(string $outRequestNo, string $outTradeNo = null, string $tradeNo = null, array $queryOptions = []): array
     {
-        if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
+        $options = ['out_request_no' => $outRequestNo];
+        if (empty($outTradeNo) && empty($tradeNo)) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
+        if (!empty($outTradeNo)) $options['out_trade_no'] = $outTradeNo;
+        if (!empty($tradeNo)) $options['trade_no'] = $tradeNo;
+        if (!empty($queryOptions)) $options['query_options'] = $queryOptions;
 
-        if (empty($options['out_request_no'])) {
-            throw new InvalidArgumentException("Missing options [out_request_no]");
-        }
         $requestOptions = $this->initOptions();
         $requestOptions['method'] = 'alipay.trade.fastpay.refund.query';
 
@@ -380,17 +397,24 @@ class Payment
     /**
      * 交易关闭
      * @access  public
-     * @param   array   $options    请求参数 (out_trade_no-商户订单号 || trade_no-支付宝订单号)
+     * @param   string  $outTradeNo     商户订单号
+     * @param   string  $tradeNo        支付宝订单号
+     * @param   string  $operatorId     商家操作员编号
      * @return  array
      * @throws InvalidArgumentException
      * @throws InvalidSignException
      * @throws InvalidResponseException
      */
-    public function tradeClose(array $options)
+    public function tradeClose(string $outTradeNo = null, string $tradeNo = null, string $operatorId = null)
     {
-        if (empty($options['out_trade_no']) && empty($options['trade_no'])) {
+        if (empty($outTradeNo) && empty($tradeNo)) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
         }
+        $options = [];
+        if (!empty($outTradeNo)) $options['out_trade_no'] = $outTradeNo;
+        if (!empty($tradeNo)) $options['trade_no'] = $tradeNo;
+        if (!empty($operatorId)) $options['operator_id'] = $operatorId;
+
         $requestOptions = $this->initOptions();
         $requestOptions['method'] = 'alipay.trade.close';
 

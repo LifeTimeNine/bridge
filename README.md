@@ -199,6 +199,14 @@ $config = [
 | [getArchiveDirectRead](./docs/ali_oss_bucket.md#getArchiveDirectRead) | 获取归档直读配置 |
 
 #### Object相关操作
+
+> 注意  
+> 请先调用`setBucketName()`设置空间名称,如果不设置，将使用配置中的存储空间名称
+~~~php
+$result = (new \lifetime\bridge\ali\oss\Bucket())
+  ->setBucketName('bucket');
+~~~
+
 | 方法 | 说明 |
 | -- | -- |
 | [setBucketName](./docs/ali_oss_object.md#setBucketName) | 设置存储空间名称 |
@@ -380,20 +388,13 @@ $config = [
 ### Kodo 对象存储
 
 > 注意  
-> 所有需要空间名称的方法请先调用`setBucketName()`设置空间名称
+> 请先调用`setBucketName()`设置空间名称,如果不设置，将使用配置中的存储空间名称
 ~~~php
 $result = (new \lifetime\bridge\qiniu\kodo\Bucket())
   ->setBucketName('bucket')
   ->getDomain()
 ~~~
 
-> 实例化的对象支持重复调用
-~~~php
-$bucket = (new \lifetime\bridge\qiniu\kodo\Bucket())->setBucketName('bucket');
-$res1 = $bucket->setTag(['tag1' => 'v1']);
-$res2 = $bucket->getTag();
-var_dump($res1, $res2);
-~~~
 
 配置说明
 ~~~php
@@ -418,16 +419,11 @@ $config = [
 ];
 ~~~
 
-#### Service 相关操作
-
-| 方法 | 说明 |
-| -- | -- |
-| [bucketList](./docs/qiniu_kodo_service.md#bucketlist) | 获取Bucket列表 |
-
 #### Bucket 相关操作
 
 | 方法 | 说明 |
 | -- | -- |
+| [list](./docs/qiniu_kodo_bucket.md#bucketlistlist) | 获取Bucket列表 |
 | [getRegionList](./docs/qiniu_kodo_bucket.md#getRegionList) | 获取存储区域列表 |
 | [create](./docs/qiniu_kodo_bucket.md#create) | 创建Bucket |
 | [delete](./docs/qiniu_kodo_bucket.md#delete) | 删除Bucket |

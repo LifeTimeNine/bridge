@@ -8,6 +8,7 @@ use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidDecodeException;
 use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\Request;
 
 /**
  * 七牛云存储对象Bucket相关操作
@@ -30,6 +31,36 @@ class Bucket extends Basic
     }
 
     /**
+     * 获取 Bucket 列表
+     * @access  public
+     * @param   array   $tags   过滤空间的标签或标签值['key1'=>'value1','key2'=>'value2']
+     * @return  array
+     * @throws  InvalidArgumentException
+     * @throws  InvalidConfigException
+     * @throws  InvalidDecodeException
+     * @throws  InvalidResponseException
+     */
+    public function list(array $tags = []): array
+    {
+        $method = Request::METHOD_GET;
+        $host = $this->getRegion()['bucket_manage'];
+        $path = '/buckets';
+        $query = [];
+        if (!empty($tags)) {
+            $query['tagCondition'] = [];
+            foreach($tags as $key => $value) {
+                $query['tagCondition'][] = "key={$key}&value={$value}";
+            }
+            $query['tagCondition'] = $this->urlBase64(implode(';', $query['tagCondition']));
+        }
+        $header = [
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
+        ];
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, $query, $header);
+        return $this->request($method, $host, $path, $header, $query);
+    }
+
+    /**
      * 创建Bucket
      * @access  public
      * @param   string  $regionId   区域ID
@@ -41,11 +72,11 @@ class Bucket extends Basic
      */
     public function create(string $regionId): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion($regionId)['bucket_manage'];
         $path = "/mkbucketv3/{$this->getBucketName()}/region/{$regionId}";
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
         return $this->request($method, $host, $path, $header);
     }
@@ -61,11 +92,11 @@ class Bucket extends Basic
      */
     public function delete(): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
         $path = "/drop/{$this->getBucketName()}";
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
         return $this->request($method, $host, $path, $header);
     }
@@ -81,14 +112,14 @@ class Bucket extends Basic
      */
     public function getDomain(): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['query'];
         $path = '/v6/domain/list';
         $query = [
             'tbl' => $this->getBucketName()
         ];
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
         ];
         return $this->request($method, $host, $path, $header, $query);
     }
@@ -106,11 +137,11 @@ class Bucket extends Basic
      */
     public function setImageSource(string $accessUrl, string $host = null): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
         $path = "/image/{$this->getBucketName()}/from/{$this->urlBase64($accessUrl)}/host/{$this->urlBase64($host)}";
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path)
         ];
         return $this->request($method, $host, $path, $header);
     }
@@ -127,7 +158,7 @@ class Bucket extends Basic
      */
     public function setAccessAuth(bool $private): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/private';
         $query = [
@@ -135,9 +166,9 @@ class Bucket extends Basic
             'private' => $private ? 1 : 0
         ];
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, $query, $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, $query, $header);
         return $this->request($method, $host, $path, $header, $query);
     }
 
@@ -153,7 +184,7 @@ class Bucket extends Basic
      */
     public function setTag(array $tagList): array
     {
-        $method = self::REQUEST_METHOD_PUT;
+        $method = Request::METHOD_PUT;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
@@ -163,9 +194,9 @@ class Bucket extends Basic
         foreach($tagList as $k => $v) $tagData[] = ['Key' => $k, 'Value' => $v];
         $body = json_encode(['Tags' => $tagData], JSON_UNESCAPED_UNICODE);
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_JSON
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_JSON
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, $query, $header, $body);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, $query, $header, $body);
         return $this->request($method, $host, $path, $header, $query, $body);
     }
 
@@ -180,14 +211,14 @@ class Bucket extends Basic
      */
     public function getTag(): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
             'bucket' => $this->getBucketName()
         ];
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
         ];
         return $this->request($method, $host, $path, $header, $query);
     }
@@ -203,14 +234,14 @@ class Bucket extends Basic
      */
     public function deleteTag(): array
     {
-        $method = self::REQUEST_METHOD_DELETE;
+        $method = Request::METHOD_DELETE;
         $host = $this->getRegion()['bucket_manage'];
         $path = '/bucketTagging';
         $query = [
             'bucket' => $this->getBucketName()
         ];
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
         ];
         return $this->request($method, $host, $path, $header, $query);
     }

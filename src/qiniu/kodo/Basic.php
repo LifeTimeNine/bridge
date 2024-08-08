@@ -8,6 +8,9 @@ use lifetime\bridge\config\QiniuKodo;
 use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidDecodeException;
+use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\exception\QiniuKodoResponseException;
+use lifetime\bridge\Request;
 use lifetime\bridge\Tools;
 
 /**
@@ -16,30 +19,6 @@ use lifetime\bridge\Tools;
  */
 abstract class Basic
 {
-
-    /** 字符串 - 内容类型 */
-    const S_CONTENT_TYPE = 'Content-Type';
-    /** 字符串 - 认证 */
-    const S_AUTHORIZATION = 'Authorization';
-
-    /** 请求方法 - GET */
-    const REQUEST_METHOD_GET = 'GET';
-    /** 请求方法 - POST */
-    const REQUEST_METHOD_POST = 'POST';
-    /** 请求方法 - PUT */
-    const REQUEST_METHOD_PUT = 'PUT';
-    /** 请求方法 - DELETE */
-    const REQUEST_METHOD_DELETE = 'DELETE';
-
-    /** Content-Type application/octet-stream */
-    const CONTENT_TYPE_STREAM = 'application/octet-stream';
-    /** Content-Type application/x-www-form-urlencoded*/
-    const CONTENT_TYPE_URLENCODE = 'application/x-www-form-urlencoded';
-    /** Content-Type application/json*/
-    const CONTENT_TYPE_JSON = 'application/json';
-    /** Content-Type application/json*/
-    const CONTENT_TYPE_FORMDATA = 'multipart/form-data';
-
     /**
      * 配置
      * @var QiniuKodo
@@ -157,13 +136,13 @@ abstract class Basic
         $signStr = "{$method} {$path}";
         if (!empty($query)) $signStr .= ('?' . Tools::arrToUrl($query));
         $signStr .= "\nHost: {$host}";
-        if (!empty($header[self::S_CONTENT_TYPE])) $signStr .= "\nContent-Type: {$header[self::S_CONTENT_TYPE]}";
+        if (!empty($header[Request::HEADER_CONTENT_TYPE])) $signStr .= "\nContent-Type: {$header[Request::HEADER_CONTENT_TYPE]}";
         foreach($header as $key => $value) {
             if(strpos('X-Qiniu-', $key) !== 0) continue;
             $signStr .= "\n{$key}: {$value}";
         }
         $signStr .= "\n\n";
-        if (!empty($body) && !empty($header[self::S_CONTENT_TYPE]) && $header[self::S_CONTENT_TYPE] <> self::CONTENT_TYPE_STREAM) {
+        if (!empty($body) && !empty($header[Request::HEADER_CONTENT_TYPE]) && $header[Request::HEADER_CONTENT_TYPE] <> Request::CONTENT_TYPE_STREAM) {
             $signStr .= $body;
         }
         $sign = $this->urlBase64(hash_hmac('sha1', $signStr, $this->config->secretKey(), true));
@@ -206,18 +185,30 @@ abstract class Basic
         if (!empty($body)) {
             $headerData[] = 'Content-Length: ' . strlen($body);
         }
-        foreach($header as $key => $value) $headerData[] = "{$key}: {$value}";
-        $response = Tools::request($method, "{$protocol}://{$host}{$path}", [
-            'headers' => $headerData,
-            'query' => $query,
-            'data' => $body
-        ], false);
+        $url = "{$protocol}://{$host}{$path}";
+        if (empty($query)) {
+            $url .= '?' . Tools::arrToUrl($query);
+        }
+        $request = new Request($url, $method);
+        $request->setHeaders($header)
+            ->setBody($body);
+        $response = $request->send();
+
+        if ($request->getCode() <> 200 && $request->getCode() <> 204) {
+            if (empty($response)) {
+                throw new InvalidResponseException('Request exception', 1);
+            } else {
+                $response = json_decode($response, true);
+                throw new QiniuKodoResponseException($response['error'], $response['code']);
+            }
+        }
+
         // 如果是空响应，直接返回
         if ($isEmptyResponse) return [];
-        $result = json_decode($response, true);
+        $response = json_decode($response, true);
         if (json_last_error() > 0) {
             throw new InvalidDecodeException(json_last_error_msg(), json_last_error());
         }
-        return $result ?: [];
+        return $response ?: [];
     }
 }

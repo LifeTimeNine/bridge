@@ -7,6 +7,7 @@ namespace lifetime\bridge\wechat\miniapp;
 use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidDecodeException;
+use lifetime\bridge\Request;
 
 /**
  * 微信小程序用户相关
@@ -20,10 +21,12 @@ class User extends Basic
      * @param   string  $code   通过 wx.pluginLogin 获得的插件用户标志凭证 code
      * @return  array
      * @throws  InvalidResponseException
+     * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function getPluginOpenPid(string $code): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/wxa/getpluginopenpid', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/wxa/getpluginopenpid', [], [
             'code' => $code
         ]);
     }
@@ -34,10 +37,12 @@ class User extends Basic
      * @param   string  $encryptedMsgHash   加密数据的sha256，通过Hex（Base16）编码后的字符串
      * @return  array
      * @throws  InvalidResponseException
+     * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function checkEncryptedData(string $encryptedMsgHash): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/wxa/business/checkencryptedmsg', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/wxa/business/checkencryptedmsg', [], [
             'encrypted_msg_hash' => $encryptedMsgHash
         ]);
     }
@@ -51,10 +56,12 @@ class User extends Basic
      * @param   string  $outTradeNo     微信支付商户订单号，和商户号配合使用
      * @return  array
      * @throws  InvalidResponseException
+     * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function getPaidUnionId(string $openid, string $transactionId = null, string $mchId = null, string $outTradeNo = null): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/wxa/getpaidunionid', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/wxa/getpaidunionid', [
             'openid' => $openid,
             'transaction_id' => $transactionId,
             'mch_id' => $mchId,
@@ -70,10 +77,12 @@ class User extends Basic
      * @param   string  $sigMethod  签名方法，只支持 hmac_sha256
      * @return  array
      * @throws  InvalidResponseException
+     * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function getUserEncryptKey(string $openid, string $signature, string $sigMethod = 'hmac_sha256'): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/wxa/business/getuserencryptkey', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/wxa/business/getuserencryptkey', [
             'openid' => $openid,
             'signature' => $signature,
             'sig_method' => $sigMethod
@@ -87,10 +96,12 @@ class User extends Basic
      * @param   string  $openid 用户OpenID
      * @return  array
      * @throws  InvalidResponseException
+     * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function getPhoneNumber(string $code, string $openid = null): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/wxa/business/getuserphonenumber', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/wxa/business/getuserphonenumber', [], [
             'code' => $code,
             'openid' => $openid
         ]);
@@ -118,6 +129,7 @@ class User extends Basic
      * @return  array
      * @throws  InvalidArgumentException
      * @throws  InvalidDecodeException
+     * @throws  WechatMiniappResponseException
      */
     public function decodeUserInfo(string $encryptedData, string $iv, string $sessionKey): array
     {

@@ -7,7 +7,7 @@ namespace lifetime\bridge\exception;
 /**
  * 解码异常类
  */
-class InvalidDecodeException extends \ErrorException
+class InvalidDecodeException extends \Exception
 {
     
 }

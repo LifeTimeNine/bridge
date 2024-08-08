@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge\wechat\official;
 
-use \lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\Request;
 
 /**
  * 公众号模板消息管理
@@ -22,7 +23,7 @@ class Template extends Basic
      */
     public function setIndustry(string $industryId1, string $industryId2): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/template/api_set_industry?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/template/api_set_industry', [], [
             'industry_id1' => $industryId1,
             'industry_id2' => $industryId2
         ]);
@@ -36,7 +37,7 @@ class Template extends Basic
      */
     public function getIndustry(): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/template/get_industry?access_token=ACCESS_TOKEN');
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/template/get_industry');
     }
 
     /**
@@ -49,7 +50,7 @@ class Template extends Basic
      */
     public function addTemplate(string $templateId, array $keywordNameList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/template/api_add_template?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/template/api_add_template', [], [
             'template_id_short' => $templateId,
             'keyword_name_list' => $keywordNameList
         ]);
@@ -63,7 +64,7 @@ class Template extends Basic
      */
     public function getAllPrivateTemplate()
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=ACCESS_TOKEN');
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/template/get_all_private_template');
     }
 
     /**
@@ -75,7 +76,7 @@ class Template extends Basic
      */
     public function deletePrivateTemplate(string $templateId): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/template/del_private_template?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/template/del_private_template', [], [
             'template_id' => $templateId
         ]);
     }
@@ -94,7 +95,7 @@ class Template extends Basic
      */
     public function send(string $toUser, string $templateId, array $data, string $url = null, array $miniProgram = [], string $clientMsgId = null): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/message/template/send', [], [
             'touser' => $toUser,
             'template_id' => $templateId,
             'url' => $url,

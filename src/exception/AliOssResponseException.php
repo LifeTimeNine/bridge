@@ -10,10 +10,10 @@ namespace lifetime\bridge\exception;
 class AliOssResponseException extends \Exception
 {
     /**
-     * 阿里云异常码
+     * 异常码
      * @var string
      */
-    protected $aliCode;
+    protected $errorCode;
 
     /**
      * 阿里云请求ID
@@ -25,24 +25,24 @@ class AliOssResponseException extends \Exception
      * 构造函数
      * @access  public
      * @param   string  $message        异常消息
-     * @param   string  $aliCode        阿里云异常码
+     * @param   string  $errorCode      阿里云异常码
      * @param   string  $aliRequestId   阿里云请求ID
      */
-    public function __construct(string $message, string $aliCode, string $aliRequestId)
+    public function __construct(string $message, string $errorCode, string $aliRequestId)
     {
         parent::__construct($message, 1);
-        $this->aliCode = $aliCode;
+        $this->errorCode = $errorCode;
         $this->aliRequestId = $aliRequestId;
     }
 
     /**
-     * 获取阿里云异常码
+     * 获取异常码
      * @access  public
      * @return  string
      */
-    public function getAliCode(): string
+    public function getErrorCode(): string
     {
-        return $this->aliCode;
+        return $this->errorCode;
     }
 
     /**

@@ -8,6 +8,7 @@ use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidDecodeException;
 use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\Request;
 use lifetime\bridge\Tools;
 
 /**
@@ -33,7 +34,7 @@ class Objects extends Basic
      */
     public function upload(string $filename, string $data, int $storageType = 0, array $customList = [], array $metaList = [], int $expire = 3600): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['upload'];
         $returnBody = [
             'name' => "$(fname)",
@@ -58,7 +59,7 @@ class Objects extends Basic
         ]);
         list($contentType, $body) = Tools::buildFormData($formData, $filename, $data);
         $header = [
-            self::S_CONTENT_TYPE => $contentType
+            Request::HEADER_CONTENT_TYPE => $contentType
         ];
         return $this->request($method, $host, '', $header, [], $body);
     }
@@ -101,9 +102,9 @@ class Objects extends Basic
         ]);
 
         return [
-            'method' => self::REQUEST_METHOD_POST,
+            'method' => Request::METHOD_POST,
             'url' => ($this->config->isSsl() ? 'https' : 'http') . "://{$this->getRegion()['upload']}",
-            'content_type' => self::CONTENT_TYPE_FORMDATA,
+            'content_type' => Request::CONTENT_TYPE_FORMDATA,
             'header' => [],
             'query' => [],
             'body' => Tools::arrToKeyVal($body),
@@ -126,12 +127,12 @@ class Objects extends Basic
      */
     public function initPart(string $filename, int $storageType = 0, int $expire = 3600): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE,
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED,
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
                 'fileType' => $storageType,
@@ -156,12 +157,12 @@ class Objects extends Basic
      */
     public function uploadPart(string $filename, string $uploadId, int $partNumber, string $data, int $expire = 3600): array
     {
-        $method = self::REQUEST_METHOD_PUT;
+        $method = Request::METHOD_PUT;
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}/{$partNumber}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_STREAM,
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_STREAM,
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
             ])
@@ -185,15 +186,15 @@ class Objects extends Basic
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}/{$partNumber}";
         $header = [
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
             ])
         ];
         return [
-            'method' => self::REQUEST_METHOD_PUT,
+            'method' => Request::METHOD_PUT,
             'url' => ($this->config->isSsl() ? 'https' : 'http') . "://{$host}{$path}",
-            'content_type' => self::CONTENT_TYPE_STREAM,
+            'content_type' => Request::CONTENT_TYPE_STREAM,
             'header' => Tools::arrToKeyVal($header),
             'query' => [],
             'part_number' => $partNumber,
@@ -216,7 +217,7 @@ class Objects extends Basic
      */
     public function completePart(string $filename, string $uploadId, array $data, int $expire = 3600): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}";
         $parts = [];
@@ -226,8 +227,8 @@ class Objects extends Basic
             'fname' => $filename
         ], JSON_UNESCAPED_UNICODE);
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_JSON,
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_JSON,
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
             ])
@@ -249,12 +250,12 @@ class Objects extends Basic
      */
     public function stopPart(string $filename, string $uploadId, int $expire = 3600): array
     {
-        $method = self::REQUEST_METHOD_DELETE;
+        $method = Request::METHOD_DELETE;
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE,
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED,
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + $expire,
             ])
@@ -277,13 +278,13 @@ class Objects extends Basic
      */
     public function partList(string $filename, string $uploadId, int $partNumberMarker = null, int $maxParts = 1000): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['upload'];
         $path = "/buckets/{$this->getBucketName()}/objects/{$this->urlBase64($filename)}/uploads/{$uploadId}";
         $query = ['max-parts' => $maxParts];
         if (!empty($partNumberMarker)) $query['part-number-marker'] = $partNumberMarker;
         $header = [
-            self::S_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
+            Request::HEADER_AUTHORIZATION => 'UpToken ' . $this->buildUploadSign([
                 'scope' => "{$this->getBucketName()}:{$filename}",
                 'deadline' => time() + 10,
             ])
@@ -306,7 +307,7 @@ class Objects extends Basic
      */
     public function list(string $marker = null, int $limit = 1000, string $prefix = null, string $delimiter = null): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['object_enum'];
         $path = '/list';
         $query = [
@@ -317,7 +318,7 @@ class Objects extends Basic
         if (!empty($prefix)) $query['prefix'] = $this->urlBase64($prefix);
         if (!empty($delimiter)) $query['delimiter'] = $this->urlBase64($delimiter);
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
         ];
         return $this->request($method, $host, $path, $header, $query);
     }
@@ -334,13 +335,13 @@ class Objects extends Basic
      */
     public function getMetaData(string $filename): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['object_manage'];
         $path = "/stat/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header);
     }
 
@@ -359,7 +360,7 @@ class Objects extends Basic
      */
     public function setMetaData(string $filename, string $mimeType = null, array $metaList = [], array $cond = []): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/chgm/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}";
         if (!empty($mimeType)) {
@@ -372,9 +373,9 @@ class Objects extends Basic
             $path .= "/cond/{$this->urlBase64(Tools::arrToUrl($cond))}";
         }
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -393,15 +394,15 @@ class Objects extends Basic
      */
     public function move(string $sourceFilename, string $targetFilename, string $targetBucket = null, bool $forceCover = false): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         if (empty($targetBucket)) $targetBucket = $this->getBucketName();
         $forceCoverText = $forceCover ? 'true' : 'false';
         $path = "/move/{$this->urlBase64("{$this->getBucketName()}:{$sourceFilename}")}/{$this->urlBase64("{$targetBucket}:{$targetFilename}")}/force/{$forceCoverText}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -420,15 +421,15 @@ class Objects extends Basic
      */
     public function copy(string $sourceFilename, string $targetFilename, string $targetBucket = null, bool $forceCover = false): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         if (empty($targetBucket)) $targetBucket = $this->getBucketName();
         $forceCoverText = $forceCover ? 'true' : 'false';
         $path = "/copy/{$this->urlBase64("{$this->getBucketName()}:{$sourceFilename}")}/{$this->urlBase64("{$targetBucket}:{$targetFilename}")}/force/{$forceCoverText}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -444,13 +445,13 @@ class Objects extends Basic
      */
     public function delete(string $filename): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/delete/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -467,14 +468,14 @@ class Objects extends Basic
      */
     public function setStatus(string $filename, bool $disable): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $status = $disable ? 1 : 0;
         $path = "/chstatus/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}/status/{$status}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -491,13 +492,13 @@ class Objects extends Basic
      */
     public function setStorageType(string $filename, int $storageType): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/chtype/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}/type/{$storageType}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -514,13 +515,13 @@ class Objects extends Basic
      */
     public function thaw(string $filename, int $duration): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/restoreAr/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}/freezeAfterDays/{$duration}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -537,13 +538,13 @@ class Objects extends Basic
      */
     public function setExpireDeleteDuration(string $filename, int $duration): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/deleteAfterDays/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}/{$duration}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -564,7 +565,7 @@ class Objects extends Basic
      */
     public function setLifecycle(string $filename, int $toIAAfterDays = null, int $toArchiveIRAfterDays = null, int $toArchiveAfterDays = null, int $toDeepArchiveAfterDays = null, int $deleteAfterDays = null): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = "/lifecycle/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}";
         if (!empty($toIAAfterDays)) {
@@ -583,9 +584,9 @@ class Objects extends Basic
             $path .= "/deleteAfterDays/{$deleteAfterDays}";
         }
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -601,13 +602,13 @@ class Objects extends Basic
      */
     public function imageSourceUpdate(string $filename): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['download'];
         $path = "/prefetch/{$this->urlBase64("{$this->getBucketName()}:{$filename}")}";
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header);
         return $this->request($method, $host, $path, $header, [], null, true);
     }
 
@@ -625,7 +626,7 @@ class Objects extends Basic
      */
     public function createAsyncFetchTask(string $url, array $opions = []): array
     {
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['query'];
         $path = '/sisyphus/fetch';
         $body = json_encode(array_merge([
@@ -633,9 +634,9 @@ class Objects extends Basic
             'bucket' => $this->getBucketName()
         ], $opions), JSON_UNESCAPED_UNICODE);
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_JSON
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_JSON
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header, $body);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header, $body);
         return $this->request($method, $host, $path, $header, [], $body);
     }
 
@@ -651,12 +652,12 @@ class Objects extends Basic
      */
     public function queryAsyncFetchTask(string $taskId): array
     {
-        $method = self::REQUEST_METHOD_GET;
+        $method = Request::METHOD_GET;
         $host = $this->getRegion()['query'];
         $path = '/sisyphus/fetch';
         $query = ['id' => $taskId];
         $header = [
-            self::S_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
+            Request::HEADER_AUTHORIZATION => $this->buildMangeSign($method, $host, $path, $query)
         ];
         return $this->request($method, $host, $path, $header, $query);
     }
@@ -754,14 +755,14 @@ class Objects extends Basic
                     throw new InvalidArgumentException("Unknown operation: {$item[0]} at index {$index}", 1, $item);
             }
         }
-        $method = self::REQUEST_METHOD_POST;
+        $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
         $path = '/batch';
         $body = implode('&', $data);
         $header = [
-            self::S_CONTENT_TYPE => self::CONTENT_TYPE_URLENCODE
+            Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED
         ];
-        $header[self::S_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header, $body);
+        $header[Request::HEADER_AUTHORIZATION] = $this->buildMangeSign($method, $host, $path, [], $header, $body);
         return $this->request($method, $host, $path, $header, [], $body);
     }
 }

@@ -7,6 +7,7 @@ namespace lifetime\bridge\wechat\official;
 use lifetime\bridge\Cache;
 use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\Request;
 use lifetime\bridge\Tools;
 
 /**
@@ -51,12 +52,12 @@ class Oauth extends Basic
     {
         if (empty($_GET['code'])) throw new InvalidArgumentException("Missing Option [code]");
 
-        return $this->request('GET', 'https://api.weixin.qq.com/sns/oauth2/access_token', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/oauth2/access_token', [
             'appid' => $this->config->appId(),
             'secret' => $this->config->appSecret(),
             'code' => $_GET['code'],
             'grant_type' => 'authorization_code'
-        ]);
+        ], [], false);
     }
 
     /**
@@ -68,11 +69,11 @@ class Oauth extends Basic
      */
     public function refreshAccessToken($refreshToken): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/sns/oauth2/refresh_token', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/oauth2/refresh_token', [
             'appid' => $this->config->appId(),
             'refresh_token' => $refreshToken,
             'grant_type' => 'refresh_token'
-        ]);
+        ], [], false);
     }
 
     /**
@@ -85,10 +86,10 @@ class Oauth extends Basic
      */
     public function getUserInfo($accessToken, $openid): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/sns/userinfo', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/userinfo', [
             'access_token' => $accessToken,
             'openid' => $openid
-        ]);
+        ], [], false);
     }
 
     /**
@@ -101,10 +102,10 @@ class Oauth extends Basic
      */
     public function checkAccessToken(string $accessToken, string $openid): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/sns/auth', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/auth', [
             'access_token' => $accessToken,
             'openid' => $openid
-        ]);
+        ], [], false);
     }
     
     /**
@@ -117,7 +118,9 @@ class Oauth extends Basic
     {
         $key = "wechat_jsapi_ticket_{$this->config->appId()}";
         if (empty($ticket = Cache::get($key))) {
-            $result = $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi');
+            $result = $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/ticket/getticket', [
+                'type' => 'jsapi'
+            ]);
             Cache::set($key, $result['ticket'], $result['expires_in']);
             $ticket = $result['ticket'];
         }

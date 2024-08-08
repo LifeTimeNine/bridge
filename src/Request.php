@@ -40,6 +40,8 @@ class Request
 
     /** HTTP请求头 - 内容类型 */
     const HEADER_CONTENT_TYPE = 'Content-Type';
+    /** HTTP请求头 - 认证 */
+    const HEADER_AUTHORIZATION = 'Authorization';
 
 
     /**

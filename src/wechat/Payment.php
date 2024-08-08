@@ -11,6 +11,8 @@ use lifetime\bridge\config\WechatPayment;
 use lifetime\bridge\exception\InvalidArgumentException;
 use lifetime\bridge\exception\InvalidConfigException;
 use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\exception\WechatPaymentResponseException;
+use lifetime\bridge\Request;
 use lifetime\bridge\Tools;
 
 /**
@@ -160,32 +162,33 @@ class Payment
      * @return  array
      * @throws InvalidResponseException
      */
-    protected function request(string $method, string $url, array $body = null, array $query = []): array
+    protected function request(string $method, string $url, array $body = [], array $query = []): array
     {
-        if (empty($query)) {
-            $signUrl = $url;
-        } else {
-            $signUrl = "{$url}?" . http_build_query($query);
+        if (!empty($query)) {
+            $url .= '?' . http_build_query($query);
         }
-        if (empty($body)) {
-            $body = '';
-        } else {
-            $body = json_encode($body, 256);
+        $body = empty($body) ? '' : json_encode($body, JSON_UNESCAPED_UNICODE);
+        $request = new Request("{$this->apiDomain}{$url}", $method);
+        $request->setHeaders([
+            'Authorization' => $this->getAuthorization($method, $url, $body),
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'User-Agent' => 'PHP-Curl/' . PHP_VERSION
+        ])->setBody($body);
+
+        $response = $request->send();
+
+        if ($request->getCode() <> 200 && $request->getCode() <> 204) {
+            if (empty($response)) {
+                throw new InvalidResponseException('Request exception', 1);
+            } else {
+                $response = json_decode($response, true);
+                throw new WechatPaymentResponseException($response['message'], $request->getCode(), $response['code']);
+            }
         }
-        $result = json_decode(Tools::request($method, "{$this->apiDomain}{$url}", [
-            'headers' => [
-                "Authorization: {$this->getAuthorization($method,$signUrl,$body)}",
-                'Content-Type: application/json',
-                'Accept: application/json',
-                "User-Agent: php-curl/" . PHP_VERSION
-            ],
-            'data' => $body,
-            'query' => $query
-        ]), true);
-        if (!empty($result['code'])) {
-            throw new InvalidResponseException($result['message'], $result['code']);
-        }
-        return $result ?: null;
+
+        $response = json_decode($response, true);
+        return $response ?: [];
     }
 
     /**
@@ -218,7 +221,7 @@ class Payment
 
         $url = "/v3/certificates";
 
-        $result = $this->request('GET', $url);
+        $result = $this->request(Request::METHOD_GET, $url);
         $cretData = $result['data'][count($result['data']) - 1];
         $wechatPublicCert = $this->decodeAes256Gcm($cretData['encrypt_certificate']['ciphertext'],  $cretData['encrypt_certificate']['nonce'], $cretData['encrypt_certificate']['associated_data']);
         Cache::set($key, $wechatPublicCert, 3600 * 11);
@@ -257,7 +260,7 @@ class Payment
 
         $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
 
-        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
+        $result = $this->request(Request::METHOD_POST, '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
@@ -287,7 +290,7 @@ class Payment
 
         $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description']);
 
-        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
+        $result = $this->request(Request::METHOD_POST, '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
@@ -327,7 +330,7 @@ class Payment
             ]
         ]);
 
-        $result = $this->request('POST', '/v3/pay/transactions/h5', $options);
+        $result = $this->request(Request::METHOD_POST, '/v3/pay/transactions/h5', $options);
 
         return $result['h5_url'];
     }
@@ -347,7 +350,7 @@ class Payment
         $options = array_merge($this->initOptions(), $order);
         $options['notify_url'] = $notifyUrl;
         $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description']);
-        $result = $this->request('POST', '/v3/pay/transactions/native', $options);
+        $result = $this->request(Request::METHOD_POST, '/v3/pay/transactions/native', $options);
         $qrcode = QrCode::create($result['code_url'])
             ->setSize($qrcodeSize);
         $writer = (new PngWriter)->write($qrcode);
@@ -368,7 +371,7 @@ class Payment
         $options = array_merge($this->initOptions(), $order);
         $options['notify_url'] = $notifyUrl;
         $this->checkMustOptions($options, ['out_trade_no', 'amount' => ['total'], 'description', 'payer' => ['openid']]);
-        $result = $this->request('POST', '/v3/pay/transactions/jsapi', $options);
+        $result = $this->request(Request::METHOD_POST, '/v3/pay/transactions/jsapi', $options);
         $time = time();
         $nonceStr = Tools::createRandomStr();
 
@@ -401,7 +404,7 @@ class Payment
         } else {
             throw new InvalidArgumentException("Missing Options [transactionId  OR outRefundNo]");
         }
-        return $this->request('GET', $url, null, ['mchid' => $this->config->mchId()]);
+        return $this->request(Request::METHOD_GET, $url, [], ['mchid' => $this->config->mchId()]);
     }
 
     /**
@@ -416,7 +419,7 @@ class Payment
     {
         if (empty($outTradeNo)) throw new InvalidArgumentException('Missing Options [out_trade_no]', 1);
         $url = "/v3/pay/transactions/out-trade-no/{$outTradeNo}/close";
-        return $this->request('POST', $url, ['mchid' => $this->config->mchId()]);
+        return $this->request(Request::METHOD_POST, $url, ['mchid' => $this->config->mchId()]);
     }
 
     /**
@@ -434,7 +437,7 @@ class Payment
             'out_refund_no',
             'amount' => ['refund','total','currency']
         ]);
-        return $this->request('POST', '/v3/refund/domestic/refunds', $this->options);
+        return $this->request(Request::METHOD_POST, '/v3/refund/domestic/refunds', $options);
     }
 
     /**
@@ -448,7 +451,7 @@ class Payment
         if (empty($outRefundNo)) {
             throw new InvalidArgumentException('Missing Options [out_refund_no]');
         }
-        return $this->request('GET', "/v3/refund/domestic/refunds/{$outRefundNo}");
+        return $this->request(Request::METHOD_GET, "/v3/refund/domestic/refunds/{$outRefundNo}");
     }
 
     /**

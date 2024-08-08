@@ -213,11 +213,11 @@ abstract class Basic
         
         $response = $request->send();
         if ($request->getCode() <> 200 && $request->getCode() <> 204) {
-            if (empty($response)) {
-                throw new InvalidResponseException('Request exception', 1);
-            } else {
+            if (!empty($response) && $request->getContentType() == Request::CONTENT_TYPE_XML) {
                 $response = Tools::xmlToArr($response);
                 throw new AliOssResponseException($response['Message'], $response['Code'], $response['RequestId']);
+            } else {
+                throw new InvalidResponseException('Request exception', 1);
             }
         }
 

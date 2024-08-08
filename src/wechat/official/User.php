@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge\wechat\official;
 
-use \lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\exception\InvalidConfigException;
+use lifetime\bridge\Request;
 
 /**
  * 公众号用户管理
@@ -21,7 +22,7 @@ class User extends Basic
      */
     public function createTag(string $name): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/create?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/create', [], [
             'tag' => ['name' => $name]
         ]);
     }
@@ -34,7 +35,7 @@ class User extends Basic
      */
     public function getTag(): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/tags/get?access_token=ACCESS_TOKEN');
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/tags/get');
     }
 
     /**
@@ -47,7 +48,7 @@ class User extends Basic
      */
     public function updateTag(int $tagId, string $name): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/update?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/update', [], [
             'tag' => ['id' => $tagId, 'name' => $name]
         ]);
     }
@@ -61,7 +62,7 @@ class User extends Basic
      */
     public function deleteTag(int $tagId): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/delete?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/delete', [], [
             'tag' => ['id' => $tagId]
         ]);
     }
@@ -76,7 +77,7 @@ class User extends Basic
      */
     public function getTagUser(int $tagId, string $nextOpenid = null):array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/user/tag/get?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/user/tag/get', [], [
             'tagid'=> $tagId,
             'next_openid' => $nextOpenid
         ]);
@@ -92,7 +93,7 @@ class User extends Basic
      */
     public function batchBindTag(int $tagId, array $openidList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/batchtagging', [], [
             'tagid' => $tagId,
             'openid_list' => $openidList
         ]);
@@ -108,7 +109,7 @@ class User extends Basic
      */
     public function batchUnBindTag(int $tagId, array $openidList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/batchuntagging', [], [
             'tagid' => $tagId,
             'openid_list' => $openidList
         ]);
@@ -123,7 +124,7 @@ class User extends Basic
      */
     public function getUserTag(string $openid): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/getidlist?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/getidlist', [], [
             'openid' => $openid
         ]);
     }
@@ -138,7 +139,7 @@ class User extends Basic
      */
     public function updateRemark(string $openid, string $remark): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark', [], [
             'openid' => $openid,
             'remark' => $remark
         ]);
@@ -153,7 +154,7 @@ class User extends Basic
      */
     public function getUserInfo(string $openid): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/user/info', [
             'openid' => $openid,
             'lang' => 'zh_CN'
         ]);
@@ -168,7 +169,7 @@ class User extends Basic
      */
     public function batchGetUserInfo(array $openidList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/user/info/batchget', [], [
             'user_list' => array_map(function($v) {
                 return ['openid' => $v];
             }, $openidList)
@@ -184,7 +185,7 @@ class User extends Basic
      */
     public function getUserList(string $nextOpenid = null): array
     {
-        return $this->request('GET', 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=ACCESS_TOKEN', [
+        return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/user/get', [
             'next_openid' => $nextOpenid
         ]);
     }
@@ -198,7 +199,7 @@ class User extends Basic
      */
     public function getBlackList(string $beginOpenid = null): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist', [], [
             'begin_openid' => $beginOpenid
         ]);
     }
@@ -212,7 +213,7 @@ class User extends Basic
      */
     public function batchBlack(array $openidList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/batchblacklist', [], [
             'openid_list' => $openidList
         ]);
     }
@@ -226,7 +227,7 @@ class User extends Basic
      */
     public function batchUnBlack(array $openidList): array
     {
-        return $this->request('POST', 'https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist?access_token=ACCESS_TOKEN', [], [
+        return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/batchunblacklist', [], [
             'openid_list' => $openidList
         ]);
     }

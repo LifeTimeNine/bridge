@@ -12,6 +12,17 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getRegionList();
 
 > 如果发现返回的数据与官方文档不符时，请提交issue！
 
+## list
+- 说明: 获取Bucket列表
+- 官方文档: [获取 Bucket 列表](https://developer.qiniu.com/kodo/3926/get-service)
+- 参数说明
+  + `tags`: (array) 过滤空间的标签或标签值['key1'=>'value1','key2'=>'value2']
+
+示例
+~~~php
+$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->list(['tag1' => 'v1']);
+~~~
+
 ## create
 - 说明: 创建Bucket
 - 官方文档: [创建 Bucket](https://developer.qiniu.com/kodo/1382/mkbucketv3)
