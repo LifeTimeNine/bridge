@@ -23,7 +23,6 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->upload('a.txt','a');
 - 官方文档: [直传文件](https://developer.qiniu.com/kodo/1312/upload)
 - 参数说明
   + `filename`: (string) 文件名
-  + `data`: (string) 数据
   + `storageType`: (int) 存储类型(0-标准存储,1-低频存储,2-归档存储,3-深度归档存储,4-归档直读存储)
   + `customList`: (array) 自定义变量列表['key1' => 'value1', 'key2' => 'value2']
   + `metaList`: (array) 自定义元数据['key1' => 'value1', 'key2' => 'value2']

@@ -99,7 +99,6 @@ class Objects extends Basic
      * 客户端直传文件
      * @access  public
      * @param   string  $filename       文件名
-     * @param   string  $data           数据
      * @param   int     $storageType    存储类型(0-标准存储,1-低频存储,2-归档存储,3-深度归档存储,4-归档直读存储)
      * @param   array   $customList     自定义变量列表['key1' => 'value1', 'key2' => 'value2']
      * @param   array   $metaList       自定义元数据['key1' => 'value1', 'key2' => 'value2']
@@ -108,7 +107,7 @@ class Objects extends Basic
      * @throws  InvalidArgumentException
      * @throws  InvalidConfigException
      */
-    public function clientUpload(string $filename, string $data, int $storageType = 0, array $customList = [], array $metaList = [], int $expire = 3600): array
+    public function clientUpload(string $filename, int $storageType = 0, array $customList = [], array $metaList = [], int $expire = 3600): array
     {
         $returnBody = [
             'name' => "$(fname)",
@@ -117,8 +116,7 @@ class Objects extends Basic
         ];
         $body = [
             'key' => $filename,
-            'fileName' => $filename,
-            'crc32' => crc32($data)
+            'fileName' => $filename
         ];
         foreach($customList as $k => $v) {
             $returnBody[$k] = "$(x:{$v})";
