@@ -65,7 +65,7 @@ class Objects extends Basic
     {
         $accessDomain = $this->config->accessDomain();
         if (empty($accessDomain)) {
-            return "https://{$this->getBucketName()}.{$this->getRegion()['extranet_endpoint']}";
+            return "https://{$this->getBucketName()}.{$this->getRegion()['extranet_endpoint']}/{$filename}";
         } else {
             return ($this->config->isHttps() ? 'https' : 'http') . "://{$accessDomain}/{$filename}";
         }
