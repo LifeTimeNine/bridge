@@ -15,7 +15,7 @@
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->jsapi([
+$result = (new \lifetime\bridge\Wechat\Payment)->jsapi([
     'out_trade_no' => 'order_2',
     'description' => '测试订单',
     'amount' => ['total' => 1],
@@ -38,7 +38,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->jsapi([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->app([
+$result = (new \lifetime\bridge\Wechat\Payment)->app([
     'out_trade_no' => 'order_2',
     'description' => '测试订单',
     'amount' => ['total' => 1],
@@ -64,7 +64,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->app([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->h5([
+$result = (new \lifetime\bridge\Wechat\Payment)->h5([
   'out_trade_no' => 'order_1',
   'amount' => ['total' => 1],
   'description' => '测试订单',
@@ -92,7 +92,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->h5([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->native([
+$result = (new \lifetime\bridge\Wechat\Payment)->native([
   'out_trade_no' => 'order_1',
   'amount' => ['total' => 1],
   'description' => '测试订单',
@@ -116,7 +116,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->native([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->miniApp([
+$result = (new \lifetime\bridge\Wechat\Payment)->miniApp([
     'out_trade_no' => 'order_2',
     'description' => '测试订单',
     'amount' => ['total' => 1],
@@ -136,7 +136,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->miniApp([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->query([
+$result = (new \lifetime\bridge\Wechat\Payment)->query([
     'out_trade_no' => 'order_2',
 ]);
 ~~~
@@ -151,7 +151,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->query([
 ~~~php
 <?php
 
-(new \lifetime\bridge\wechat\Payment)->clse('order_2');
+(new \lifetime\bridge\Wechat\Payment)->clse('order_2');
 ~~~
 
 > 如果成功将返回 `null`, 如果失败将抛出异常 `InvalidResponseException`
@@ -174,7 +174,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->query([
 ~~~php
 <?php
 
-$result = (new \lifetime\bridge\wechat\Payment)->refund([
+$result = (new \lifetime\bridge\Wechat\Payment)->refund([
   'out_trade_no' => 'order_1',
   'out_refund_no' => 'refund_1',
   'amount' => ['refund' => 1, 'total' => 1,'currency' => 'CNY'],
@@ -191,7 +191,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->refund([
 ~~~php
 <?php
 
-(new \lifetime\bridge\wechat\Payment)->refundQuery('refund_2');
+(new \lifetime\bridge\Wechat\Payment)->refundQuery('refund_2');
 ~~~
 
 ## notify
@@ -202,7 +202,7 @@ $result = (new \lifetime\bridge\wechat\Payment)->refund([
 ~~~php
 <?php
 
-echo (new \lifetime\bridge\wechat\Payment)->notify(function($data) {
+echo (new \lifetime\bridge\Wechat\Payment)->notify(function($data) {
   /** 
    * 当签名验证成功后会进入此闭包函数
    * 

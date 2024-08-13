@@ -9,7 +9,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\Login())->code2session('js_code');
+$result = (new \lifetime\bridge\Wechat\MiniApp\Login())->code2session('js_code');
 ~~~
 
 ## checkSession
@@ -22,7 +22,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\Login())->code2session('js_code')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\Login())->checkSession('openid', hash('sha256', 'session_key'));
+$result = (new \lifetime\bridge\Wechat\MiniApp\Login())->checkSession('openid', hash('sha256', 'session_key'));
 ~~~
 
 ## resetSession
@@ -35,5 +35,5 @@ $result = (new \lifetime\bridge\wechat\miniapp\Login())->checkSession('openid', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\Login())->resetSession('openid', hash('sha256', 'session_key'));
+$result = (new \lifetime\bridge\Wechat\MiniApp\Login())->resetSession('openid', hash('sha256', 'session_key'));
 ~~~

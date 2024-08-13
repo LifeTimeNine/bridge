@@ -13,10 +13,10 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->upload('a.txt','a');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->upload('a.txt','a');
 ~~~
 
-> 此方法只对接了常用的参数，如果不满足需求，请继承`\lifetime\bridge\qiniu\kodo\Basic`类重新封装
+> 此方法只对接了常用的参数，如果不满足需求，请继承`\lifetime\bridge\Qiniu\Kodo\Basic`类重新封装
 
 ## clientUpload
 - 说明: 客户端直传文件
@@ -30,10 +30,10 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->upload('a.txt','a');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->clientUpload('a.txt','a');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->clientUpload('a.txt','a');
 ~~~
 
-> 此方法只对接了常用的参数，如果不满足需求，请继承`\lifetime\bridge\qiniu\kodo\Basic`类重新封装
+> 此方法只对接了常用的参数，如果不满足需求，请继承`\lifetime\bridge\Qiniu\Kodo\Basic`类重新封装
 
 ## initPart
 - 说明: 初始化分片上传
@@ -45,7 +45,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->clientUpload('a.txt','a')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->initPart('a.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->initPart('a.txt');
 ~~~
 
 ## uploadPart
@@ -60,7 +60,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->initPart('a.txt');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->initPart('a.txt', 'upload_id', 1, 'a');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->initPart('a.txt', 'upload_id', 1, 'a');
 ~~~
 
 ## clientUploadPart
@@ -74,7 +74,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->initPart('a.txt', 'upload
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->clientUploadPart('a.txt', 'upload_id', 1);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->clientUploadPart('a.txt', 'upload_id', 1);
 ~~~
 
 ## completePart
@@ -88,7 +88,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->clientUploadPart('a.txt',
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->completePart('a.txt', 'upload_id', ['1' => 'etag1', '2' => 'etag2']);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->completePart('a.txt', 'upload_id', ['1' => 'etag1', '2' => 'etag2']);
 ~~~
 
 ## stopPart
@@ -100,7 +100,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->completePart('a.txt', 'up
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->stopPart('a.txt', 'upload_id');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->stopPart('a.txt', 'upload_id');
 ~~~
 
 ## partList
@@ -114,7 +114,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->stopPart('a.txt', 'upload
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->partList('a.txt', 'upload_id');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->partList('a.txt', 'upload_id');
 ~~~
 
 ## list
@@ -128,7 +128,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->partList('a.txt', 'upload
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->list();
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->list();
 ~~~
 
 ## getMetaData
@@ -139,7 +139,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->list();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->getMetaData('a.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->getMetaData('a.txt');
 ~~~
 
 ## setMetaData
@@ -153,7 +153,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->getMetaData('a.txt');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setMetaData('a.txt', 'text/plain', ['a' => '1']);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->setMetaData('a.txt', 'text/plain', ['a' => '1']);
 ~~~
 
 ## move
@@ -167,7 +167,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->setMetaData('a.txt', 'tex
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->move('a.txt', 'b.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->move('a.txt', 'b.txt');
 ~~~
 
 ## copy
@@ -181,7 +181,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->move('a.txt', 'b.txt');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->copy('a.txt', 'b.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->copy('a.txt', 'b.txt');
 ~~~
 
 ## delete
@@ -192,7 +192,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->copy('a.txt', 'b.txt');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->delete('a.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->delete('a.txt');
 ~~~
 
 ## setStatus
@@ -204,7 +204,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->delete('a.txt');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setStatus('a.txt', false);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->setStatus('a.txt', false);
 ~~~
 
 ## setStorageType
@@ -216,7 +216,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->setStatus('a.txt', false)
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setStorageType('a.txt', false);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->setStorageType('a.txt', false);
 ~~~
 
 ## thaw
@@ -228,7 +228,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->setStorageType('a.txt', f
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->thaw('a.txt', 1);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->thaw('a.txt', 1);
 ~~~
 
 ## setExpireDeleteDuration
@@ -240,7 +240,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->thaw('a.txt', 1);
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setExpireDeleteDuration('a.txt', 1);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->setExpireDeleteDuration('a.txt', 1);
 ~~~
 
 ## setLifecycle
@@ -256,7 +256,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->setExpireDeleteDuration('
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->setLifecycle('a.txt', null, null, 1);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->setLifecycle('a.txt', null, null, 1);
 ~~~
 
 ## imageSourceUpdate
@@ -267,7 +267,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->setLifecycle('a.txt', nul
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->imageSourceUpdate('a.txt');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->imageSourceUpdate('a.txt');
 ~~~
 
 ## createAsyncFetchTask
@@ -279,7 +279,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->imageSourceUpdate('a.txt'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->createAsyncFetchTask('https://www.xxx.com/a.png', ['key' => 'a.png']);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->createAsyncFetchTask('https://www.xxx.com/a.png', ['key' => 'a.png']);
 ~~~
 
 ## queryAsyncFetchTask
@@ -290,7 +290,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->createAsyncFetchTask('htt
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->queryAsyncFetchTask('task_id');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->queryAsyncFetchTask('task_id');
 ~~~
 
 ## batch
@@ -301,7 +301,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Objects())->queryAsyncFetchTask('task
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Objects())->batch([
+$result = (new \lifetime\bridge\Qiniu\Kodo\Objects())->batch([
     ['setMetaData', ['test.txt', null, ['b' => '3']]],
     ['getMetaData', ['test.txt']],
     ['copy', ['test3.txt', 'test2.txt']],

@@ -8,7 +8,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->createTag('name');
+$result = (new \lifetime\bridge\Wechat\Official\User())->createTag('name');
 ~~~
 
 ## getTag
@@ -18,7 +18,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->createTag('name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getTag();
+$result = (new \lifetime\bridge\Wechat\Official\User())->getTag();
 ~~~
 
 ## updateTag
@@ -30,7 +30,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getTag();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->updateTag(1, 'name');
+$result = (new \lifetime\bridge\Wechat\Official\User())->updateTag(1, 'name');
 ~~~
 
 ## deleteTag
@@ -41,7 +41,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->updateTag(1, 'name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->deleteTag(1);
+$result = (new \lifetime\bridge\Wechat\Official\User())->deleteTag(1);
 ~~~
 
 ## getTagUser
@@ -53,7 +53,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->deleteTag(1);
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getTagUser(1, 'openid');
+$result = (new \lifetime\bridge\Wechat\Official\User())->getTagUser(1, 'openid');
 ~~~
 
 ## batchBindTag
@@ -65,7 +65,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getTagUser(1, 'openid')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->batchBindTag(1, ['openid1','openid2']);
+$result = (new \lifetime\bridge\Wechat\Official\User())->batchBindTag(1, ['openid1','openid2']);
 ~~~
 
 ## batchUnBindTag
@@ -77,7 +77,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->batchBindTag(1, ['openi
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->batchUnBindTag(1, ['openid1','openid2']);
+$result = (new \lifetime\bridge\Wechat\Official\User())->batchUnBindTag(1, ['openid1','openid2']);
 ~~~
 
 ## getUserTag
@@ -88,7 +88,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->batchUnBindTag(1, ['ope
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getUserTag('openid1');
+$result = (new \lifetime\bridge\Wechat\Official\User())->getUserTag('openid1');
 ~~~
 
 ## updateRemark
@@ -100,7 +100,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getUserTag('openid1');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->updateRemark('openid', 'remark');
+$result = (new \lifetime\bridge\Wechat\Official\User())->updateRemark('openid', 'remark');
 ~~~
 
 ## getUserInfo
@@ -111,7 +111,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->updateRemark('openid', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getUserInfo('openid');
+$result = (new \lifetime\bridge\Wechat\Official\User())->getUserInfo('openid');
 ~~~
 
 ## batchGetUserInfo
@@ -122,7 +122,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getUserInfo('openid');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->batchGetUserInfo(['openid1']);
+$result = (new \lifetime\bridge\Wechat\Official\User())->batchGetUserInfo(['openid1']);
 ~~~
 
 ## getUserList
@@ -133,7 +133,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->batchGetUserInfo(['open
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getUserList('openid');
+$result = (new \lifetime\bridge\Wechat\Official\User())->getUserList('openid');
 ~~~
 
 ## getBlackList
@@ -144,7 +144,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getUserList('openid');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->getBlackList('openid');
+$result = (new \lifetime\bridge\Wechat\Official\User())->getBlackList('openid');
 ~~~
 
 ## batchBlack
@@ -155,7 +155,7 @@ $result = (new \lifetime\bridge\wechat\official\User())->getBlackList('openid');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->batchBlack(['openid1']);
+$result = (new \lifetime\bridge\Wechat\Official\User())->batchBlack(['openid1']);
 ~~~
 
 ## batchUnBlack
@@ -166,6 +166,6 @@ $result = (new \lifetime\bridge\wechat\official\User())->batchBlack(['openid1'])
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\User())->batchUnBlack(['openid1']);
+$result = (new \lifetime\bridge\Wechat\Official\User())->batchUnBlack(['openid1']);
 ~~~
 

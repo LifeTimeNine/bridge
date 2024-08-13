@@ -11,7 +11,7 @@
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->setIndustry('industryId1', 'industryId1');
+$result = (new \lifetime\bridge\Wechat\Official\Template())->setIndustry('industryId1', 'industryId1');
 
 ~~~
 
@@ -22,7 +22,7 @@ $result = (new \lifetime\bridge\wechat\official\Template())->setIndustry('indust
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->getIndustry();
+$result = (new \lifetime\bridge\Wechat\Official\Template())->getIndustry();
 
 ~~~
 
@@ -35,7 +35,7 @@ $result = (new \lifetime\bridge\wechat\official\Template())->getIndustry();
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->addTemplate('templateId', ['keyword1', 'keyword2']);
+$result = (new \lifetime\bridge\Wechat\Official\Template())->addTemplate('templateId', ['keyword1', 'keyword2']);
 
 ~~~
 
@@ -46,7 +46,7 @@ $result = (new \lifetime\bridge\wechat\official\Template())->addTemplate('templa
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->getAllPrivateTemplate();
+$result = (new \lifetime\bridge\Wechat\Official\Template())->getAllPrivateTemplate();
 
 ~~~
 
@@ -58,7 +58,7 @@ $result = (new \lifetime\bridge\wechat\official\Template())->getAllPrivateTempla
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->deletePrivateTemplate('templateId');
+$result = (new \lifetime\bridge\Wechat\Official\Template())->deletePrivateTemplate('templateId');
 
 ~~~
 
@@ -75,7 +75,7 @@ $result = (new \lifetime\bridge\wechat\official\Template())->deletePrivateTempla
 示例
 ~~~php
 
-$result = (new \lifetime\bridge\wechat\official\Template())->send(
+$result = (new \lifetime\bridge\Wechat\Official\Template())->send(
   'openid',
   'templateId',
   [

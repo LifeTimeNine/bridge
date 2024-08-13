@@ -7,7 +7,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getRegionList();
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->getRegionList();
 ~~~
 
 > 如果发现返回的数据与官方文档不符时，请提交issue！
@@ -20,7 +20,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getRegionList();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->list(['tag1' => 'v1']);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->list(['tag1' => 'v1']);
 ~~~
 
 ## create
@@ -32,7 +32,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->list(['tag1' => 'v1']);
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->create('bucket','z1');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->create('bucket','z1');
 ~~~
 
 ## delete
@@ -43,7 +43,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->create('bucket','z1');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->delete('bucket');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->delete('bucket');
 ~~~
 
 ## getDomain
@@ -54,7 +54,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->delete('bucket');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getDomain('bucket');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->getDomain('bucket');
 ~~~
 
 ## setImageSource
@@ -67,7 +67,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getDomain('bucket');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setImageSource('bucket', 'http://xxx.com');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->setImageSource('bucket', 'http://xxx.com');
 ~~~
 
 ## setAccessAuth
@@ -79,7 +79,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setImageSource('bucket', '
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setAccessAuth('bucket', true);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->setAccessAuth('bucket', true);
 ~~~
 
 ## setTag
@@ -91,7 +91,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setAccessAuth('bucket', tr
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setTag('bucket', ['a' => 1, 'b' => 2]);
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->setTag('bucket', ['a' => 1, 'b' => 2]);
 ~~~
 
 ## getTag
@@ -102,7 +102,7 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->setTag('bucket', ['a' => 1
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getTag('bucket');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->getTag('bucket');
 ~~~
 
 ## deleteTag
@@ -113,5 +113,5 @@ $result = (new \lifetime\bridge\qiniu\kodo\Bucket())->getTag('bucket');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\qiniu\kodo\Bucket())->deleteTag('bucket');
+$result = (new \lifetime\bridge\Qiniu\Kodo\Bucket())->deleteTag('bucket');
 ~~~

@@ -50,30 +50,51 @@ composer require lifetime/bridge
 ~~~php
 $config = [
   'ali' => [
-    'payment' => [
-        // 应用ID
-        'appid' => '',
-        // 公钥
-        'public_key' => '',
-        // 私钥
-        'private_key' => '',
-        // 支付宝公钥
-        'alipay_public_key' => '',
+    'alipay' => [
+        // 是否是沙箱
+      'sandbox' => false,
+      // 应用ID
+      'app_id' => '',
+      // 应用公钥
+      'app_public_key' => '',
+      // 应用私钥
+      'app_private_key' => '',
+      // 支付宝公钥
+      'alipay_public_key' => '',
+      // 应用公钥证书地址
+      'app_public_cert_path' => '',
+      // 支付宝公钥证书地址
+      'alipay_public_cert_path' => '',
+      // 支付宝根证书地址
+      'alipay_root_cert_path' => '',
+      // 加密key
+      'encrypt_key' => ''
     ]
   ]
 ];
 ~~~
 
+> 如果设置了支付宝公钥证书地址【alipay_public_cert_path】，将使用证书模式
+> 如果设置了加密Key【encrypt_key】，将对请求数据进行加密
+
+#### 支付相关
 | 方法 | 说明 |
 | -- | -- |
-| [app](./docs/ali_payment.md#app) | APP支付 |
-| [wap](./docs/ali_payment.md#wap) | 手机网站支付 |
-| [page](./docs/ali_payment.md#page) | 电脑网站支付 |
-| [notify](./docs/ali_payment.md#notify) | 对支付后异步的通知进行处理 |
-| [query](./docs/ali_payment.md#query) | 订单查询 |
-| [refund](./docs/ali_payment.md#refund) | 退款 |
-| [refundQuery](./docs/ali_payment.md#refundQuery) | 退款查询 |
-| [tradeClose](./docs/ali_payment.md#tradeClose) | 交易关闭 |
+| [app](./docs/ali_alipay_trade.md#app) | APP支付 |
+| [wap](./docs/ali_alipay_trade.md#wap) | 手机网站支付 |
+| [page](./docs/ali_alipay_trade.md#page) | 电脑网站支付 |
+| [notify](./docs/ali_alipay_trade.md#notify) | 对支付后异步的通知进行处理 |
+| [query](./docs/ali_alipay_trade.md#query) | 订单查询 |
+| [refund](./docs/ali_alipay_trade.md#refund) | 退款 |
+| [refundQuery](./docs/ali_alipay_trade.md#refundQuery) | 退款查询 |
+| [tradeClose](./docs/ali_alipay_trade.md#tradeClose) | 交易关闭 |
+
+#### 资金相关
+| 方法 | 说明 |
+| -- | -- |
+| [accountQuery](./docs/ali_alipay_fund.md#accountQuery) | 资产查询 |
+| [quotaQuery](./docs/ali_alipay_fund.md#quotaQuery) | 转账额度查询 |
+| [transfer](./docs/ali_alipay_fund.md#transfer) | 单笔转账 |
 
 ### 对象存储
 

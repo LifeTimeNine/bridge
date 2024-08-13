@@ -5,14 +5,22 @@ return [
     'ali' => [
         // 支付宝支付相关配置
         'payment' => [
-            // 支付宝APPID
+            // 应用ID
             'app_id' => '',
             // 应用公钥
-            'public_key' => '',
+            'app_public_key' => '',
             // 应用私钥
-            'private_key' => '',
+            'app_private_key' => '',
             // 支付宝公钥
-            'alipay_public_key' => ''
+            'alipay_public_key' => '',
+            // 应用公钥证书地址
+            'app_public_cert_path' => '',
+            // 支付宝公钥证书地址
+            'alipay_public_cert_path' => '',
+            // 支付宝根证书地址
+            'alipay_root_cert_path' => '',
+            // 加密key
+            'encrypt_key' => ''
         ],
         'oss' => [
             // 访问KeyID

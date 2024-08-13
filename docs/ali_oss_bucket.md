@@ -11,7 +11,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->list('log/');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->list('log/');
 ~~~
 
 ## regionList
@@ -21,7 +21,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->list('log/');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->regionList();
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->regionList();
 ~~~
 
 > 如果发现返回的数据与官方文档不符时，请提交issue！
@@ -38,7 +38,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->regionList();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->create('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->create('bucket-name');
 ~~~
 
 ## delete
@@ -49,7 +49,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->create('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->delete('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->delete('bucket-name');
 ~~~
 
 ## getInfo
@@ -60,7 +60,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->delete('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getInfo('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getInfo('bucket-name');
 ~~~
 
 ## getLocation
@@ -71,7 +71,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getInfo('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getLocation('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getLocation('bucket-name');
 ~~~
 
 ## getStat
@@ -82,7 +82,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getLocation('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getStat('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getStat('bucket-name');
 ~~~
 
 ## createWorm
@@ -94,7 +94,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getStat('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createWorm('bucket-name', 10);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createWorm('bucket-name', 10);
 ~~~
 
 ## deleteWorm
@@ -105,7 +105,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createWorm('bucket-name', 10)
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteWorm('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteWorm('bucket-name');
 ~~~
 
 ## lockWorm
@@ -117,7 +117,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteWorm('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->lockWorm('bucket-name', 'worm-id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->lockWorm('bucket-name', 'worm-id');
 ~~~
 
 ## extendWorm
@@ -130,7 +130,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->lockWorm('bucket-name', 'worm
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->extendWorm('bucket-name', 'worm-id', 10);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->extendWorm('bucket-name', 'worm-id', 10);
 ~~~
 
 ## getWorm
@@ -141,7 +141,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->extendWorm('bucket-name', 'wo
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getWorm('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getWorm('bucket-name');
 ~~~
 
 ## setAcl
@@ -153,7 +153,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getWorm('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setAcl('bucket-name', 'private');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setAcl('bucket-name', 'private');
 ~~~
 
 ## getAcl
@@ -164,7 +164,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setAcl('bucket-name', 'privat
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAcl('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAcl('bucket-name');
 ~~~
 
 ## setLifecycle
@@ -177,7 +177,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAcl('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setLifecycle('bucket-name', [
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setLifecycle('bucket-name', [
     [
         'ID' => 'rule1',
         'Status' => 'Enabled',
@@ -197,7 +197,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setLifecycle('bucket-name', [
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getLifecycle('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getLifecycle('bucket-name');
 ~~~
 
 ## deleteLifecycle
@@ -208,7 +208,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getLifecycle('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLifecycle('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteLifecycle('bucket-name');
 ~~~
 
 ## setTransferAcceleration
@@ -220,7 +220,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLifecycle('bucket-name'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setTransferAcceleration('bucket-name', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setTransferAcceleration('bucket-name', true);
 ~~~
 
 ## getTransferAcceleration
@@ -231,7 +231,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setTransferAcceleration('buck
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getTransferAcceleration('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getTransferAcceleration('bucket-name');
 ~~~
 
 ## setVersioning
@@ -243,7 +243,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getTransferAcceleration('buck
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setVersioning('bucket-name', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setVersioning('bucket-name', true);
 ~~~
 
 ## getVersioning
@@ -254,7 +254,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setVersioning('bucket-name', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getVersioning('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getVersioning('bucket-name');
 ~~~
 
 ## getVersionList
@@ -271,7 +271,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getVersioning('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getVersionList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getVersionList('bucket-name');
 ~~~
 
 ## createReplication
@@ -292,7 +292,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getVersionList('bucket-name')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createReplication('bucket-name','cn-beijing', 'target-bucket-name', 'internal', null, ['test'], null, null, 'oss-dev');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createReplication('bucket-name','cn-beijing', 'target-bucket-name', 'internal', null, ['test'], null, null, 'oss-dev');
 ~~~
 
 ## setRtc
@@ -305,7 +305,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createReplication('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setRtc('bucket-name', 'rule-id', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setRtc('bucket-name', 'rule-id', true);
 ~~~
 
 ## getReplication
@@ -316,7 +316,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setRtc('bucket-name', 'rule-i
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getReplication('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getReplication('bucket-name');
 ~~~
 
 ## getReplicationLocation
@@ -327,7 +327,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getReplication('bucket-name')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getReplicationLocation('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getReplicationLocation('bucket-name');
 ~~~
 
 ## getReplicationProgress
@@ -339,7 +339,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getReplicationLocation('bucke
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getReplicationProgress('bucket-name', 'rule-id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getReplicationProgress('bucket-name', 'rule-id');
 ~~~
 
 ## deleteReplication
@@ -351,7 +351,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getReplicationProgress('bucke
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteReplication('bucket-name', 'rule-id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteReplication('bucket-name', 'rule-id');
 ~~~
 
 ## setPolicy
@@ -363,7 +363,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteReplication('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setPolicy('bucket-name', [
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setPolicy('bucket-name', [
   "Version" => "1",
   "Statement" => [
       [
@@ -391,7 +391,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setPolicy('bucket-name', [
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getPolicy('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getPolicy('bucket-name');
 ~~~
 
 ## getPolicyStatus
@@ -402,7 +402,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getPolicy('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getPolicyStatus('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getPolicyStatus('bucket-name');
 ~~~
 
 ## deletePolicy
@@ -413,7 +413,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getPolicyStatus('bucket-name'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deletePolicy('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deletePolicy('bucket-name');
 ~~~
 
 ## createInventory
@@ -431,7 +431,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deletePolicy('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createInventory('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createInventory('bucket-name');
 ~~~
 
 ## getInventory
@@ -443,7 +443,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createInventory('bucket-name'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getInventory('bucket-name', 'id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getInventory('bucket-name', 'id');
 ~~~
 
 ## getInventoryList
@@ -455,7 +455,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getInventory('bucket-name', '
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getInventoryList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getInventoryList('bucket-name');
 ~~~
 
 ## deleteInventory
@@ -467,7 +467,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getInventoryList('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteInventory('bucket-name', 'id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteInventory('bucket-name', 'id');
 ~~~
 
 ## setLogging
@@ -480,7 +480,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteInventory('bucket-name'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setLogging('bucket-name', 'target-bucket-name', 'log/');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setLogging('bucket-name', 'target-bucket-name', 'log/');
 ~~~
 
 ## getLogging
@@ -491,7 +491,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setLogging('bucket-name', 'ta
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getLogging('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getLogging('bucket-name');
 ~~~
 
 ## deleteLogging
@@ -502,7 +502,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getLogging('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLogging('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteLogging('bucket-name');
 ~~~
 
 ## setLoggingUserField
@@ -515,7 +515,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLogging('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setLoggingUserField('bucket-name', ['a' => '1'], ['b' => 2]);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setLoggingUserField('bucket-name', ['a' => '1'], ['b' => 2]);
 ~~~
 
 ## getLoggingUserField
@@ -526,7 +526,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setLoggingUserField('bucket-n
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getLoggingUserField('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getLoggingUserField('bucket-name');
 ~~~
 
 ## deleteLoggingUserField
@@ -537,7 +537,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getLoggingUserField('bucket-n
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLoggingUserField('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteLoggingUserField('bucket-name');
 ~~~
 
 ## setWebsite
@@ -551,7 +551,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteLoggingUserField('bucke
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setWebsite('bucket-name', [
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setWebsite('bucket-name', [
   'Suffix' => 'index.html'
 ]);
 ~~~
@@ -564,7 +564,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setWebsite('bucket-name', [
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getWebsite('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getWebsite('bucket-name');
 ~~~
 
 ## deleteWebsite
@@ -575,7 +575,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getWebsite('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteWebsite('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteWebsite('bucket-name');
 ~~~
 
 ## setReferer
@@ -591,7 +591,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteWebsite('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setReferer('bucket-name', false, ['https://*'], false);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setReferer('bucket-name', false, ['https://*'], false);
 ~~~
 
 ## getReferer
@@ -602,7 +602,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setReferer('bucket-name', fal
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getReferer('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getReferer('bucket-name');
 ~~~
 
 ## setTag
@@ -614,7 +614,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getReferer('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setTag('bucket-name', ['a' => 1, 'b' => 2]);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setTag('bucket-name', ['a' => 1, 'b' => 2]);
 ~~~
 
 ## getTag
@@ -625,7 +625,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setTag('bucket-name', ['a' =>
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getTag('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getTag('bucket-name');
 ~~~
 
 ## deleteTag
@@ -637,7 +637,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getTag('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteTag('bucket-name', ['a']);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteTag('bucket-name', ['a']);
 ~~~
 
 ## setEncryption
@@ -651,7 +651,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteTag('bucket-name', ['a'
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setEncryption('bucket-name', 'AES256');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setEncryption('bucket-name', 'AES256');
 ~~~
 
 ## getEncryption
@@ -662,7 +662,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setEncryption('bucket-name', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getEncryption('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getEncryption('bucket-name');
 ~~~
 
 ## deleteEncryption
@@ -673,7 +673,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getEncryption('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteEncryption('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteEncryption('bucket-name');
 ~~~
 
 ## setRequestPayment
@@ -685,7 +685,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteEncryption('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setRequestPayment('bucket-name', 'BucketOwner');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setRequestPayment('bucket-name', 'BucketOwner');
 ~~~
 
 ## getRequestPayment
@@ -696,7 +696,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setRequestPayment('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getRequestPayment('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getRequestPayment('bucket-name');
 ~~~
 
 ## setCors
@@ -709,7 +709,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getRequestPayment('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setCors('bucket-name', ['AllowedOrigin' => ['*'],'AllowedMethod'=>['GET']]);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setCors('bucket-name', ['AllowedOrigin' => ['*'],'AllowedMethod'=>['GET']]);
 ~~~
 
 ## getCors
@@ -720,7 +720,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setCors('bucket-name', ['Allo
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getCors('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getCors('bucket-name');
 ~~~
 
 ## deleteCors
@@ -731,7 +731,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getCors('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteCors('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteCors('bucket-name');
 ~~~
 
 ## setAccessMonitor
@@ -743,7 +743,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteCors('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessMonitor('bucket-name', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setAccessMonitor('bucket-name', true);
 ~~~
 
 ## getAccessMonitor
@@ -754,7 +754,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessMonitor('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessMonitor('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAccessMonitor('bucket-name');
 ~~~
 
 ## openMetaQuery
@@ -765,7 +765,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessMonitor('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->openMetaQuery('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->openMetaQuery('bucket-name');
 ~~~
 
 ## getMetaQuery
@@ -776,7 +776,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->openMetaQuery('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getMetaQuery('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getMetaQuery('bucket-name');
 ~~~
 
 ## doMetaQuery
@@ -793,7 +793,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getMetaQuery('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->doMetaQuery('bucket-name', json_encode(['Field' => 'Size', 'Value' => 10, 'Operation' => 'gte']));
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->doMetaQuery('bucket-name', json_encode(['Field' => 'Size', 'Value' => 10, 'Operation' => 'gte']));
 ~~~
 
 ## closeMetaQuery
@@ -804,7 +804,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->doMetaQuery('bucket-name', js
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->closeMetaQuery('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->closeMetaQuery('bucket-name');
 ~~~
 
 ## setResourceGroupId
@@ -816,7 +816,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->closeMetaQuery('bucket-name')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setResourceGroupId('bucket-name', 'resource-group-id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setResourceGroupId('bucket-name', 'resource-group-id');
 ~~~
 
 ## getResourceGroupId
@@ -827,7 +827,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setResourceGroupId('bucket-na
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getResourceGroupId('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getResourceGroupId('bucket-name');
 ~~~
 
 ## createCnameToken
@@ -839,7 +839,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getResourceGroupId('bucket-na
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createCnameToken('bucket-name', 'xxx.domain.com');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createCnameToken('bucket-name', 'xxx.domain.com');
 ~~~
 
 ## getCnameToken
@@ -851,7 +851,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createCnameToken('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getCnameToken('bucket-name', 'xxx.domain.com');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getCnameToken('bucket-name', 'xxx.domain.com');
 ~~~
 
 ## bindCname
@@ -869,7 +869,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getCnameToken('bucket-name', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->bindCname('bucket-name', 'xxx.domain.com');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->bindCname('bucket-name', 'xxx.domain.com');
 ~~~
 
 ## getCname
@@ -880,7 +880,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->bindCname('bucket-name', 'xxx
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getCname('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getCname('bucket-name');
 ~~~
 
 ## deleteCname
@@ -892,7 +892,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getCname('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteCname('bucket-name', 'xxx.domain.com');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteCname('bucket-name', 'xxx.domain.com');
 ~~~
 
 ## createImageStyle
@@ -905,7 +905,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteCname('bucket-name', 'x
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createImageStyle('bucket-name', 'style1', 'image/resize,p_50');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createImageStyle('bucket-name', 'style1', 'image/resize,p_50');
 ~~~
 
 ## getImageStyle
@@ -917,7 +917,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createImageStyle('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getImageStyle('bucket-name', 'style1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getImageStyle('bucket-name', 'style1');
 ~~~
 
 ## getImageStyleList
@@ -928,7 +928,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getImageStyle('bucket-name', 
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getImageStyleList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getImageStyleList('bucket-name');
 ~~~
 
 ## deleteImageStyle
@@ -940,7 +940,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getImageStyleList('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteImageStyle('bucket-name', 'style1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteImageStyle('bucket-name', 'style1');
 ~~~
 
 ## setTls
@@ -952,7 +952,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteImageStyle('bucket-name
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setTls('bucket-name', ['TLSv1.2']);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setTls('bucket-name', ['TLSv1.2']);
 ~~~
 
 ## getTls
@@ -963,7 +963,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setTls('bucket-name', ['TLSv1
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getTls('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getTls('bucket-name');
 ~~~
 
 ## createDataRedundancyTransition
@@ -974,7 +974,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getTls('bucket-name');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createDataRedundancyTransition('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createDataRedundancyTransition('bucket-name');
 ~~~
 
 ## getDataRedundancyTransition
@@ -986,7 +986,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createDataRedundancyTransitio
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getDataRedundancyTransition('bucket-name', 'id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getDataRedundancyTransition('bucket-name', 'id');
 ~~~
 
 ## deleteDataRedundancyTransition
@@ -998,7 +998,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getDataRedundancyTransition('
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteDataRedundancyTransition('bucket-name', 'id');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteDataRedundancyTransition('bucket-name', 'id');
 ~~~
 
 ## getUserDataRedundancyTransitionList
@@ -1011,7 +1011,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteDataRedundancyTransitio
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getUserDataRedundancyTransitionList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getUserDataRedundancyTransitionList('bucket-name');
 ~~~
 
 ## getDataRedundancyTransitionList
@@ -1022,7 +1022,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getUserDataRedundancyTransiti
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getDataRedundancyTransitionList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getDataRedundancyTransitionList('bucket-name');
 ~~~
 
 ## createAccessPoint
@@ -1036,7 +1036,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getDataRedundancyTransitionLi
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->createAccessPoint('bucket-name', 'ap1', 'internet');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->createAccessPoint('bucket-name', 'ap1', 'internet');
 ~~~
 
 ## getAccessPoint
@@ -1048,7 +1048,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->createAccessPoint('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPoint('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAccessPoint('bucket-name', 'ap1');
 ~~~
 
 ## deleteAccessPoint
@@ -1060,7 +1060,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPoint('bucket-name',
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPoint('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteAccessPoint('bucket-name', 'ap1');
 ~~~
 
 ## getAccessPointList
@@ -1073,7 +1073,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPoint('bucket-nam
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointList('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAccessPointList('bucket-name');
 ~~~
 
 ## setAccessPointPolicy
@@ -1086,7 +1086,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointList('bucket-na
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessPointPolicy('bucket-name', 'ap1', [
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setAccessPointPolicy('bucket-name', 'ap1', [
   "Version" => "1",
   "Statement" => [
       [
@@ -1115,7 +1115,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessPointPolicy('bucket-
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointPolicy('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAccessPointPolicy('bucket-name', 'ap1');
 ~~~
 
 ## deleteAccessPointPolicy
@@ -1127,7 +1127,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointPolicy('bucket-
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPointPolicy('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteAccessPointPolicy('bucket-name', 'ap1');
 ~~~
 
 ## setGlobalPublicAccessBlock
@@ -1138,7 +1138,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPointPolicy('buck
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setGlobalPublicAccessBlock(false);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setGlobalPublicAccessBlock(false);
 ~~~
 
 ## getGlobalPublicAccessBlock
@@ -1148,7 +1148,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setGlobalPublicAccessBlock(fa
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getGlobalPublicAccessBlock();
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getGlobalPublicAccessBlock();
 ~~~
 
 ## deleteGlobalPublicAccessBlock
@@ -1158,7 +1158,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getGlobalPublicAccessBlock();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteGlobalPublicAccessBlock();
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteGlobalPublicAccessBlock();
 ~~~
 
 ## setPublicAccessBlock
@@ -1170,7 +1170,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteGlobalPublicAccessBlock
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setPublicAccessBlock('bucket-name', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setPublicAccessBlock('bucket-name', true);
 ~~~
 
 ## getPublicAccessBlock
@@ -1181,7 +1181,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setPublicAccessBlock('bucket-
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getPublicAccessBlock('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getPublicAccessBlock('bucket-name');
 ~~~
 
 ## deletePublicAccessBlock
@@ -1192,7 +1192,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getPublicAccessBlock('bucket-
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deletePublicAccessBlock('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deletePublicAccessBlock('bucket-name');
 ~~~
 
 ## setAccessPointPublicAccessBlock
@@ -1205,7 +1205,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deletePublicAccessBlock('buck
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessPointPublicAccessBlock('bucket-name', 'ap1', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setAccessPointPublicAccessBlock('bucket-name', 'ap1', true);
 ~~~
 
 ## getAccessPointPublicAccessBlock
@@ -1217,7 +1217,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setAccessPointPublicAccessBlo
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointPublicAccessBlock('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getAccessPointPublicAccessBlock('bucket-name', 'ap1');
 ~~~
 
 ## deleteAccessPointPublicAccessBlock
@@ -1229,7 +1229,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->getAccessPointPublicAccessBlo
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPointPublicAccessBlock('bucket-name', 'ap1');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->deleteAccessPointPublicAccessBlock('bucket-name', 'ap1');
 ~~~
 
 ## setArchiveDirectRead
@@ -1241,7 +1241,7 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->deleteAccessPointPublicAccess
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->setArchiveDirectRead('bucket-name', true);
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->setArchiveDirectRead('bucket-name', true);
 ~~~
 
 ## getArchiveDirectRead
@@ -1252,5 +1252,5 @@ $result = (new \lifetime\bridge\ali\oss\Bucket())->setArchiveDirectRead('bucket-
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\ali\oss\Bucket())->getArchiveDirectRead('bucket-name');
+$result = (new \lifetime\bridge\Ali\OSS\Bucket())->getArchiveDirectRead('bucket-name');
 ~~~

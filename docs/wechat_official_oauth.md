@@ -12,7 +12,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\wechat\official\Oauth())->authorize('http://xxx.com');
+(new \lifetime\bridge\Wechat\Official\Oauth())->authorize('http://xxx.com');
 ~~~
 
 > 注意调用此方法之后前端会跳转，因此不可以有任何返回数据
@@ -24,7 +24,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\Oauth())->getUserAccessToken();
+$result = (new \lifetime\bridge\Wechat\Official\Oauth())->getUserAccessToken();
 ~~~
 
 ## refreshAccessToken
@@ -35,7 +35,7 @@ $result = (new \lifetime\bridge\wechat\official\Oauth())->getUserAccessToken();
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\Oauth())->refreshAccessToken('refresh_token');
+$result = (new \lifetime\bridge\Wechat\Official\Oauth())->refreshAccessToken('refresh_token');
 ~~~
 
 ## getUserInfo
@@ -47,7 +47,7 @@ $result = (new \lifetime\bridge\wechat\official\Oauth())->refreshAccessToken('re
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\Oauth())->getUserInfo('access_token', 'openid');
+$result = (new \lifetime\bridge\Wechat\Official\Oauth())->getUserInfo('access_token', 'openid');
 ~~~
 
 ## checkAccessToken
@@ -59,7 +59,7 @@ $result = (new \lifetime\bridge\wechat\official\Oauth())->getUserInfo('access_to
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\Oauth())->checkAccessToken('access_token', 'openid');
+$result = (new \lifetime\bridge\Wechat\Official\Oauth())->checkAccessToken('access_token', 'openid');
 ~~~
 
 ## getJsSdkSign
@@ -70,5 +70,5 @@ $result = (new \lifetime\bridge\wechat\official\Oauth())->checkAccessToken('acce
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\official\Oauth())->getJsSdkSign('url');
+$result = (new \lifetime\bridge\Wechat\Official\Oauth())->getJsSdkSign('url');
 ~~~

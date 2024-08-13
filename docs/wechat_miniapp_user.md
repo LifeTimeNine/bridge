@@ -8,7 +8,7 @@
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->getPluginOpenPid('code');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->getPluginOpenPid('code');
 ~~~
 
 ## checkEncryptedData
@@ -19,7 +19,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->getPluginOpenPid('code')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->checkEncryptedData('657edd868c9715a9bebe42b833269a557a48498785397a796f1568c29a200b2c');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->checkEncryptedData('657edd868c9715a9bebe42b833269a557a48498785397a796f1568c29a200b2c');
 ~~~
 
 ## getPaidUnionId
@@ -33,7 +33,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->checkEncryptedData('657e
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->getPaidUnionId('openid');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->getPaidUnionId('openid');
 ~~~
 
 > 注意事项  
@@ -50,7 +50,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->getPaidUnionId('openid')
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->getUserEncryptKey('openid', 'signature');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->getUserEncryptKey('openid', 'signature');
 ~~~
 
 ## getPhoneNumber
@@ -62,7 +62,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->getUserEncryptKey('openi
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->getPhoneNumber('code');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->getPhoneNumber('code');
 ~~~
 
 ## check
@@ -75,7 +75,7 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->getPhoneNumber('code');
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->check('raw_data', 'signature', 'session_key');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->check('raw_data', 'signature', 'session_key');
 ~~~
 
 ## decodeUserInfo
@@ -88,5 +88,5 @@ $result = (new \lifetime\bridge\wechat\miniapp\User())->check('raw_data', 'signa
 
 示例
 ~~~php
-$result = (new \lifetime\bridge\wechat\miniapp\User())->decodeUserInfo('encrypted_data', 'iv', 'session_key');
+$result = (new \lifetime\bridge\Wechat\MiniApp\User())->decodeUserInfo('encrypted_data', 'iv', 'session_key');
 ~~~

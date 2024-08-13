@@ -1,7 +1,7 @@
 {
   "name": "lifetime/bridge",
   "description": "bridge",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "homepage": "https://github.com/LifeTimeNine/bridge.git",
   "license": "Apache-2.0",
   "authors": [{
@@ -19,7 +19,6 @@
       }
   },
   "require": {
-      "php": ">=7.1",
-      "endroid/qr-code": "^4.6"
+      "php": ">=7.1"
   }
 }

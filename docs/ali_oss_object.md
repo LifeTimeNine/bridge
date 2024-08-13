@@ -8,7 +8,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->setBucketName('bucket-name');
+(new \lifetime\bridge\Ali\OSS\Objects())->setBucketName('bucket-name');
 ~~~
 
 ## getAccessPath
@@ -19,7 +19,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getAccessPath('text.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getAccessPath('text.txt');
 ~~~
 
 ## list
@@ -36,7 +36,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->list();
+(new \lifetime\bridge\Ali\OSS\Objects())->list();
 ~~~
 
 ## put
@@ -61,7 +61,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->put('test.txt', '0');
+(new \lifetime\bridge\Ali\OSS\Objects())->put('test.txt', '0');
 ~~~
 
 ## get
@@ -84,7 +84,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->get('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->get('test.txt');
 ~~~
 
 ## copy
@@ -109,7 +109,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->copy('test.txt', 'test1.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->copy('test.txt', 'test1.txt');
 ~~~
 
 ## append
@@ -135,7 +135,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->copy('test.txt', 0， '0');
+(new \lifetime\bridge\Ali\OSS\Objects())->copy('test.txt', 0， '0');
 ~~~
 
 ## delete
@@ -147,7 +147,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->delete('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->delete('test.txt');
 ~~~
 
 ## deleteMultiple
@@ -160,7 +160,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->deleteMultiple(['test.txt', 'test1.txt']);
+(new \lifetime\bridge\Ali\OSS\Objects())->deleteMultiple(['test.txt', 'test1.txt']);
 ~~~
 
 ## getHead
@@ -176,7 +176,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getHead('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getHead('test.txt');
 ~~~
 
 ## getMeta
@@ -188,7 +188,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getMeta('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getMeta('test.txt');
 ~~~
 
 ## post
@@ -213,7 +213,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->post('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->post('test.txt');
 ~~~
 
 ## restore
@@ -226,7 +226,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->restore('test.txt'， 1);
+(new \lifetime\bridge\Ali\OSS\Objects())->restore('test.txt'， 1);
 ~~~
 
 ## initPart
@@ -246,7 +246,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->initPart('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->initPart('test.txt');
 ~~~
 
 ## uploadPart
@@ -260,7 +260,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->uploadPart('test.txt', 'upload-id', 1, '1');
+(new \lifetime\bridge\Ali\OSS\Objects())->uploadPart('test.txt', 'upload-id', 1, '1');
 ~~~
 
 ## clientUploadPart
@@ -273,7 +273,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->clientUploadPart('test.txt', 'upload-id', 1);
+(new \lifetime\bridge\Ali\OSS\Objects())->clientUploadPart('test.txt', 'upload-id', 1);
 ~~~
 
 ## copyPart
@@ -294,7 +294,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->copyPart('test.txt', 'upload-id', 1, 'source.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->copyPart('test.txt', 'upload-id', 1, 'source.txt');
 ~~~
 
 ## completePart
@@ -310,7 +310,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->completePart('test.txt', 'upload-id', [1 => 'etag1', 2 => 'etag2']);
+(new \lifetime\bridge\Ali\OSS\Objects())->completePart('test.txt', 'upload-id', [1 => 'etag1', 2 => 'etag2']);
 ~~~
 
 ## abortPart
@@ -322,7 +322,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->abortPart('test.txt', 'upload-id');
+(new \lifetime\bridge\Ali\OSS\Objects())->abortPart('test.txt', 'upload-id');
 ~~~
 
 ## partTaskList
@@ -338,7 +338,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->partTaskList();
+(new \lifetime\bridge\Ali\OSS\Objects())->partTaskList();
 ~~~
 
 ## abortPart
@@ -350,7 +350,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->abortPart('test.txt', 'upload-id');
+(new \lifetime\bridge\Ali\OSS\Objects())->abortPart('test.txt', 'upload-id');
 ~~~
 
 ## partList
@@ -365,7 +365,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->partList('test.txt', 'upload-id');
+(new \lifetime\bridge\Ali\OSS\Objects())->partList('test.txt', 'upload-id');
 ~~~
 
 ## setAcl
@@ -377,7 +377,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->setAcl('test.txt', 'private');
+(new \lifetime\bridge\Ali\OSS\Objects())->setAcl('test.txt', 'private');
 ~~~
 
 ## getAcl
@@ -388,7 +388,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getAcl('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getAcl('test.txt');
 ~~~
 
 ## createSymlink
@@ -403,7 +403,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->createSymlink('test.txt', 'source.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->createSymlink('test.txt', 'source.txt');
 ~~~
 
 ## getSymlink
@@ -415,7 +415,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getSymlink('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getSymlink('test.txt');
 ~~~
 
 ## setTag
@@ -428,7 +428,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->setTag('test.txt', ['key1' => 'value1', 'key2' => 'value2']);
+(new \lifetime\bridge\Ali\OSS\Objects())->setTag('test.txt', ['key1' => 'value1', 'key2' => 'value2']);
 ~~~
 
 ## getTag
@@ -440,7 +440,7 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->getTag('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->getTag('test.txt');
 ~~~
 
 ## deleteTag
@@ -452,5 +452,5 @@
 
 示例
 ~~~php
-(new \lifetime\bridge\ali\oss\Objects())->deleteTag('test.txt');
+(new \lifetime\bridge\Ali\OSS\Objects())->deleteTag('test.txt');
 ~~~

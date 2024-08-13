@@ -6,8 +6,8 @@ namespace lifetime\bridge;
 
 use DOMDocument;
 use DOMElement;
-use lifetime\bridge\exception\InvalidDecodeException;
-use lifetime\bridge\exception\InvalidResponseException;
+use lifetime\bridge\Exception\InvalidDecodeException;
+use lifetime\bridge\Exception\InvalidResponseException;
 
 /**
  * 工具类

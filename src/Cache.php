@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace lifetime\bridge;
 
-use lifetime\bridge\exception\InvalidCacheException;
+use lifetime\bridge\Exception\InvalidCacheException;
 
 /**
  * 缓存类
