@@ -25,7 +25,7 @@ class Trade extends Basic
      */
     protected function initOptions(): array
     {
-        return [
+        $options = [
             'app_id' => $this->config->appId(),
             'version' => '1.0',
             'format' => 'JSON',
@@ -33,6 +33,11 @@ class Trade extends Basic
             'charset' => 'UTF-8',
             'timestamp' => date('Y-m-d H:i:s'),
         ];
+        if (!empty($this->config->appPublicCertPath())) {
+            $options['app_cert_sn'] = $this->appPublicCertSn;
+            $options['alipay_root_cert_sn'] = $this->alipayRootCertSn;
+        }
+        return $options;
     }
 
     /**
@@ -70,9 +75,9 @@ class Trade extends Basic
      * 验证签名
      * @access  public
      * @param   array   $data   阿里返回数据
-     * @return  void
+     * @return  bool
      */
-    protected function verify($data)
+    protected function verify($data): bool
     {
         if (empty($data)) return false;
 
@@ -80,9 +85,7 @@ class Trade extends Basic
         $sign = $data['sign'];
         $signData = $this->handlerSignData($data);
 
-        if (openssl_verify($signData, base64_decode($sign), $this->alipayPublicKey, OPENSSL_ALGO_SHA256) === 1) {
-            throw new InvalidSignException('signature verification failed', 1, $data);
-        }
+        return openssl_verify($signData, base64_decode($sign), $this->alipayPublicKey, OPENSSL_ALGO_SHA256) === 1;
     }
 
     /**
