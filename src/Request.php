@@ -156,7 +156,9 @@ class Request
         curl_setopt_array($curl, $this->options);
         $content = curl_exec($curl);
         $this->info = curl_getinfo($curl);
-        curl_close($curl);
+        if (PHP_VERSION_ID < 80000) {
+                curl_close($curl);
+        }
         if ($content === false) return '';
         $headerArr = array_diff(explode("\r\n", substr($content, 0, $this->info['header_size'])), [""]);
         array_shift($headerArr);
