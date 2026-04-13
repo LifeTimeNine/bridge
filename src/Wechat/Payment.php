@@ -132,7 +132,7 @@ class Payment
      * @param   string  $requestBody       请求报文主体
      * @return  string
      */
-    protected function getAuthorization(string $requestMethod, string $requestUrl, string $requestBody = null)
+    protected function getAuthorization(string $requestMethod, string $requestUrl, ?string $requestBody = null)
     {
         $time = time();
         $nonce_str = Tools::createRandomStr();
@@ -391,7 +391,7 @@ class Payment
      * @throws InvalidArgumentException
      * @throws InvalidResponseException
      */
-    public function query(string $outRefundNo = null, string $transactionId = null): array
+    public function query(?string $outRefundNo = null, ?string $transactionId = null): array
     {
         $url = '';
         if (!empty($transactionId)) {

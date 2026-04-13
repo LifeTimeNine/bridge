@@ -139,7 +139,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setImageSource(string $name, string $accessUrl, string $host = null): array
+    public function setImageSource(string $name, string $accessUrl, ?string $host = null): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['bucket_manage'];

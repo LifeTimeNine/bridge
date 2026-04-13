@@ -26,7 +26,7 @@ class Fund extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidSignException
      */
-    public function accountQuery(string $accountType, string $alipayOpenId = null, string $alipayUserId = null): array
+    public function accountQuery(string $accountType, ?string $alipayOpenId = null, ?string $alipayUserId = null): array
     {
         if (empty($alipayOpenId) && empty($alipayUserId)) {
             throw new InvalidArgumentException("Missing Options [alipay_open_id OR alipay_user_id]");

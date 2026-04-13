@@ -87,7 +87,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function list(string $delimiter = null, string $startAfter = null, string $continuationToken = null, string $maxKeys = null, string $prefix = null, string $encodingType = null, bool $fetchOwner = false): array
+    public function list(?string $delimiter = null, ?string $startAfter = null, ?string $continuationToken = null, ?string $maxKeys = null, ?string $prefix = null, ?string $encodingType = null, bool $fetchOwner = false): array
     {
         $query = ['list-type' => 2];
         if (!empty($delimiter)) $query['delimiter'] = $delimiter;
@@ -134,17 +134,17 @@ class Objects extends Basic
     public function put(
         string $filename,
         string $data,
-        string $acl = null,
-        string $storageType = null,
-        string $cacheControl = null,
-        string $disposition = null,
-        string $encoding = null,
-        string $md5 = null,
+        ?string $acl = null,
+        ?string $storageType = null,
+        ?string $cacheControl = null,
+        ?string $disposition = null,
+        ?string $encoding = null,
+        ?string $md5 = null,
         ?\DateTime $expires = null,
         ?bool $overwrite = null,
-        string $encryption = null,
-        string $dataEncryption = null,
-        string $encryptionKey = null,
+        ?string $encryption = null,
+        ?string $dataEncryption = null,
+        ?string $encryptionKey = null,
         array $metaList = [],
         array $tagList = []
     ): array
@@ -200,18 +200,18 @@ class Objects extends Basic
      */
     public function get(
         string $filename,
-        string $responseContentType = null,
-        string $responseContentLanguage = null,
+        ?string $responseContentType = null,
+        ?string $responseContentLanguage = null,
         ?\DateTime $responseExpires = null,
-        string $responseCacheControl = null,
-        string $responseDisposition = null,
-        string $responseEncoding = null,
-        string $range = null,
+        ?string $responseCacheControl = null,
+        ?string $responseDisposition = null,
+        ?string $responseEncoding = null,
+        ?string $range = null,
         ?\DateTime $ifModifiedSince = null,
         ?\DateTime $ifUnmodifiedSince = null,
-        string $ifMatch = null,
-        string $ifNoneMatch = null,
-        string $acceptEncoding = null
+        ?string $ifMatch = null,
+        ?string $ifNoneMatch = null,
+        ?string $acceptEncoding = null
     ): array
     {
         $header = [Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED];
@@ -272,18 +272,18 @@ class Objects extends Basic
     public function copy(
         string $filename,
         string $sourceFilename,
-        string $sourceBucket = null,
-        string $acl = null,
-        string $storageType = null,
+        ?string $sourceBucket = null,
+        ?string $acl = null,
+        ?string $storageType = null,
         ?\DateTime $ifModifiedSince = null,
         ?\DateTime $ifUnmodifiedSince = null,
-        string $ifMatch = null,
-        string $ifNoneMatch = null,
-        string $encryption = null,
-        string $encryptionKey = null,
-        string $metaDirective = null,
+        ?string $ifMatch = null,
+        ?string $ifNoneMatch = null,
+        ?string $encryption = null,
+        ?string $encryptionKey = null,
+        ?string $metaDirective = null,
         array $metaList = [],
-        string $taggingDirective = null,
+        ?string $taggingDirective = null,
         array $tagList = []
     ): array
     {
@@ -345,17 +345,17 @@ class Objects extends Basic
         string $filename,
         int $position,
         string $data,
-        string $acl = null,
-        string $storageType = null,
-        string $cacheControl = null,
-        string $disposition = null,
-        string $encoding = null,
-        string $md5 = null,
+        ?string $acl = null,
+        ?string $storageType = null,
+        ?string $cacheControl = null,
+        ?string $disposition = null,
+        ?string $encoding = null,
+        ?string $md5 = null,
         ?\DateTime $expires = null,
         ?bool $overwrite = null,
-        string $encryption = null,
-        string $dataEncryption = null,
-        string $encryptionKey = null,
+        ?string $encryption = null,
+        ?string $dataEncryption = null,
+        ?string $encryptionKey = null,
         array $metaList = [],
         array $tagList = []
     ): array
@@ -398,7 +398,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function delete(string $filename, string $versionId = null): array
+    public function delete(string $filename, ?string $versionId = null): array
     {
         $query = [];
         if (!is_null($versionId)) $query['versionId'] = $versionId ?: 'null';
@@ -425,7 +425,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function deleteMultiple(array $fileList, bool $quiet = false, string $encodingType = null): array
+    public function deleteMultiple(array $fileList, bool $quiet = false, ?string $encodingType = null): array
     {
         $objectList = [];
         foreach($fileList as $k => $v) {
@@ -467,7 +467,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function getHead(string $filename, string $versionId = null, ?\DateTime $ifModifiedSince = null, ?\DateTime $ifUnmodifiedSince = null, string $ifMatch = null, string $ifNoneMatch = null): array
+    public function getHead(string $filename, ?string $versionId = null, ?\DateTime $ifModifiedSince = null, ?\DateTime $ifUnmodifiedSince = null, ?string $ifMatch = null, ?string $ifNoneMatch = null): array
     {
         $query = [];
         if (!empty($versionId)) $query['versionId'] = $versionId;
@@ -499,7 +499,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function getMeta(string $filename, string $versionId = null): array
+    public function getMeta(string $filename, ?string $versionId = null): array
     {
         $query = ['objectMeta' => null];
         if (!empty($versionId)) $query['versionId'] = $versionId;
@@ -540,19 +540,19 @@ class Objects extends Basic
     public function post(
         string $filename,
         int $expire = 60,
-        string $acl = null,
-        string $storageType = null,
-        string $successRedirectUrl = null,
+        ?string $acl = null,
+        ?string $storageType = null,
+        ?string $successRedirectUrl = null,
         ?int $successStatusCode = null,
-        string $cacheControl = null,
-        string $disposition = null,
-        string $encoding = null,
+        ?string $cacheControl = null,
+        ?string $disposition = null,
+        ?string $encoding = null,
         \DateTime $expires = null,
-        string $dataEncryption = null,
-        string $encryptionKey = null,
+        ?string $dataEncryption = null,
+        ?string $encryptionKey = null,
         ?bool $overwrite = null,
         array $metaList = [],
-        string $securityToken = null
+        ?string $securityToken = null
     ): array
     {
         $time = time();
@@ -631,7 +631,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function restore(string $filename, int $day, string $tier = null): array
+    public function restore(string $filename, int $day, ?string $tier = null): array
     {
         $body = ['Days' => $day];
         if (!empty($tier)) $body['JobParameters'] = ['Tier' => $tier];
@@ -667,14 +667,14 @@ class Objects extends Basic
      */
     public function initPart(
         string $filename,
-        string $storageType = null,
-        string $cacheControl = null,
-        string $disposition = null,
-        string $encoding = null,
+        ?string $storageType = null,
+        ?string $cacheControl = null,
+        ?string $disposition = null,
+        ?string $encoding = null,
         \DateTime $expire = null,
         ?bool $overwrite = null,
-        string $encryption = null,
-        string $encryptionKey = null,
+        ?string $encryption = null,
+        ?string $encryptionKey = null,
         array $tagList = []
     ): array
     {
@@ -788,13 +788,13 @@ class Objects extends Basic
         string $uploadId,
         int $partNumber,
         string $sourceFilename,
-        string $sourceBucket = null,
-        string $copySourceRange = null,
-        string $versionId = null,
-        \DateTime $ifModifiedSince = null,
-        \DateTime $ifUnmodifiedSince = null,
-        string $ifMatch = null,
-        string $ifNoneMatch = null
+        ?string $sourceBucket = null,
+        ?string $copySourceRange = null,
+        ?string $versionId = null,
+        ?\DateTime $ifModifiedSince = null,
+        ?\DateTime $ifUnmodifiedSince = null,
+        ?string $ifMatch = null,
+        ?string $ifNoneMatch = null
     ): array
     {
         $query = ['uploadId' => $uploadId, 'partNumber' => $partNumber];
@@ -835,7 +835,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function completePart(string $filename, string $uploadId, array $eTagList, string $encoding = null, ?bool $overwrite = null, ?bool $completeAll = null): array
+    public function completePart(string $filename, string $uploadId, array $eTagList, ?string $encoding = null, ?bool $overwrite = null, ?bool $completeAll = null): array
     {
         $query = ['uploadId' => $uploadId];
         if (!empty($encoding)) $query['encoding-type'] = $encoding;
@@ -895,7 +895,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function partTaskList(string $delimiter = null, ?int $maxUploads = null, string $keyMarker = null, string $prefix = null, string $uploadIdMarker = null, string $encoding = null): array
+    public function partTaskList(?string $delimiter = null, ?int $maxUploads = null, ?string $keyMarker = null, ?string $prefix = null, ?string $uploadIdMarker = null, ?string $encoding = null): array
     {
         $query = ['uploads' => null];
         if (!empty($delimiter)) $query['delimiter'] = $delimiter;
@@ -904,7 +904,6 @@ class Objects extends Basic
         if (!empty($prefix)) $query['prefix'] = $prefix;
         if (!empty($uploadIdMarker)) $query['upload-id-marker'] = $uploadIdMarker;
         if (!empty($encoding)) $query['encoding-type'] = $encoding;
-        dump($query);
         return $this->buildHeaderSignAndRequest(
             Request::METHOD_GET,
             '/',
@@ -929,7 +928,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function partList(string $filename, string $uploadId, ?int $maxParts = null, ?int $partNumberMarker = null, string $encoding = null): array
+    public function partList(string $filename, string $uploadId, ?int $maxParts = null, ?int $partNumberMarker = null, ?string $encoding = null): array
     {
         $query = ['uploadId' => $uploadId];
         if (!is_null($maxParts)) $query['max-parts'] = $maxParts;
@@ -1007,7 +1006,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function createSymlink(string $filename, string $sourceFilename, ?bool $overwrite = null, string $acl = null, string $storageType = null): array
+    public function createSymlink(string $filename, string $sourceFilename, ?bool $overwrite = null, ?string $acl = null, ?string $storageType = null): array
     {
         $header = [
             Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED,
@@ -1037,7 +1036,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function getSymlink(string $filename, string $versionId = null): array
+    public function getSymlink(string $filename, ?string $versionId = null): array
     {
         $query = ['symlink' => null];
         if (!empty($versionId)) $query['versionId'] = $versionId;
@@ -1068,7 +1067,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function setTag(string $filename, array $tagList, string $versionId = null)
+    public function setTag(string $filename, array $tagList, ?string $versionId = null)
     {
         $query = ['tagging' => null];
         if(!empty($versionId)) $query['versionId'] = $versionId;
@@ -1098,7 +1097,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function getTag(string $filename, string $versionId = null)
+    public function getTag(string $filename, ?string $versionId = null)
     {
         $query = ['tagging' => null];
         if(!empty($versionId)) $query['versionId'] = $versionId;
@@ -1123,7 +1122,7 @@ class Objects extends Basic
      * @throws  InvalidResponseException
      * @throws  InvalidDecodeException
      */
-    public function deleteTag(string $filename, string $versionId = null)
+    public function deleteTag(string $filename, ?string $versionId = null)
     {
         $query = ['tagging' => null];
         if(!empty($versionId)) $query['versionId'] = $versionId;

@@ -49,7 +49,7 @@ abstract class Basic implements ArrayAccess
      * @param   string  $offset
      * @return  mixed
      */
-    public function get(string $offset = null, $default = null)
+    public function get(?string $offset = null, $default = null)
     {
         return $this->offsetGet($offset, $default);
     }
@@ -115,7 +115,7 @@ abstract class Basic implements ArrayAccess
      * @param   mixed   $default
      * @return  mixed
      */
-    public function offsetGet($offset, $default = null)
+    public function offsetGet($offset, $default = null): mixed
     {
         if (is_null($offset)) {
             return $this->config;

@@ -80,7 +80,7 @@ abstract class Basic
      * @throws InvalidArgumentException
      * @throws InvalidConfigException
      */
-    protected function getRegion(string $id = null): array
+    protected function getRegion(?string $id = null): array
     {
         $useConfigId = false;
         if (empty($id)) {
@@ -107,7 +107,7 @@ abstract class Basic
      * @param   array   $header     请求头
      * @return  string
      */
-    protected function buildHeaderSign(string $method, string $bucket = null, string $object = null, array $query = [], array $header = []): string
+    protected function buildHeaderSign(string $method, ?string $bucket = null, ?string $object = null, array $query = [], array $header = []): string
     {
         // 构造CanonicalRequest
         $canonicalUri = '/';
@@ -192,7 +192,7 @@ abstract class Basic
      * @throws  InvalidDecodeException
      * @throws  AliOssResponseException
      */
-    protected function buildHeaderSignAndRequest(string $method, string $uri, string $bucket = null, string $object = null, array $header = [], array $query = [], string $body = null, bool $returnHeader = false): array
+    protected function buildHeaderSignAndRequest(string $method, string $uri, ?string $bucket = null, ?string $object = null, array $header = [], array $query = [], ?string $body = null, bool $returnHeader = false): array
     {
         $host = $this->getRegion()['extranet_endpoint'];
         if (!empty($bucket)) $host = "{$bucket}.{$host}";

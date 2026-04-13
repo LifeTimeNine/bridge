@@ -26,7 +26,7 @@ class Oauth extends Basic
      * @return  void
      * @throws InvalidArgumentException
      */
-    public function authorize(string $redirectUri, bool $scope = true, string $state = null)
+    public function authorize(string $redirectUri, bool $scope = true, ?string $state = null)
     {
         if (empty($redirectUri)) {
             throw new InvalidArgumentException("Missing redirectUri empty");
@@ -67,7 +67,7 @@ class Oauth extends Basic
      * @return array
      * @throws InvalidResponseException
      */
-    public function refreshAccessToken($refreshToken): array
+    public function refreshAccessToken(string $refreshToken): array
     {
         return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/oauth2/refresh_token', [
             'appid' => $this->config->appId(),
@@ -84,7 +84,7 @@ class Oauth extends Basic
      * @return array
      * @throws InvalidResponseException
      */
-    public function getUserInfo($accessToken, $openid): array
+    public function getUserInfo(string $accessToken, string $openid): array
     {
         return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/sns/userinfo', [
             'access_token' => $accessToken,

@@ -93,7 +93,7 @@ class Template extends Basic
      * @return  array
      * @throws InvalidResponseException
      */
-    public function send(string $toUser, string $templateId, array $data, string $url = null, array $miniProgram = [], string $clientMsgId = null): array
+    public function send(string $toUser, string $templateId, array $data, ?string $url = null, array $miniProgram = [], ?string $clientMsgId = null): array
     {
         return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/message/template/send', [], [
             'touser' => $toUser,

@@ -75,7 +75,7 @@ class User extends Basic
      * @return array
      * @throws InvalidResponseException
      */
-    public function getTagUser(int $tagId, string $nextOpenid = null):array
+    public function getTagUser(int $tagId, ?string $nextOpenid = null):array
     {
         return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/user/tag/get', [], [
             'tagid'=> $tagId,
@@ -183,7 +183,7 @@ class User extends Basic
      * @return  array
      * @throws InvalidResponseException
      */
-    public function getUserList(string $nextOpenid = null): array
+    public function getUserList(?string $nextOpenid = null): array
     {
         return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/cgi-bin/user/get', [
             'next_openid' => $nextOpenid
@@ -197,7 +197,7 @@ class User extends Basic
      * @return  array
      * @throws InvalidResponseException
      */
-    public function getBlackList(string $beginOpenid = null): array
+    public function getBlackList(?string $beginOpenid = null): array
     {
         return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/cgi-bin/tags/members/getblacklist', [], [
             'begin_openid' => $beginOpenid

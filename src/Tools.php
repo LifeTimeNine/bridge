@@ -186,7 +186,7 @@ class Tools
      * @param   string  $fileFieldName  文件字段名称
      * @param   array
      */
-    public static function buildFormData(array $param, string $fileName = null, $fileData = null, string $fileFiledName = 'file'): array
+    public static function buildFormData(array $param, ?string $fileName = null, $fileData = null, string $fileFiledName = 'file'): array
     {
         $data = [];
         $mimeBoundary = md5(uniqid());

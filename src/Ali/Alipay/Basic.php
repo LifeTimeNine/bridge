@@ -85,7 +85,7 @@ abstract class Basic
      * @param   array   $config     配置信息
      * @throws InvalidConfigException
      */
-    public function __construct($config = [])
+    public function __construct(array $config = [])
     {
         $this->config = new AliPayment($config);
 
@@ -212,7 +212,7 @@ abstract class Basic
      * @param   string  $body       请求内容
      * @return  void
      */
-    protected function buildSign(array &$header, string $method, string $uri, string $body = null)
+    protected function buildSign(array &$header, string $method, string $uri, ?string $body = null)
     {
         $appAuthToken = $header['alipay-app-auth-token'] ?? null;
         $nonce = uniqid((string)mt_rand());

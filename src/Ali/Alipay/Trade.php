@@ -118,7 +118,7 @@ class Trade extends Basic
      * @return   string
      * @throws InvalidArgumentException
      */
-    public function page(array $order, string $notifyUrl, string $returnUrl = null): string
+    public function page(array $order, string $notifyUrl, ?string $returnUrl = null): string
     {
         $this->checkMustOptions($order, ['out_trade_no', 'total_amount', 'subject']);
         $options = $this->initOptions();
@@ -141,7 +141,7 @@ class Trade extends Basic
      * @return  string
      * @throws InvalidArgumentException
      */
-    public function wap(array $order, string $notifyUrl, string $returnUrl = null): string
+    public function wap(array $order, string $notifyUrl, ?string $returnUrl = null): string
     {
         $this->checkMustOptions($order, ['out_trade_no', 'total_amount', 'subject']);
         $options = $this->initOptions();
@@ -210,7 +210,7 @@ class Trade extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidSignException
      */
-    public function query(string $outTradeNo = null, string $tradeNo = null, array $queryOptions = [], string $orgPid = null): array
+    public function query(?string $outTradeNo = null, ?string $tradeNo = null, array $queryOptions = [], ?string $orgPid = null): array
     {
         if (empty($outTradeNo) && empty($tradeNo)) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");
@@ -265,7 +265,7 @@ class Trade extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidSignException
      */
-    public function refundQuery(string $outRequestNo, string $outTradeNo = null, string $tradeNo = null, array $queryOptions = []): array
+    public function refundQuery(string $outRequestNo, ?string $outTradeNo = null, ?string $tradeNo = null, array $queryOptions = []): array
     {
         $options = ['out_request_no' => $outRequestNo];
         if (empty($outTradeNo) && empty($tradeNo)) {
@@ -291,7 +291,7 @@ class Trade extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidSignException
      */
-    public function tradeClose(string $outTradeNo = null, string $tradeNo = null, string $operatorId = null)
+    public function tradeClose(?string $outTradeNo = null, ?string $tradeNo = null, ?string $operatorId = null)
     {
         if (empty($outTradeNo) && empty($tradeNo)) {
             throw new InvalidArgumentException("Missing Options [out_trade_no OR trade_no]");

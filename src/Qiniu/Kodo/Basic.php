@@ -72,7 +72,7 @@ abstract class Basic
      * @throws InvalidArgumentException
      * @throws InvalidConfigException
      */
-    protected function getRegion(string $id = null): array
+    protected function getRegion(?string $id = null): array
     {
         $useConfigId = false;
         if (empty($id)) {
@@ -100,7 +100,7 @@ abstract class Basic
      * @param   string  $body           请求体
      * @return  string
      */
-    protected function buildMangeSign(string $method, string $host, string $path, array $query = [], array $header = [], string $body = null): string
+    protected function buildMangeSign(string $method, string $host, string $path, array $query = [], array $header = [], ?string $body = null): string
     {
         $signStr = "{$method} {$path}";
         if (!empty($query)) $signStr .= ('?' . Tools::arrToUrl($query));
@@ -144,7 +144,7 @@ abstract class Basic
      * @return  array
      * @throws  InvalidDecodeException
      */
-    protected function request(string $method, string $host, string $path, array $header = [], array $query = [], string $body = null, bool $isEmptyResponse = false): array
+    protected function request(string $method, string $host, string $path, array $header = [], array $query = [], ?string $body = null, bool $isEmptyResponse = false): array
     {
         $protocol = $this->config->isSsl() ? 'https' : 'http';
         $headerData = [

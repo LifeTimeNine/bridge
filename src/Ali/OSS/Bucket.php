@@ -29,7 +29,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function list(string $prefix = null, string $marker = null, int $maxKeys = null, string $resourceGroupId = null): array
+    public function list(?string $prefix = null, ?string $marker = null, ?int $maxKeys = null, ?string $resourceGroupId = null): array
     {
         $header = [Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_URLENCODEED];
         if (!empty($resourceGroupId)) $header['x-oss-resource-group-id'] = $resourceGroupId;
@@ -76,7 +76,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function create(string $name, string $storageType = null, string $dataRedundancyType = null, string $acl = null, string $resourceGroupId = null): array
+    public function create(string $name, ?string $storageType = null, ?string $dataRedundancyType = null, ?string $acl = null, ?string $resourceGroupId = null): array
     {
         $header = [
             Request::HEADER_CONTENT_TYPE => Request::CONTENT_TYPE_XML
@@ -507,7 +507,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getVersionList(string $name, string $delimiter = null, string $keyMarker = null, string $versionIdMarker = null, string $maxKeys = null, string $prefix = null, string $encodingType = null): array
+    public function getVersionList(string $name, ?string $delimiter = null, ?string $keyMarker = null, ?string $versionIdMarker = null, ?string $maxKeys = null, ?string $prefix = null, ?string $encodingType = null): array
     {
         $query = [];
         if (!empty($delimiter)) $query['delimiter'] = $delimiter;
@@ -552,11 +552,11 @@ class Bucket extends Basic
         string $transferType = 'internal',
         ?bool $rtc,
         array $prefixList = [],
-        string $action = null,
+        ?string $action = null,
         ?bool $replicationHistorical = null,
-        string $syncRole = null,
+        ?string $syncRole = null,
         ?bool $sseKmsEnabled = null,
-        string $replicaKmsKeyID = null
+        ?string $replicaKmsKeyID = null
     ): array
     {
         $rule = [
@@ -854,7 +854,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getInventoryList(string $name, string $continuationToken = null): array
+    public function getInventoryList(string $name, ?string $continuationToken = null): array
     {
         $query = ['inventory' => null];
         if (!empty($continuationToken)) {
@@ -903,7 +903,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setLogging(string $name, string $targetBucket = null, string $targetPrefix = null): array
+    public function setLogging(string $name, ?string $targetBucket = null, ?string $targetPrefix = null): array
     {
         $body = $enabled = [];
         if (!empty($targetBucket)) $enabled['TargetBucket'] = $targetBucket;
@@ -1241,7 +1241,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setEncryption(string $name, string $sseAlgorithm, string $kmsDataEncryption = null, string $kmsMasterKeyID = null): array
+    public function setEncryption(string $name, string $sseAlgorithm, ?string $kmsDataEncryption = null, ?string $kmsMasterKeyID = null): array
     {
         $body = ['ApplyServerSideEncryptionByDefault' => ['SSEAlgorithm' => $sseAlgorithm]];
         if (!empty($kmsDataEncryption)) $body['ApplyServerSideEncryptionByDefault']['KMSDataEncryption'] = $kmsDataEncryption;
@@ -1512,7 +1512,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function doMetaQuery(string $name, string $query, string $nextToken = null, ?int $maxResults = null, string $sort = null, string $order = null, array $aggregationList = []): array
+    public function doMetaQuery(string $name, string $query, ?string $nextToken = null, ?int $maxResults = null, ?string $sort = null, ?string $order = null, array $aggregationList = []): array
     {
         $body = ['Query' => $query];
         if (!empty($nextToken)) $body['NextToken'] = $nextToken;
@@ -1560,7 +1560,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setResourceGroupId(string $name, string $resourceGroupId = null): array
+    public function setResourceGroupId(string $name, ?string $resourceGroupId = null): array
     {
         return $this->buildHeaderSignAndRequest(
             Request::METHOD_PUT,
@@ -1654,7 +1654,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function bindCname(string $name, string $domain, ?bool $delete = null, ?bool $force = null, string $certId = null, string $publicKey = null, string $privateKey = null, string $previousCertId = null): array
+    public function bindCname(string $name, string $domain, ?bool $delete = null, ?bool $force = null, ?string $certId = null, ?string $publicKey = null, ?string $privateKey = null, ?string $previousCertId = null): array
     {
         $body = [
             'Cname' => [
@@ -1937,7 +1937,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getUserDataRedundancyTransitionList(string $name, string $continuationToken = null, ?int $maxKeys = null): array
+    public function getUserDataRedundancyTransitionList(string $name, ?string $continuationToken = null, ?int $maxKeys = null): array
     {
         $query = ['redundancyTransition' => null];
         if (!empty($continuationToken)) $query['continuation-token'] = $continuationToken;
@@ -1985,7 +1985,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function createAccessPoint(string $name, string $pointName, string $networkOrigin, string $vpcId = null): array
+    public function createAccessPoint(string $name, string $pointName, string $networkOrigin, ?string $vpcId = null): array
     {
         $body = ['AccessPointName' => $pointName, 'NetworkOrigin' => $networkOrigin];
         if (!empty($vpcId)) $body['VpcConfiguration'] = ['VpcId' => $vpcId];
@@ -2061,7 +2061,7 @@ class Bucket extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function getAccessPointList(string $name = null, string $continuationToken = null, ?int $maxKeys = null): array
+    public function getAccessPointList(?string $name = null, ?string $continuationToken = null, ?int $maxKeys = null): array
     {
         $query = ['accessPoint' => null];
         if (!empty($continuationToken)) $query['continuation-token'] = $continuationToken;

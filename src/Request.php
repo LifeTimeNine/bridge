@@ -175,7 +175,7 @@ class Request
      * @param   mixed   $default
      * @return  mixed
      */
-    public function getInfo(string $key = null, $default = null)
+    public function getInfo(?string $key = null, $default = null)
     {
         return is_null($key) ? $this->info : ($this->info[$key] ?? $default);
     }
@@ -197,7 +197,7 @@ class Request
      * @param   mixed   $default
      * @return  mixed
      */
-    public function getHeader(string $key = null, $default = null)
+    public function getHeader(?string $key = null, $default = null)
     {
         return is_null($key) ? $this->responseHeader : ($this->responseHeader[$key] ?? $default);
     }

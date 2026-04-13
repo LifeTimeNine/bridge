@@ -59,7 +59,7 @@ class User extends Basic
      * @throws  InvalidDecodeException
      * @throws  WechatMiniAppResponseException
      */
-    public function getPaidUnionId(string $openid, string $transactionId = null, string $mchId = null, string $outTradeNo = null): array
+    public function getPaidUnionId(string $openid, ?string $transactionId = null, ?string $mchId = null, ?string $outTradeNo = null): array
     {
         return $this->request(Request::METHOD_GET, 'https://api.weixin.qq.com/wxa/getpaidunionid', [
             'openid' => $openid,
@@ -99,7 +99,7 @@ class User extends Basic
      * @throws  InvalidDecodeException
      * @throws  WechatMiniAppResponseException
      */
-    public function getPhoneNumber(string $code, string $openid = null): array
+    public function getPhoneNumber(string $code, ?string $openid = null): array
     {
         return $this->request(Request::METHOD_POST, 'https://api.weixin.qq.com/wxa/business/getuserphonenumber', [], [
             'code' => $code,

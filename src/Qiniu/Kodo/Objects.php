@@ -305,7 +305,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function partList(string $filename, string $uploadId, int $partNumberMarker = null, int $maxParts = 1000): array
+    public function partList(string $filename, string $uploadId, ?int $partNumberMarker = null, int $maxParts = 1000): array
     {
         $method = Request::METHOD_GET;
         $host = $this->getRegion()['upload'];
@@ -334,7 +334,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function list(string $marker = null, int $limit = 1000, string $prefix = null, string $delimiter = null): array
+    public function list(?string $marker = null, int $limit = 1000, ?string $prefix = null, ?string $delimiter = null): array
     {
         $method = Request::METHOD_GET;
         $host = $this->getRegion()['object_enum'];
@@ -387,7 +387,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setMetaData(string $filename, string $mimeType = null, array $metaList = [], array $cond = []): array
+    public function setMetaData(string $filename, ?string $mimeType = null, array $metaList = [], array $cond = []): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
@@ -421,7 +421,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function move(string $sourceFilename, string $targetFilename, string $targetBucket = null, bool $forceCover = false): array
+    public function move(string $sourceFilename, string $targetFilename, ?string $targetBucket = null, bool $forceCover = false): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
@@ -448,7 +448,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function copy(string $sourceFilename, string $targetFilename, string $targetBucket = null, bool $forceCover = false): array
+    public function copy(string $sourceFilename, string $targetFilename, ?string $targetBucket = null, bool $forceCover = false): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
@@ -592,7 +592,7 @@ class Objects extends Basic
      * @throws  InvalidDecodeException
      * @throws  InvalidResponseException
      */
-    public function setLifecycle(string $filename, int $toIAAfterDays = null, int $toArchiveIRAfterDays = null, int $toArchiveAfterDays = null, int $toDeepArchiveAfterDays = null, int $deleteAfterDays = null): array
+    public function setLifecycle(string $filename, ?int $toIAAfterDays = null, ?int $toArchiveIRAfterDays = null, ?int $toArchiveAfterDays = null, ?int $toDeepArchiveAfterDays = null, ?int $deleteAfterDays = null): array
     {
         $method = Request::METHOD_POST;
         $host = $this->getRegion()['object_manage'];
