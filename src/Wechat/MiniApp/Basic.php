@@ -39,6 +39,7 @@ abstract class Basic
     public function __construct(array $config = [])
     {
         $this->config = new WechatMiniApp($config);
+        Cache::init();
     }
 
     /**
