@@ -97,7 +97,7 @@ abstract class Basic
         $response = json_decode($response, true);
         if (json_last_error() > 0) throw new InvalidDecodeException(json_last_error_msg(), json_last_error());
 
-        if (isset($response['errcode'])) {
+        if (isset($response['errcode']) && $response['errcode'] > 0) {
             if (in_array($response['errcode'], $this->accessTokenErrorCode)) {
                 $response = call_user_func_array([$this, __FUNCTION__], func_get_args());
             } else {
